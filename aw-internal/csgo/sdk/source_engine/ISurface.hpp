@@ -49,5 +49,8 @@ struct ISurface
 	CUSTOM_VFUNC( StartDrawing(), void( __thiscall* )( void* ), ctx::mem.ISurface.StartDrawing )( );
 	CUSTOM_VFUNC( FinishDrawing(), void( __thiscall* )( void* ), ctx::mem.ISurface.FinishDrawing )( );
 
+	VFUNC( 66, UnlockCursor(), void( __thiscall* )( void* ) )( );
+	VFUNC( 82, PlaySound( std::string path ), void( __thiscall* )( void*, const char* ) )( path.c_str() );
+
 	OFFSET( bool, m_bClippingEnabled, ctx::mem.ISurface.m_bClippingEnabled );
 };

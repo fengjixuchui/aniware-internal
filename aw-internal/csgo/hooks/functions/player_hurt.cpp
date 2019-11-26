@@ -21,10 +21,10 @@ void hook_handler_t::player_hurt( IGameEvent* e )
 		case HitmarkerSound::NOSOUND:
 			break;
 		case HitmarkerSound::SWITCH_PRESS:
-			ctx::csgo.engine->ClientCmd_Unrestricted( "play buttons/arena_switch_press_02.wav" );
+			ctx::csgo.surface->PlaySound( "buttons/arena_switch_press_02.wav" );
 			break;
 		case HitmarkerSound::PAINTCAN_HARD:
-			ctx::csgo.engine->ClientCmd_Unrestricted( "play physics/metal/paintcan_impact_hard3.wav" );
+			ctx::csgo.surface->PlaySound( "physics/metal/paintcan_impact_hard3.wav" );
 			break;
 		}
 	}

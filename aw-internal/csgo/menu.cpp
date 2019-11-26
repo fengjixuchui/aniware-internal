@@ -57,9 +57,16 @@ namespace menu
 		{
 			tab2->add( std::make_shared<gui::controls::c_separator>( ".extrasensory" ) );
 			{
+				tab2->add( std::make_shared<gui::controls::c_checkbox>( "fog", &config::get_item( ctx::cfg.draw_fog ) ) );
 				tab2->add( std::make_shared<gui::controls::c_checkbox>( "name", &config::get_item( ctx::cfg.extrasensory_name ) ) );
 				tab2->add(std::make_shared<gui::controls::c_combo>("health type", &config::get_item(ctx::cfg.extrasensory_health_type), std::vector<std::string_view>{ "disabled", "bar", "number" }));
 				tab2->add( std::make_shared<gui::controls::c_combo>( "box type", &config::get_item( ctx::cfg.extrasensory_box_type ), std::vector<std::string_view>{ "disabled", "rectangle", "corners" } ) );
+			}
+
+			tab2->add( std::make_shared<gui::controls::c_separator>( ".cosmetic" ) );
+			{
+				tab2->add( std::make_shared<gui::controls::c_slider>( "viewmodel fov", &config::get_item( ctx::cfg.view_fov ), 0.f, 100.f ) );
+				tab2->add( std::make_shared<gui::controls::c_slider>( "world fov", &config::get_item( ctx::cfg.world_fov ), 0.f, 100.f ) );
 			}
 		}
 

@@ -6,8 +6,10 @@ namespace ctx
 	{
 		ADD_CFG_ITEM(bool, aim_enable, false);
 
-		ADD_CFG_ITEM( bool, draw_fog, false );
-		ADD_CFG_ITEM( bool, draw_smoke, false );
+		ADD_CFG_ITEM( bool, draw_fog, true );
+
+		ADD_CFG_ITEM( float, view_fov, 0.f );
+		ADD_CFG_ITEM( float, world_fov, 0.f );
 
 		ADD_CFG_ITEM( bool, extrasensory_name, false );
 		ADD_CFG_ITEM( int, extrasensory_box_type, 0 );

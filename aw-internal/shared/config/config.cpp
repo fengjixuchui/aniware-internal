@@ -2,7 +2,7 @@
 
 namespace config
 {
-	std::string_view m_name = "modest_cfg";
+	std::string_view m_name = "aniware_cfg";
 	std::string_view m_config = "default.cfg";
 
 	std::vector<item_t>& get_items()
@@ -70,7 +70,7 @@ namespace config
 					break;
 				}
 				case CT_HASH( "std::vector<int>" ):
-				{
+				{ 
 					auto vec = item.get<std::vector<int>>();
 					nlohmann::json sub;
 

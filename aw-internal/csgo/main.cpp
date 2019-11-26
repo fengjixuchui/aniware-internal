@@ -31,7 +31,7 @@ unsigned long __stdcall entry( void* instance )
 		menu::init();
 		hooks::init();
 
-		config::set_config_directory( "modest_cfg" );
+		config::set_config_directory( "aniware_cfg" );
 
 		while ( !input::get_key_info( VK_END ).m_state )
 			std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );

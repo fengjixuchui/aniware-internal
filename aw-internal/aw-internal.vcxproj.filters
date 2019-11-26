@@ -147,6 +147,7 @@
     <ClCompile Include="csgo\hooks\functions\frame_stage_notify.cpp" />
     <ClCompile Include="csgo\hooks\functions\draw_fog.cpp" />
     <ClCompile Include="csgo\hooks\functions\do_screen_effects.cpp" />
-    <ClCompile Include="csgo\hooks\functions\render_smoke_overlay.cpp" />
+    <ClCompile Include="csgo\hooks\functions\viewmodel_fov.cpp" />
+    <ClCompile Include="csgo\hooks\functions\override_view.cpp" />
   </ItemGroup>
 </Project>

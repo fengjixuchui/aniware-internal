@@ -120,17 +120,22 @@ struct hook_handler_t
 	static void __fastcall frame_stage_notify( REGISTERS, client_frame_stage_t stage );
 	static bool __fastcall draw_fog( REGISTERS );
 	static bool __fastcall do_screen_effects( REGISTERS, const CViewSetup* setup);
-	static void __fastcall render_smoke_overlay( REGISTERS, bool render_overlay );
 	static void __fastcall reload_fonts( REGISTERS );
 
+	static void __fastcall override_view( REGISTERS, CViewSetup* setup );
+	static float __stdcall viewmodel_fov();
+	
 	static void player_hurt( IGameEvent* e );
 
 	CREATE_HOOK( ctx::csgo.enginevgui, idx::ENGINE_PAINT, paint );
 	CREATE_HOOK( ctx::csgo.clientmode, idx::CREATE_MOVE, create_move );
+
 	CREATE_HOOK( ctx::csgo.client, idx::FRAME_STAGE_NOTIFY, frame_stage_notify );
 	CREATE_HOOK( ctx::csgo.clientmode, idx::SHOULD_DRAW_FOG, draw_fog );
+	CREATE_HOOK( ctx::csgo.clientmode, idx::GET_VIEWMODEL_FOV, viewmodel_fov );
+	CREATE_HOOK( ctx::csgo.clientmode, idx::OVERRIDE_VIEW, override_view );
 	CREATE_HOOK( ctx::csgo.clientmode, idx::DO_POST_SCREEN_SPACE_FX, do_screen_effects );
-	CREATE_HOOK( ctx::csgo.viewrender, idx::RENDER_SMOKE_OVERLAY, render_smoke_overlay );
+
 	CREATE_HOOK( ctx::csgo.scheme_manager, idx::RELOAD_FONT, reload_fonts );
 
 	CREATE_EVENT_CALLBACK( player_hurt );

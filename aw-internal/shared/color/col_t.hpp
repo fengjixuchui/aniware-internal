@@ -86,6 +86,7 @@ struct col_t
 		static col_t light_black(int alpha = 255) { return col_t(32, 32, 32, alpha); }
 		static col_t dark_grey(int alpha = 255) { return col_t(44, 44, 44, alpha); }
 		static col_t grey(int alpha = 255) { return col_t(60, 60, 60, alpha); }
+		static col_t white(int alpha = 255) { return col_t(255, 255, 255, alpha); }
 		static col_t light_grey(int alpha = 255) { return col_t(77, 77, 77, alpha); }
 		static col_t red(int alpha = 255) { return col_t(236, 98, 95, alpha); }
 	};

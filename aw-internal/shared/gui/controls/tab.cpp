@@ -110,7 +110,7 @@ namespace gui::controls
 
 		m_style.m_col_inner = col_t::palette_t::light_black();
 
-		m_style.m_col_line_active = col_t::palette_t::grey();
+		m_style.m_col_line_active = col_t::palette_t::white();
 		m_style.m_col_line = col_t::palette_t::black( 120 );
 
 		m_style.m_window_padding = 8;
