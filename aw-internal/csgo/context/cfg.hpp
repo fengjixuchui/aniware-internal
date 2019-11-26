@@ -1,0 +1,23 @@
+#pragma once
+
+namespace ctx
+{
+	struct cfg_t
+	{
+		ADD_CFG_ITEM(bool, aim_enable, false);
+
+		ADD_CFG_ITEM( bool, extrasensory_name, false );
+		ADD_CFG_ITEM( int, extrasensory_box_type, 0 );
+		ADD_CFG_ITEM( int, extrasensory_health_type, false) ;
+
+		ADD_CFG_ITEM( bool, hitmarker_enable, false );
+		ADD_CFG_ITEM( bool, hitmarker_tint, false );
+		ADD_CFG_ITEM( int, hitmarker_sound, 0 );
+
+		ADD_CFG_ITEM( bool, movement_bhop, false );
+		ADD_CFG_ITEM( bool, movement_strafe_enable, false );
+		ADD_CFG_ITEM( int, movement_strafe_type, 0 );
+	};
+
+	extern cfg_t cfg;
+}

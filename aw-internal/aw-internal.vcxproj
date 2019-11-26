@@ -18,6 +18,148 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="csgo\context\cfg.hpp" />
+    <ClInclude Include="csgo\context\client.hpp" />
+    <ClInclude Include="csgo\context\csgo.hpp" />
+    <ClInclude Include="csgo\context\mem.hpp" />
+    <ClInclude Include="csgo\csgo.hpp" />
+    <ClInclude Include="csgo\features\features.hpp" />
+    <ClInclude Include="csgo\features\misc\movement.hpp" />
+    <ClInclude Include="csgo\features\visuals\players.hpp" />
+    <ClInclude Include="csgo\hooks\hook_handler.hpp" />
+    <ClInclude Include="csgo\menu.hpp" />
+    <ClInclude Include="csgo\sdk\entities.hpp" />
+    <ClInclude Include="csgo\sdk\helper\classids.hpp" />
+    <ClInclude Include="csgo\sdk\helper\events.hpp" />
+    <ClInclude Include="csgo\sdk\helper\game.hpp" />
+    <ClInclude Include="csgo\sdk\helper\interfaces.hpp" />
+    <ClInclude Include="csgo\sdk\helper\netvars.hpp" />
+    <ClInclude Include="csgo\sdk\helper\render.hpp" />
+    <ClInclude Include="csgo\sdk\helper\weaponids.hpp" />
+    <ClInclude Include="csgo\sdk\sdk.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\CFontManager.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\CGlobalVarsBase.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\CHLClient.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\CInputSystem.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\CItemSystem.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\CCSWeaponData.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\ClientClass.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\ConVar.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\CUserCmd.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\datamap.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\IGameEvent.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\player_info_t.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\ServerClass.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\IClientEntity.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\IClientEntityList.h" />
+    <ClInclude Include="csgo\sdk\source_engine\IClientMode.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\ICVar.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\IGameEventManager.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\ISchemeManager.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\IServer.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\ISurface.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\IVEngineClient.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\IVEngineVGui.hpp" />
+    <ClInclude Include="shared\address\address.hpp" />
+    <ClInclude Include="shared\bitflag\bitflag.hpp" />
+    <ClInclude Include="shared\color\col_t.hpp" />
+    <ClInclude Include="shared\config\config.hpp" />
+    <ClInclude Include="shared\easing\easing.hpp" />
+    <ClInclude Include="shared\fmt\chrono.hpp" />
+    <ClInclude Include="shared\fmt\color.hpp" />
+    <ClInclude Include="shared\fmt\core.hpp" />
+    <ClInclude Include="shared\fmt\format-inl.hpp" />
+    <ClInclude Include="shared\fmt\format.hpp" />
+    <ClInclude Include="shared\fmt\locale.hpp" />
+    <ClInclude Include="shared\fmt\ostream.hpp" />
+    <ClInclude Include="shared\fmt\posix.hpp" />
+    <ClInclude Include="shared\fmt\prepare.hpp" />
+    <ClInclude Include="shared\fmt\printf.hpp" />
+    <ClInclude Include="shared\fmt\ranges.hpp" />
+    <ClInclude Include="shared\fmt\time.hpp" />
+    <ClInclude Include="shared\gui\controls.hpp" />
+    <ClInclude Include="shared\gui\gui.hpp" />
+    <ClInclude Include="shared\hash\hash.hpp" />
+    <ClInclude Include="shared\hook\hook.hpp" />
+    <ClInclude Include="shared\input\input.hpp" />
+    <ClInclude Include="shared\json\adl_serializer.hpp" />
+    <ClInclude Include="shared\json\detail\conversions\from_json.hpp" />
+    <ClInclude Include="shared\json\detail\conversions\to_chars.hpp" />
+    <ClInclude Include="shared\json\detail\conversions\to_json.hpp" />
+    <ClInclude Include="shared\json\detail\exceptions.hpp" />
+    <ClInclude Include="shared\json\detail\input\binary_reader.hpp" />
+    <ClInclude Include="shared\json\detail\input\input_adapters.hpp" />
+    <ClInclude Include="shared\json\detail\input\json_sax.hpp" />
+    <ClInclude Include="shared\json\detail\input\lexer.hpp" />
+    <ClInclude Include="shared\json\detail\input\parser.hpp" />
+    <ClInclude Include="shared\json\detail\input\position_t.hpp" />
+    <ClInclude Include="shared\json\detail\iterators\internal_iterator.hpp" />
+    <ClInclude Include="shared\json\detail\iterators\iteration_proxy.hpp" />
+    <ClInclude Include="shared\json\detail\iterators\iterator_traits.hpp" />
+    <ClInclude Include="shared\json\detail\iterators\iter_impl.hpp" />
+    <ClInclude Include="shared\json\detail\iterators\json_reverse_iterator.hpp" />
+    <ClInclude Include="shared\json\detail\iterators\primitive_iterator.hpp" />
+    <ClInclude Include="shared\json\detail\json_pointer.hpp" />
+    <ClInclude Include="shared\json\detail\json_ref.hpp" />
+    <ClInclude Include="shared\json\detail\macro_scope.hpp" />
+    <ClInclude Include="shared\json\detail\macro_unscope.hpp" />
+    <ClInclude Include="shared\json\detail\meta\cpp_future.hpp" />
+    <ClInclude Include="shared\json\detail\meta\detected.hpp" />
+    <ClInclude Include="shared\json\detail\meta\is_sax.hpp" />
+    <ClInclude Include="shared\json\detail\meta\type_traits.hpp" />
+    <ClInclude Include="shared\json\detail\meta\void_t.hpp" />
+    <ClInclude Include="shared\json\detail\output\binary_writer.hpp" />
+    <ClInclude Include="shared\json\detail\output\output_adapters.hpp" />
+    <ClInclude Include="shared\json\detail\output\serializer.hpp" />
+    <ClInclude Include="shared\json\detail\value_t.hpp" />
+    <ClInclude Include="shared\json\json.hpp" />
+    <ClInclude Include="shared\json\json_fwd.hpp" />
+    <ClInclude Include="shared\math\datatypes\angle_t.hpp" />
+    <ClInclude Include="shared\math\datatypes\matrix3x4_t.hpp" />
+    <ClInclude Include="shared\math\datatypes\vec2_t.hpp" />
+    <ClInclude Include="shared\math\datatypes\vec3_t.hpp" />
+    <ClInclude Include="shared\math\datatypes\vec4_t.hpp" />
+    <ClInclude Include="shared\math\datatypes\vert_t.h" />
+    <ClInclude Include="shared\math\datatypes\view_matrix_t.hpp" />
+    <ClInclude Include="shared\math\math.hpp" />
+    <ClInclude Include="shared\math\math_definitions.hpp" />
+    <ClInclude Include="shared\mem\mem.hpp" />
+    <ClInclude Include="shared\mem_protect\mem_protect.hpp" />
+    <ClInclude Include="shared\misc\misc.hpp" />
+    <ClInclude Include="shared\shared.hpp" />
+    <ClInclude Include="shared\stack_frame\stack_frame.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="csgo\features\misc\movement.cpp" />
+    <ClCompile Include="csgo\features\visuals\players.cpp" />
+    <ClCompile Include="csgo\hooks\functions\create_move.cpp" />
+    <ClCompile Include="csgo\hooks\functions\paint.cpp" />
+    <ClCompile Include="csgo\hooks\functions\player_hurt.cpp" />
+    <ClCompile Include="csgo\hooks\functions\reload_fonts.cpp" />
+    <ClCompile Include="csgo\hooks\hook_handler.cpp" />
+    <ClCompile Include="csgo\main.cpp" />
+    <ClCompile Include="csgo\menu.cpp" />
+    <ClCompile Include="csgo\sdk\entities.cpp" />
+    <ClCompile Include="csgo\sdk\helper\classids.cpp" />
+    <ClCompile Include="csgo\sdk\helper\events.cpp" />
+    <ClCompile Include="csgo\sdk\helper\game.cpp" />
+    <ClCompile Include="csgo\sdk\helper\interfaces.cpp" />
+    <ClCompile Include="csgo\sdk\helper\netvars.cpp" />
+    <ClCompile Include="csgo\sdk\helper\render.cpp" />
+    <ClCompile Include="csgo\sdk\helper\weaponids.cpp" />
+    <ClCompile Include="shared\config\config.cpp" />
+    <ClCompile Include="shared\gui\controls\checkbox.cpp" />
+    <ClCompile Include="shared\gui\controls\combo.cpp" />
+    <ClCompile Include="shared\gui\controls\separator.cpp" />
+    <ClCompile Include="shared\gui\controls\slider.cpp" />
+    <ClCompile Include="shared\gui\controls\tab.cpp" />
+    <ClCompile Include="shared\gui\gui.cpp" />
+    <ClCompile Include="shared\input\input.cpp" />
+    <ClCompile Include="shared\math\math.cpp" />
+    <ClCompile Include="shared\mem\mem.cpp" />
+    <ClCompile Include="shared\misc\misc.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{7DDC8CC7-3407-4377-87EE-3733696EA5EE}</ProjectGuid>
@@ -26,7 +168,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -69,13 +211,18 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)\output\</OutDir>
+    <IntDir>$(SolutionDir)\intermediates\</IntDir>
+    <TargetName>cheat</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,8 +269,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

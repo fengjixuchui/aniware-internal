@@ -1,0 +1,6 @@
+Start injector routine
+
+[!] Attempting to open process handle
+[!] Closing handle
+
+End injector routine
