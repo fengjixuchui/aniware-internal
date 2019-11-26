@@ -11,6 +11,7 @@
 #include <cctype>
 #include <functional>
 #include <thread>
+#include <string>
 #include <vector>
 #include <array>
 #include <map>

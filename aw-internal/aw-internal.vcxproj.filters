@@ -111,6 +111,9 @@
     <ClInclude Include="shared\misc\misc.hpp" />
     <ClInclude Include="shared\stack_frame\stack_frame.hpp" />
     <ClInclude Include="csgo\features\visuals\players.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\client_frame_stage_t.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\CViewSetup.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\IVRenderView.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="csgo\features\misc\movement.cpp" />
@@ -141,5 +144,9 @@
     <ClCompile Include="shared\mem\mem.cpp" />
     <ClCompile Include="shared\misc\misc.cpp" />
     <ClCompile Include="csgo\features\visuals\players.cpp" />
+    <ClCompile Include="csgo\hooks\functions\frame_stage_notify.cpp" />
+    <ClCompile Include="csgo\hooks\functions\draw_fog.cpp" />
+    <ClCompile Include="csgo\hooks\functions\do_screen_effects.cpp" />
+    <ClCompile Include="csgo\hooks\functions\render_smoke_overlay.cpp" />
   </ItemGroup>
 </Project>

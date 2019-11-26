@@ -45,8 +45,10 @@
     <ClInclude Include="csgo\sdk\source_engine\CItemSystem.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\CCSWeaponData.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\ClientClass.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\client_frame_stage_t.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\ConVar.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\CUserCmd.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\CViewSetup.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\datamap.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\IGameEvent.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\player_info_t.hpp" />
@@ -61,6 +63,7 @@
     <ClInclude Include="csgo\sdk\source_engine\ISurface.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IVEngineClient.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IVEngineVGui.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\IVRenderView.hpp" />
     <ClInclude Include="shared\address\address.hpp" />
     <ClInclude Include="shared\bitflag\bitflag.hpp" />
     <ClInclude Include="shared\color\col_t.hpp" />
@@ -134,9 +137,13 @@
     <ClCompile Include="csgo\features\misc\movement.cpp" />
     <ClCompile Include="csgo\features\visuals\players.cpp" />
     <ClCompile Include="csgo\hooks\functions\create_move.cpp" />
+    <ClCompile Include="csgo\hooks\functions\do_screen_effects.cpp" />
+    <ClCompile Include="csgo\hooks\functions\draw_fog.cpp" />
+    <ClCompile Include="csgo\hooks\functions\frame_stage_notify.cpp" />
     <ClCompile Include="csgo\hooks\functions\paint.cpp" />
     <ClCompile Include="csgo\hooks\functions\player_hurt.cpp" />
     <ClCompile Include="csgo\hooks\functions\reload_fonts.cpp" />
+    <ClCompile Include="csgo\hooks\functions\render_smoke_overlay.cpp" />
     <ClCompile Include="csgo\hooks\hook_handler.cpp" />
     <ClCompile Include="csgo\main.cpp" />
     <ClCompile Include="csgo\menu.cpp" />
@@ -181,7 +188,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -216,6 +223,11 @@
     <IntDir>$(SolutionDir)\intermediates\</IntDir>
     <TargetName>cheat</TargetName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)\output\</OutDir>
+    <IntDir>$(SolutionDir)\intermediates\</IntDir>
+    <TargetName>cheat</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
@@ -234,6 +246,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

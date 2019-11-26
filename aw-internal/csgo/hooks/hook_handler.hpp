@@ -31,6 +31,41 @@ namespace hooks
 
 	void init();
 	void undo();
+
+	enum idx : int
+	{
+		// IClientMode
+		SHOULD_DRAW_FOG = 17,
+		OVERRIDE_VIEW = 18,
+		CREATE_MOVE = 24,
+		GET_VIEWMODEL_FOV = 35,
+		DO_POST_SCREEN_SPACE_FX = 44,
+		//IVEngine
+		IS_HLTV = 93,
+		// IBaseClient
+		LEVEL_INIT_POST_ENTITY = 6,
+		LEVEL_SHUTDOWN = 7,
+		FRAME_STAGE_NOTIFY = 37,
+		// ISurface
+		LOCK_CURSOR = 67,
+		DRAW_SET_COLOR = 15,
+		// ISchemeManager
+		RELOAD_FONT = 4,
+		// IEngineVGUI
+		ENGINE_PAINT = 14,
+		// IModelRender
+		DRAW_MODEL_EXECUTE = 21,
+		// IRenderView
+		SCENE_END = 9,
+		// IViewRender
+		RENDER_SMOKE_OVERLAY = 41,
+		// IMaterialSystem
+		GET_MATERIAL = 84,
+		// CCSplayer
+		DO_EXTRA_BONE_PROC = 195,
+		// CBaseAnimating
+		SETUP_BONES = 13
+	};
 }
 
 template< typename func_sig >
@@ -58,7 +93,6 @@ inline func_sig create_hook_impl( const uint32_t token, void* table, const uint3
 inline bool create_event_callback_impl( std::string_view event_name, const std::function<void( IGameEvent* e )>& callback )
 {
 	event_handler::add( event_name, callback );
-
 	return true;
 }
 
@@ -74,6 +108,8 @@ type_fn_ ## func orig_ ## func = create_hook_impl< type_fn_ ## func >( HASH( #ho
 
 #define CREATE_EVENT_CALLBACK( func ) bool m_event_ ## func = create_event_callback_impl( #func, func );
 
+using namespace hooks;
+
 struct hook_handler_t
 {
 	hook_handler_t() = default;
@@ -81,13 +117,21 @@ struct hook_handler_t
 
 	static void __fastcall paint( REGISTERS, int mode );
 	static bool __fastcall create_move( REGISTERS, float flInputSampleTime, CUserCmd* cmd );
+	static void __fastcall frame_stage_notify( REGISTERS, client_frame_stage_t stage );
+	static bool __fastcall draw_fog( REGISTERS );
+	static bool __fastcall do_screen_effects( REGISTERS, const CViewSetup* setup);
+	static void __fastcall render_smoke_overlay( REGISTERS, bool render_overlay );
 	static void __fastcall reload_fonts( REGISTERS );
 
 	static void player_hurt( IGameEvent* e );
 
-	CREATE_HOOK( ctx::csgo.enginevgui, 14, paint );
-	CREATE_HOOK( ctx::csgo.clientmode, 24, create_move );
-	CREATE_HOOK( ctx::csgo.scheme_manager, 4, reload_fonts );
+	CREATE_HOOK( ctx::csgo.enginevgui, idx::ENGINE_PAINT, paint );
+	CREATE_HOOK( ctx::csgo.clientmode, idx::CREATE_MOVE, create_move );
+	CREATE_HOOK( ctx::csgo.client, idx::FRAME_STAGE_NOTIFY, frame_stage_notify );
+	CREATE_HOOK( ctx::csgo.clientmode, idx::SHOULD_DRAW_FOG, draw_fog );
+	CREATE_HOOK( ctx::csgo.clientmode, idx::DO_POST_SCREEN_SPACE_FX, do_screen_effects );
+	CREATE_HOOK( ctx::csgo.viewrender, idx::RENDER_SMOKE_OVERLAY, render_smoke_overlay );
+	CREATE_HOOK( ctx::csgo.scheme_manager, idx::RELOAD_FONT, reload_fonts );
 
 	CREATE_EVENT_CALLBACK( player_hurt );
 };

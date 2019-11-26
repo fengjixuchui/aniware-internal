@@ -96,6 +96,5 @@ struct CUserCmd
 
 	// Client only, tracks whether we've predicted this command at least once
 	bool	hasbeenpredicted;
-
 	char    pad_0x4C[ 0x18 ];
 };

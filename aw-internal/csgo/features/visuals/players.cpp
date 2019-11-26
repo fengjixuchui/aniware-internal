@@ -27,8 +27,7 @@ namespace players
 			if ( config::get<bool>( ctx::cfg.extrasensory_name ) )
 			{
 				auto player_info = pl->get_player_info();
-
-				render::text( render::fonts::m_main, { bbox.x + bbox.w * 0.5f, bbox.y - 7 }, { 255,255,255 }, { render::fonts::FONT_RIGHT | render::fonts::FONT_CENTER_Y }, player_info.name );
+				render::text( render::fonts::m_main, { bbox.x + bbox.w * 0.5f, bbox.y - 7 }, { 255, 255, 255 }, { render::fonts::FONT_RIGHT | render::fonts::FONT_CENTER_Y }, player_info.name );
 			}
 
 			const int health = pl->get_health();
