@@ -24,6 +24,7 @@
     <ClInclude Include="csgo\context\csgo.hpp" />
     <ClInclude Include="csgo\context\mem.hpp" />
     <ClInclude Include="csgo\csgo.hpp" />
+    <ClInclude Include="csgo\features\aimbot\aimbot.hpp" />
     <ClInclude Include="csgo\features\features.hpp" />
     <ClInclude Include="csgo\features\misc\movement.hpp" />
     <ClInclude Include="csgo\features\visuals\players.hpp" />
@@ -134,6 +135,7 @@
     <ClInclude Include="shared\stack_frame\stack_frame.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="csgo\features\aimbot\aimbot.cpp" />
     <ClCompile Include="csgo\features\misc\movement.cpp" />
     <ClCompile Include="csgo\features\visuals\players.cpp" />
     <ClCompile Include="csgo\hooks\functions\create_move.cpp" />

@@ -114,6 +114,7 @@
     <ClInclude Include="csgo\sdk\source_engine\datatypes\client_frame_stage_t.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\CViewSetup.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IVRenderView.hpp" />
+    <ClInclude Include="csgo\features\aimbot\aimbot.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="csgo\features\misc\movement.cpp" />
@@ -149,5 +150,6 @@
     <ClCompile Include="csgo\hooks\functions\do_screen_effects.cpp" />
     <ClCompile Include="csgo\hooks\functions\viewmodel_fov.cpp" />
     <ClCompile Include="csgo\hooks\functions\override_view.cpp" />
+    <ClCompile Include="csgo\features\aimbot\aimbot.cpp" />
   </ItemGroup>
 </Project>

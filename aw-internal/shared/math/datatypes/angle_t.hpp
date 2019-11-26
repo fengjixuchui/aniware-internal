@@ -9,6 +9,7 @@ namespace math
 		angle_t( float xyz ) : x( xyz ), y( xyz ), z( xyz ) {};
 		angle_t( float x, float y ) : x( x ), y( y ), z( 0 ) {};
 		angle_t( float x, float y, float z ) : x( x ), y( y ), z( z ) {};
+		angle_t( math::vec3_t xyz ) : x( xyz.x ), y( xyz.y ), z( xyz.z ) {};
 		angle_t( float* arr ) : x( arr[ PITCH ] ), y( arr[ YAW ] ), z( arr[ ROLL ] ) {};
 
 		inline float length() const
