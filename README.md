@@ -4,7 +4,6 @@
   [![Build status](https://img.shields.io/appveyor/ci/ibamboofox/aniware-internal?style=for-the-badge)](https://ci.appveyor.com/project/iBambooFox/aniware-internal) 
   [![GitHub Issues](https://img.shields.io/bitbucket/issues/ibamboofox/aniware-internal?style=for-the-badge)](https://github.com/iBambooFox/aniware-internal/issues)
   [![GitHub license](https://img.shields.io/github/license/ibamboofox/aniware-internal?style=for-the-badge)](https://github.com/iBambooFox/aniware-internal/blob/master/LICENSE)
-    [![GitHub activity](https://img.shields.io/github/commit-activity/m/ibamboofox/aniware-internal?style=for-the-badge)]
 </p>
 
 ## Issues
