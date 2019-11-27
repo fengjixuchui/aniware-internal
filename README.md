@@ -3,7 +3,7 @@
 </p>
 
 [![Build status](https://ci.appveyor.com/api/projects/status/hed52wml7ovx3qxb?svg=true)](https://google.com) 
-[![GitHub Issues](https://img.shields.io/github/issues/EternityX/DEADCELL-CSGO.svg)](https://google.com)
+[![GitHub Issues](https://img.shields.io/github/issues/EternityX/DEADCELL-CSGO.svg)](https://github.com/iBambooFox/aniware-internal/issuesm)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/iBambooFox/aniware-internal/blob/master/LICENSE)
 
 ## Preface
