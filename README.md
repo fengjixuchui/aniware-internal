@@ -1,9 +1,11 @@
 <p align="center">
   <img width="512" height="319" src="https://i.imgur.com/DQfjgBz.png">
-  
-  [![Build status](https://img.shields.io/appveyor/ci/ibamboofox/aniware-internal?style=for-the-badge)](https://ci.appveyor.com/project/iBambooFox/aniware-internal) 
-  [![GitHub Issues](https://img.shields.io/bitbucket/issues/ibamboofox/aniware-internal?style=for-the-badge)](https://github.com/iBambooFox/aniware-internal/issues)
-  [![GitHub license](https://img.shields.io/github/license/ibamboofox/aniware-internal?style=for-the-badge)](https://github.com/iBambooFox/aniware-internal/blob/master/LICENSE)
+</p>
+
+<p align="center">
+  <a href="https://ci.appveyor.com/project/iBambooFox/aniware-internal"><img src="https://img.shields.io/appveyor/ci/ibamboofox/aniware-internal?style=for-the-badge"></a>
+  <a href="https://github.com/iBambooFox/aniware-internal/issues"><img src="https://img.shields.io/github/issues/ibamboofox/aniware-internal?style=for-the-badge"></a>
+  <a href="https://github.com/iBambooFox/aniware-internal/blob/master/LICENSE"><img src="https://img.shields.io/github/license/ibamboofox/aniware-internal?style=for-the-badge"></a>
 </p>
 
 ## Issues
