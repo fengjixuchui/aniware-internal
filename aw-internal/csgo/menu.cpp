@@ -83,7 +83,7 @@ namespace menu
 			{
 				tab3->add( std::make_shared<gui::controls::c_checkbox>( "auto jump", &config::get_item( ctx::cfg.movement_bhop ) ) );
 				tab3->add( std::make_shared<gui::controls::c_checkbox>( "auto strafe", &config::get_item( ctx::cfg.movement_strafe_enable ) ) );
-				tab3->add( std::make_shared<gui::controls::c_combo>( "strafe type", &config::get_item( ctx::cfg.movement_strafe_type ), std::vector<std::string_view>{ "rage", "legit", "salted" } ) );	
+				tab3->add( std::make_shared<gui::controls::c_combo>( "strafe type", &config::get_item( ctx::cfg.movement_strafe_type ), std::vector<std::string_view>{ "rage", "legit" } ) );	
 			}			
 		}
 	}

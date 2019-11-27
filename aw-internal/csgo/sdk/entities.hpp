@@ -63,6 +63,8 @@ struct weapon_t : public econ_entity_t
 	NETVAR( int, get_ammo, "DT_WeaponBaseItem", "m_iClip1" );
 	NETVAR( CBaseHandle, get_owner, "DT_BaseCombatWeapon", "m_hOwner" );
 
+	VFUNC( 449, get_spread(), float( __thiscall* )( void* ) )( );
+
 	CUSTOM_VFUNC( get_wpn_data(), CCSWeaponData* ( __thiscall* )( void* ), ctx::mem.CWeaponCSBase.GetCSWpnData )( );
 	CUSTOM_VFUNC( get_inaccuracy(), float( __thiscall* )( void* ), ctx::mem.CWeaponCSBase.GetInaccuracy )( );
 	CUSTOM_VFUNC( update_accuracy(), void( __thiscall* )( void* ), ctx::mem.CWeaponCSBase.UpdateAccuracy )( );
@@ -84,7 +86,7 @@ struct player_t : public combat_character_t
 	NETVAR( CBaseHandle, get_weapon_handle, "DT_BaseCombatCharacter", "m_hActiveWeapon" );
 	NETVAR( math::vec3_t, get_velocity, "DT_BasePlayer", "m_vecVelocity[0]" );
 	NETVAR( math::vec3_t, get_view_offset, "DT_BasePlayer", "m_vecViewOffset[0]" );
-	NETVAR( math::vec3_t, get_punch_angle, "DT_BasePlayer", "m_aimPunchAngle" );
+	NETVAR( math::angle_t, get_punch_angle, "DT_BasePlayer", "m_aimPunchAngle" );
 	NETVAR( bitflag_t, get_flags, "DT_BasePlayer", "m_fFlags" );
 	NETVAR( float, get_health_boost_time, "DT_CSPlayer", "m_flHealthShotBoostExpirationTime" );
 

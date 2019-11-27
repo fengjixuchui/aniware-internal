@@ -2,5 +2,5 @@
 
 namespace aimbot
 {
-	void think();
+	bool hitchance( const math::angle_t ang, player_t* pl );
 }

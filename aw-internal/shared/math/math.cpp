@@ -13,12 +13,17 @@ namespace math
 		return ret.clamp();
 	}
 
-	void normalize_angle( float &angle )
+	float random( const float& min, const float& max )
 	{
-		if ( angle > 180.f || angle < -180.f )
+		return min + ( ( static_cast<float>( std::rand() ) / static_cast<float>( RAND_MAX ) )* ( max - min ) );
+	}
+
+	void normalize_angle( float &ang )
+	{
+		if ( ang > 180.f || ang < -180.f )
 		{
-			float revolutions = std::round( std::abs( angle / 360.f ) );
-			angle < 0.f ? angle = angle + 360.f * revolutions : angle = angle - 360.f * revolutions;
+			float revolutions = std::round( std::abs( ang / 360.f ) );
+			ang < 0.f ? ang = ang + 360.f * revolutions : ang = ang - 360.f * revolutions;
 		}
 	}
 

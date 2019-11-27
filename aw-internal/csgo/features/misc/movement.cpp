@@ -3,7 +3,6 @@
 enum StrafeType {
 	RAGE,
 	LEGIT,
-	SALTED
 };
 
 namespace movement
@@ -83,11 +82,7 @@ namespace movement
 		case RAGE:
 			break;
 		case LEGIT:
-			cos_rot /= 5;
-			sin_rot /= 5;
-			break;
-		case SALTED:
-			sin_rot *= static_cast< float >( std::sin( ctx::csgo.globals->tickcount ) * 0.15 );
+			sin_rot *= static_cast< float >( std::sin( ctx::csgo.globals->tickcount ) * 0.12f );
 			break;
 		}
 

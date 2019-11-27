@@ -77,7 +77,6 @@ bool entity_t::get_bbox( math::vec4_t& box )
 math::vec3_t player_t::get_eye_pos()
 {
 	auto pos = math::vec3_t{};
-
 	weapon_shootpos( &pos );
 
 	return pos;
@@ -85,6 +84,9 @@ math::vec3_t player_t::get_eye_pos()
 
 bool player_t::is_alive()
 {
+	if ( !ctx::client.local )
+		return false;
+
 	return get_lifestate() == ALIVE;
 }
 
