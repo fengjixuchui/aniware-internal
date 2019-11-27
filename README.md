@@ -4,7 +4,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/hed52wml7ovx3qxb?svg=true)](https://google.com) 
 [![GitHub Issues](https://img.shields.io/github/issues/EternityX/DEADCELL-CSGO.svg)](https://google.com)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://google.com)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/iBambooFox/aniware-internal/blob/master/LICENSE)
 
 ## Preface
 This is *not* a ready-to-use cheat, it is missing a lot of core features and has a multitude of issues. As such it is highly recommended that you do not use this if you have no prior programming knowledge. However we are working towards a stable, free, feature-rich cheat for everyone to use!
@@ -45,4 +45,4 @@ Press `END`.
 - masu for memory classes (vmt, protection, etc)
 
 ## License
-Licensed under the MIT License. See [LICENSE](https://github.com/EternityX/DEADCELL-CSGO/blob/master/LICENSE) for more details.
+Licensed under the MIT License. See [LICENSE](https://github.com/iBambooFox/aniware-internal/blob/master/LICENSE) for more details.
