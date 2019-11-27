@@ -9,7 +9,6 @@ bool __fastcall hook_handler_t::create_move( REGISTERS, float flInputSampleTime,
 	ctx::client.local = entity_t::get<player_t>( ctx::csgo.engine->GetLocalPlayer() );
 
 	INIT_STACKFRAME();
-
 	stack_frame.previous();
 
 	bool* bSendPacket = stack_frame.get_var<bool*>( -0x1C );

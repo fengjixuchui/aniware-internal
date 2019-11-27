@@ -30,15 +30,11 @@ namespace players
 				render::text( render::fonts::m_main, { bbox.x + bbox.w * 0.5f, bbox.y - 7 }, { 255, 255, 255 }, { render::fonts::FONT_RIGHT | render::fonts::FONT_CENTER_Y }, player_info.name );
 			}
 
-			const int health = pl->get_health();
+			const int player_health = pl->get_health();
 
-			col_t health_color { static_cast< int >( 255 - health * 2.55 ),
-								 static_cast< int >( health * 2.55 ),
-								 static_cast< int >( 0 ),
-								 static_cast< int >( 255 )
-			};
-
-			health > 100 ? health_color = col_t{ 0, 255, 0 } : col_t {};
+			col_t health_color { static_cast< int >( 255 - player_health * 2.55 ), static_cast< int >( player_health * 2.55 ), 0, 255 };
+			
+			player_health > 100 ? health_color = col_t{ 0, 255, 0 } : col_t {};
 
 			switch ( config::get<int>( ctx::cfg.extrasensory_health_type ) )
 			{
@@ -46,7 +42,7 @@ namespace players
 				break;
 			case HealthType::BAR:
 				render::rect_filled( { bbox.x - 6, bbox.y - 1 }, { 3, bbox.z + 2 }, { 0, 0, 0, 255 } );
-				render::rect_filled( { bbox.x - 5, bbox.y + ( bbox.z - bbox.z * ( std::clamp< int >( health, 0, 100.f) / 100.f) ) }, { 1, bbox.z * ( std::clamp< int >( health, 0, 100 ) / 100.f ) - ( health >= 100 ? 0 : -1 ) }, health_color );
+				render::rect_filled( { bbox.x - 5, bbox.y + ( bbox.z - bbox.z * ( std::clamp< int >( player_health, 0, 100.f) / 100.f) ) }, { 1, bbox.z * ( std::clamp< int >( player_health, 0, 100 ) / 100.f ) - ( player_health >= 100 ? 0 : -1 ) }, health_color );
 				break;
 			case HealthType::NUMBER:
 				render::text( render::fonts::m_main, { bbox.x + bbox.w * 0.5f, bbox.y - 7 }, { 255, 255, 255 }, { render::fonts::FONT_CENTER_Y }, fmt::format( " [ {:d} ]", pl->get_health() ) );
