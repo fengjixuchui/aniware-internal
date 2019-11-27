@@ -46,6 +46,7 @@ namespace aimbot
 		if ( !weapon )
 			return false;
 
+		/*
 		weapon->update_accuracy();
 		float weapon_spread = weapon->spread();
 		float weapon_cone = weapon->inaccuracy();
@@ -90,7 +91,7 @@ namespace aimbot
 			if (traces_hit >= static_cast<int>(g_vars.rage.hitchance * 2.56f))
 				return true;
 		}
-
+		*/
 		return false;
 	}
 
