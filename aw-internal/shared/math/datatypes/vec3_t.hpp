@@ -241,4 +241,17 @@ namespace math
 
 		float x, y, z;
 	};
+
+	struct __declspec( align( 16 ) ) vec3_aligned_t : public vec3_t
+	{
+		inline vec3_aligned_t& operator=( const vec3_t& vOther )
+		{
+			x = vOther.x;
+			y = vOther.y;
+			z = vOther.z;
+			return *this;
+		}
+
+		float w;
+	};
 }

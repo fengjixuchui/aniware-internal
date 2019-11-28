@@ -10,6 +10,7 @@ namespace aimbot
 		if ( !ctx::client.local->is_alive() )
 			return false;
 
+		int traces_hit = 0;
 		static math::vec3_t forward, right, up;
 
 		const auto eye_position = ctx::client.local->get_eye_pos();
@@ -52,12 +53,18 @@ namespace aimbot
 				math::vector_angles( get_bullet_location( i ), spread_angle );
 				math::angle_vectors( ang - ( spread_angle - ang ), predicted_bullet_end );
 
-				/*
-				todo: finish hitchance
-				trace trace
-				if hitchance
-				ret true
+				Trace_t trace;
+				Ray_t ray;
 
+				ray.initialize( eye_position, { eye_position + predicted_bullet_end * weapon->get_wpn_data()->flWeaponRange } );
+				ctx::csgo.enginetrace->ClipRayToEntity( ray, MASK_SHOT, pl, &trace );
+
+				/*
+				if (trace.ent == ent)
+					++traces_hit;
+
+				if (traces_hit >= static_cast<int>( 87 * 2.56f))
+					return true;
 				*/
 			}
 		}

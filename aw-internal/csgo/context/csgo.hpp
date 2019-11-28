@@ -13,6 +13,7 @@ namespace ctx
 		ADD_INTERFACE_MOD( ISurface, surface, "vguimatsurface.dll", "VGUI_Surface" );
 		ADD_INTERFACE( IVEngineClient, engine, "VEngineClient0" );
 		ADD_INTERFACE( IVEngineVGui, enginevgui, "VEngineVGui" );
+		ADD_INTERFACE( IEngineTrace, enginetrace, "EngineTraceClient004" );
 		ADD_INTERFACE( ICVar, cvar, "VEngineCvar" );
 		ADD_INTERFACE( CHLClient, client, "VClient0" );
 		ADD_INTERFACE( IServer, server, "ServerGameDLL0" );
