@@ -83,7 +83,24 @@ struct TraceFilter : public ITraceFilter
 	}
 };
 
-using Trace_t = void*;
+struct Trace_t
+{
+	math::vec3_t src;
+	math::vec3_t dst;
+	void* plane;
+	float fraction;
+	int contents;
+	unsigned short flags;
+	bool all_solid;
+	bool start_solid;
+	float fraction_left_solid;
+	void* surface;
+	int hitgroup;
+	short physics_bone;
+	void* entity;
+	int hitbox;
+};
+
 
 struct Ray_t
 {
@@ -100,24 +117,24 @@ struct Ray_t
 	void initialize( const math::vec3_t& src, const math::vec3_t& dst )
 	{
 		delta = dst - src;
+		start = src;
+
+		is_ray = true;
 		is_swept = ( delta.length() != 0 );
 
-		extents.x = extents.y = extents.z = 0.0f;
-		is_ray = true;
-
 		start_offset.x = start_offset.y = start_offset.z = 0.0f;
-		start = src;
+		extents.x = extents.y = extents.z = 0.0f;
 	}
 };
 
 struct IEngineTrace
 {
-	VFUNC( 4, ClipRayToEntity( const Ray_t& ray, unsigned int mask, void* ent, Trace_t trace ), 
-		void( __thiscall* )( void*, const Ray_t&, unsigned int, void*, Trace_t ) )( ray, mask, ent, trace );
+	VFUNC( 4, ClipRayToEntity( const Ray_t& ray, unsigned int mask, void* ent, Trace_t* trace ), 
+		void( __thiscall* )( void*, const Ray_t&, unsigned int, void*, Trace_t* ) )( ray, mask, ent, trace );
 	
-	VFUNC( 5, ClipRayToCollideable( const Ray_t& ray, unsigned int mask, void* ent, Trace_t trace ), 
-		void( __thiscall* )( void*, const Ray_t&, unsigned int, void*, Trace_t ) )( ray, mask, ent, trace );
+	VFUNC( 5, ClipRayToCollideable( const Ray_t& ray, unsigned int mask, void* ent, Trace_t* trace ), 
+		void( __thiscall* )( void*, const Ray_t&, unsigned int, void*, Trace_t* ) )( ray, mask, ent, trace );
 	
-	VFUNC( 6, TraceRay( const Ray_t& ray, unsigned int mask, TraceFilter* skip, Trace_t trace ), 
-		void( __thiscall* )( void*, const Ray_t&, unsigned int, TraceFilter*, Trace_t ) )( ray, mask, skip, trace );
+	VFUNC( 6, TraceRay( const Ray_t& ray, unsigned int mask, TraceFilter* skip, Trace_t* trace ), 
+		void( __thiscall* )( void*, const Ray_t&, unsigned int, TraceFilter*, Trace_t* ) )( ray, mask, skip, trace );
 };

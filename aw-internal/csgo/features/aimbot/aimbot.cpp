@@ -26,9 +26,11 @@ namespace aimbot
 			const float weapon_cone = weapon->get_inaccuracy();
 
 			const auto get_bullet_location = [ & ]( int seed ) {
-				if ( reinterpret_cast< void*( * )( unsigned int )>( GetProcAddress( GetModuleHandleA( "vstdlib.dll" ), "RandomSeed" ) )( seed ) )
-					return math::vec3_t{};
-				
+				if ( auto module_handle = GetModuleHandleA( "vstdlib.dll" ) )
+				{
+					reinterpret_cast< void*( * )( unsigned int )>( GetProcAddress( module_handle, "RandomSeed" ) )( seed );
+				}
+
 				const float rand[ 4 ] = { math::random( 0.f, 1.f ), 
 										  math::random( 0.f, float{ 2.f * M_PI } ), 
 										  math::random( 0.f, 1.f ), 
@@ -59,13 +61,11 @@ namespace aimbot
 				ray.initialize( eye_position, { eye_position + predicted_bullet_end * weapon->get_wpn_data()->flWeaponRange } );
 				ctx::csgo.enginetrace->ClipRayToEntity( ray, MASK_SHOT, pl, &trace );
 
-				/*
-				if (trace.ent == ent)
+				if ( reinterpret_cast< player_t* >( trace.entity ) == pl )
 					++traces_hit;
 
-				if (traces_hit >= static_cast<int>( 87 * 2.56f))
+				if ( traces_hit >= static_cast< int >( 88 * 2.56f ) )
 					return true;
-				*/
 			}
 		}
 
