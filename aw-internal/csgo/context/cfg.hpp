@@ -4,7 +4,9 @@ namespace ctx
 {
 	struct cfg_t
 	{
-		ADD_CFG_ITEM(bool, aim_enable, false);
+		ADD_CFG_ITEM( bool, aim_enable, false );
+		ADD_CFG_ITEM( float, aim_hitchance, false );
+
 
 		ADD_CFG_ITEM( bool, draw_fog, true );
 

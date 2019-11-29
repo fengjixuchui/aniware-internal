@@ -24,7 +24,7 @@ namespace players
 			if ( !pl->get_bbox( bbox ) )
 				return false;
 
-			if ( config::get<bool>( ctx::cfg.extrasensory_name ) )
+			if ( config::get< bool >( ctx::cfg.extrasensory_name ) )
 			{
 				auto player_info = pl->get_player_info();
 				render::text( render::fonts::m_main, { bbox.x + bbox.w * 0.5f, bbox.y - 7 }, { 255, 255, 255 }, { render::fonts::FONT_RIGHT | render::fonts::FONT_CENTER_Y }, player_info.name );
@@ -36,7 +36,7 @@ namespace players
 			
 			player_health > 100 ? health_color = col_t{ 0, 255, 0 } : col_t {};
 
-			switch ( config::get<int>( ctx::cfg.extrasensory_health_type ) )
+			switch ( config::get< int >( ctx::cfg.extrasensory_health_type ) )
 			{
 			case HealthType::NOHEALTH:
 				break;
@@ -49,7 +49,7 @@ namespace players
 				break;
 			}
 
-			switch ( config::get<int>( ctx::cfg.extrasensory_box_type ) )
+			switch ( config::get< int >( ctx::cfg.extrasensory_box_type ) )
 			{
 			case BoxType::NOBOX:
 				break;

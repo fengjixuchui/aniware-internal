@@ -9,7 +9,7 @@ namespace movement
 {
 	void bunnyhop()
 	{
-		if ( !config::get<bool>( ctx::cfg.movement_bhop ) )
+		if ( !config::get< bool >( ctx::cfg.movement_bhop ) )
 			return;
 
 		if ( !ctx::client.cmd )
@@ -33,7 +33,7 @@ namespace movement
 
 	void strafe()
 	{
-		if ( !config::get<bool>( ctx::cfg.movement_strafe_enable ) )
+		if ( !config::get< bool >( ctx::cfg.movement_strafe_enable ) )
 			return;
 
 		if ( !ctx::client.cmd )

@@ -64,7 +64,7 @@ namespace aimbot
 				if ( reinterpret_cast< player_t* >( trace.entity ) == pl )
 					++traces_hit;
 
-				if ( traces_hit >= static_cast< int >( 88 * 2.56f ) )
+				if ( traces_hit >= static_cast< int >( config::get< int >( ctx::cfg.aim_hitchance ) * 2.56f ) )
 					return true;
 			}
 		}

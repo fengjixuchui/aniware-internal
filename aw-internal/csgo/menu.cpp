@@ -50,6 +50,7 @@ namespace menu
 			tab1->add( std::make_shared<gui::controls::c_separator>( ".aim" ) );
 			{
 				tab1->add( std::make_shared<gui::controls::c_checkbox>( "enable", &config::get_item( ctx::cfg.aim_enable ) ) );
+				tab1->add( std::make_shared<gui::controls::c_slider>( "hitchance", &config::get_item( ctx::cfg.aim_hitchance ), 0.f, 100.f ) );
 			}
 		}
 
@@ -59,7 +60,7 @@ namespace menu
 			{
 				tab2->add( std::make_shared<gui::controls::c_checkbox>( "fog", &config::get_item( ctx::cfg.draw_fog ) ) );
 				tab2->add( std::make_shared<gui::controls::c_checkbox>( "name", &config::get_item( ctx::cfg.extrasensory_name ) ) );
-				tab2->add(std::make_shared<gui::controls::c_combo>("health type", &config::get_item(ctx::cfg.extrasensory_health_type), std::vector<std::string_view>{ "disabled", "bar", "number" }));
+				tab2->add( std::make_shared<gui::controls::c_combo>( "health type", &config::get_item( ctx::cfg.extrasensory_health_type ), std::vector<std::string_view>{ "disabled", "bar", "number" } ) );
 				tab2->add( std::make_shared<gui::controls::c_combo>( "box type", &config::get_item( ctx::cfg.extrasensory_box_type ), std::vector<std::string_view>{ "disabled", "rectangle", "corners" } ) );
 			}
 
