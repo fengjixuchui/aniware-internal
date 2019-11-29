@@ -2,6 +2,26 @@
 
 namespace aimbot
 {
+	bool is_valid( player_t* pl )
+	{
+		if ( !pl || pl->IsDormant() )
+			return false;
+
+		if ( !pl->is_alive() || pl->get_flags().has_flag( FL_FROZEN ) )
+			return false;
+
+		if ( pl->get_team() == ctx::client.local->get_team() && !config::get< bool >( ctx::cfg.aim_friendly ) )
+			return false;
+		
+		if (pl->get_survival_team() != -1 )
+			return false;
+
+		if ( pl->is_immune() )
+			return false;
+
+		return true;
+	}
+
 	bool hitchance( math::angle_t ang, player_t* pl )
 	{
 		if ( !ctx::client.cmd )

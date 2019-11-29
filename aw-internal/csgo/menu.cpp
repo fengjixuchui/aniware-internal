@@ -50,6 +50,7 @@ namespace menu
 			tab1->add( std::make_shared<gui::controls::c_separator>( ".aim" ) );
 			{
 				tab1->add( std::make_shared<gui::controls::c_checkbox>( "enable", &config::get_item( ctx::cfg.aim_enable ) ) );
+				tab1->add( std::make_shared<gui::controls::c_checkbox>( "friendly", &config::get_item( ctx::cfg.aim_friendly ) ) );
 				tab1->add( std::make_shared<gui::controls::c_slider>( "hitchance", &config::get_item( ctx::cfg.aim_hitchance ), 0.f, 100.f ) );
 			}
 		}

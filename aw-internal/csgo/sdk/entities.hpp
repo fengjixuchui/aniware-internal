@@ -27,6 +27,7 @@ struct entity_t : public IClientEntity
 	}
 
 	NETVAR( int, get_team, "DT_BaseEntity", "m_iTeamNum" );
+	NETVAR( int, get_survival_team, "DT_BaseEntity", "m_nSurvivalTeam" );
 	NETVAR( math::vec3_t, get_origin, "DT_BaseEntity", "m_vecOrigin" );
 	NETVAR( math::vec3_t, get_mins, "DT_BaseEntity", "m_vecMins" );
 	NETVAR( math::vec3_t, get_maxs, "DT_BaseEntity", "m_vecMaxs" );
