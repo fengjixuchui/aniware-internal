@@ -84,7 +84,7 @@ namespace aimbot
 				if ( reinterpret_cast< player_t* >( trace.entity ) == pl )
 					++traces_hit;
 
-				if ( traces_hit >= static_cast< int >( config::get< int >( ctx::cfg.aim_hitchance ) * 2.56f ) )
+				if ( traces_hit >= static_cast< int >( config::get< float >( ctx::cfg.aim_hitchance ) * 2.56f ) )
 					return true;
 			}
 		}
@@ -104,7 +104,13 @@ namespace aimbot
 			if ( !is_valid( pl ) )
 				return false;
 
-			auto ang = math::calc_angle( ctx::client.local->get_eye_pos(), pl->get_hitbox_pos( HITBOX_HEAD ) );
+			auto weapon = entity_t::get<weapon_t>( ctx::client.local->get_weapon_handle() );
+			
+			weapon->update_accuracy();
+
+			const auto aim_punch = ctx::client.local->get_punch_angle() * ctx::csgo.cvar->FindVar( "weapon_recoil_scale" )->GetFloat();
+
+			auto ang = math::calc_angle( ctx::client.local->get_eye_pos(), pl->get_hitbox_pos( HITBOX_HEAD ) ) - aim_punch;
 
 			ang.x = std::clamp( ang.x, -89.0f, 89.0f );
 			ang.y = std::clamp( ang.y, -180.0f, 180.0f );
@@ -115,7 +121,10 @@ namespace aimbot
 			if ( !config::get< bool >( ctx::cfg.aim_silent ) )
 				ctx::csgo.engine->SetViewAngles( ctx::client.cmd->viewangles );
 
+			if ( hitchance( ang, pl ) )
+				ctx::client.cmd->buttons.add_flag( IN_ATTACK );
+
 			return false;
-		}, { game::ENEMY_ONLY } );
+		}, ( config::get< bool >( ctx::cfg.aim_friendly ) ? game::NO_FLAG : game::ENEMY_ONLY ) );
 	}
 }

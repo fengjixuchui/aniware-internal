@@ -87,15 +87,16 @@ math::vec3_t player_t::get_hitbox_pos( int hitbox )
 	math::matrix3x4_t bone_matrix[ 128 ];
 
 	if ( !SetupBones( bone_matrix, 128, 256, 0.0f ) )
-		return math::vec3_t{};
+			return math::vec3_t{};
 
-	const auto studio_model = ctx::csgo.modelinfo->GetStudioModel( model() );
+	auto studio_model = ctx::csgo.modelinfo->GetStudioModel( GetModel() );
 
 	if( studio_model )
 	{
 		auto hitbox_set = studio_model->hitbox_set( 0 )->hitbox( hitbox );
 
-		if ( hitbox_set ) {
+		if ( hitbox_set )
+		{
 			auto min = math::vec3_t{}, max = math::vec3_t{};
 
 			math::vector_transform( hitbox_set->mins, bone_matrix[ hitbox_set->bone ], min );
@@ -104,8 +105,6 @@ math::vec3_t player_t::get_hitbox_pos( int hitbox )
 			return math::vec3_t{ ( min.x + max.x ) * 0.5f, ( min.y + max.y ) * 0.5f, ( min.z + max.z ) * 0.5f };
 		}
 	}
-
-	return math::vec3_t{};
 }
 
 bool player_t::is_alive()

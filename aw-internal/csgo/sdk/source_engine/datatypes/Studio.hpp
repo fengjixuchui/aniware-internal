@@ -67,9 +67,9 @@ struct studio_hitbox_set_t
 	int hitbox_count;
 	int hitbox_index;
 
-	studio_box_t* hitbox( int i )
+	studio_box_t* hitbox( int index )
 	{
-		return reinterpret_cast< studio_box_t* >( ( unsigned char* )( this ) + hitbox_index ) + i;
+		return reinterpret_cast<studio_box_t* >( reinterpret_cast< unsigned char *>( this ) + hitbox_index)  + index;
 	}
 };
 
@@ -104,15 +104,19 @@ struct studio_hdr_t
 	int textures_count;
 	int texture_index;
 
-	studio_hitbox_set_t* hitbox_set( int i ) 
+	studio_hitbox_set_t* hitbox_set( int index )
 	{
-		if (i <= hitbox_sets_count )
-			return reinterpret_cast< studio_hitbox_set_t* >( this + hitbox_set_index) + i;
+		if ( index > hitbox_sets_count )
+			return nullptr;
+
+		return reinterpret_cast< studio_hitbox_set_t* >(reinterpret_cast<unsigned char*>(this) + hitbox_set_index ) + index;
 	}
 
-	studio_bone_t* bone( int i )
+	studio_bone_t* bone( int index)
 	{
-		if ( i <= bones_count )
-			return reinterpret_cast< studio_bone_t* >( this + bone_index ) + i;
+		if ( index > bones_count )
+			return nullptr;
+
+		return reinterpret_cast< studio_bone_t* >( reinterpret_cast< unsigned char *>( this ) + bone_index )  + index;
 	}
 };
