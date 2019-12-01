@@ -16,6 +16,8 @@ namespace math
 
 	float random( const float& min, const float& max);
 
+	void normalize_angle( vec3_t& angle );
+
 	void normalize_angle( float& angle );
 
 	void angle_vectors( const angle_t& ang, vec3_t& out_forward );

@@ -54,6 +54,7 @@
     <ClInclude Include="csgo\sdk\source_engine\datatypes\IGameEvent.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\player_info_t.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\ServerClass.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\Studio.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IClientEntity.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IClientEntityList.h" />
     <ClInclude Include="csgo\sdk\source_engine\IClientMode.hpp" />
@@ -63,8 +64,10 @@
     <ClInclude Include="csgo\sdk\source_engine\ISchemeManager.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IServer.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\ISurface.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\IVDebugOverlay.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IVEngineClient.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IVEngineVGui.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\IVModelInfo.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IVRenderView.hpp" />
     <ClInclude Include="shared\address\address.hpp" />
     <ClInclude Include="shared\bitflag\bitflag.hpp" />

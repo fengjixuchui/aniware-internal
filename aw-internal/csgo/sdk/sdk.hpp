@@ -9,10 +9,13 @@
 #include "source_engine/datatypes/ServerClass.hpp"
 #include "source_engine/datatypes/CCSWeaponData.hpp"
 #include "source_engine/datatypes/IGameEvent.hpp"
+#include "source_engine/datatypes/Studio.hpp"
 #include "source_engine/datatypes/client_frame_stage_t.hpp"
 
 #include "source_engine/ISurface.hpp"
 #include "source_engine/IVEngineClient.hpp"
+#include "source_engine/IVDebugOverlay.hpp"
+#include "source_engine/IVModelInfo.hpp"
 #include "source_engine/CFontManager.hpp"
 #include "source_engine/IVEngineVGui.hpp"
 #include "source_engine/IEngineTrace.hpp"

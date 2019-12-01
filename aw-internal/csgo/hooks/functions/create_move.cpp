@@ -13,6 +13,8 @@ bool __fastcall hook_handler_t::create_move( REGISTERS, float flInputSampleTime,
 
 	bool* bSendPacket = stack_frame.get_var<bool*>( -0x1C );
 
+	aimbot::work();
+
 	movement::bunnyhop();
 	movement::strafe();
 

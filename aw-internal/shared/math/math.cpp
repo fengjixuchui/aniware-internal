@@ -4,18 +4,31 @@ namespace math
 {
 	angle_t calc_angle( const vec3_t& src, const vec3_t& dst )
 	{
-		auto ret = angle_t();
+		vec3_t delta = src - dst;
+		double hyp = std::sqrtf( delta.x * delta.x + delta.y * delta.y );
 
-		auto vec_delta = src - dst;
+		vec3_t ang;
+		ang.x = static_cast< float >( std::atan( delta.z / hyp ) * ( 180.0 / M_PI ) );
+		ang.y = static_cast< float >( std::atan( delta.y / delta.x ) * ( 180.0 / M_PI ) );
+		ang.z = 0.f;
 
-		vector_angles( vec_delta, ret );
+		if (delta.x >= 0.f)
+			ang.y += 180.f;
 
-		return ret.clamp();
+		normalize_angle(ang);
+		return ang;
 	}
 
 	float random( const float& min, const float& max )
 	{
-		return min + ( ( static_cast<float>( std::rand() ) / static_cast<float>( RAND_MAX ) )* ( max - min ) );
+		return min + ( ( static_cast<float>( std::rand() ) / static_cast<float>( RAND_MAX ) ) * ( max - min ) );
+	}
+
+	void normalize_angle( vec3_t& ang )
+	{
+		ang.x = std::isfinite( ang.x ) ? std::remainderf( ang.x, 360.0f ) : 0.0f;
+		ang.y = std::isfinite( ang.y ) ? std::remainderf( ang.y, 360.0f ) : 0.0f;
+		ang.z = 0.0f;
 	}
 
 	void normalize_angle( float &ang )

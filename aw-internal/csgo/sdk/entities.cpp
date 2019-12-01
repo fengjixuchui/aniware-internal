@@ -34,7 +34,7 @@ bool entity_t::get_bbox( math::vec4_t& box )
 	for ( int i = 0; i <= 7; i++ )
 	{
 		math::vec3_t out_vec; math::vector_transform( points[ i ], tran_frame, out_vec );
-		if ( !game::world_to_screen( out_vec, screen_boxes[ i ] ) )
+		if ( !static_cast< bool >( ctx::csgo.debugoverlay->WorldToScreen( out_vec, screen_boxes[ i ] ) != 1 ) )
 			return false;
 	}
 
@@ -80,6 +80,32 @@ math::vec3_t player_t::get_eye_pos()
 	weapon_shootpos( &pos );
 
 	return pos;
+}
+
+math::vec3_t player_t::get_hitbox_pos( int hitbox )
+{
+	math::matrix3x4_t bone_matrix[ 128 ];
+
+	if ( !SetupBones( bone_matrix, 128, 256, 0.0f ) )
+		return math::vec3_t{};
+
+	const auto studio_model = ctx::csgo.modelinfo->GetStudioModel( model() );
+
+	if( studio_model )
+	{
+		auto hitbox_set = studio_model->hitbox_set( 0 )->hitbox( hitbox );
+
+		if ( hitbox_set ) {
+			auto min = math::vec3_t{}, max = math::vec3_t{};
+
+			math::vector_transform( hitbox_set->mins, bone_matrix[ hitbox_set->bone ], min );
+			math::vector_transform( hitbox_set->maxs, bone_matrix[ hitbox_set->bone ], max );
+
+			return math::vec3_t{ ( min.x + max.x ) * 0.5f, ( min.y + max.y ) * 0.5f, ( min.z + max.z ) * 0.5f };
+		}
+	}
+
+	return math::vec3_t{};
 }
 
 bool player_t::is_alive()

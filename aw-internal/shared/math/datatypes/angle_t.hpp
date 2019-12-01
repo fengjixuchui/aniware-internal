@@ -38,8 +38,8 @@ namespace math
 		{
 			angle_t out{};
 			
-			out.x = std::clamp( x, -180.f, 180.f );
-			out.y = std::clamp( y, -89.f, 89.f );
+			out.x = std::clamp( x, -89.f, 89.f );
+			out.y = std::clamp( y, -180.f, 180.f );
 			out.z = 0.f;
 
 			return out;

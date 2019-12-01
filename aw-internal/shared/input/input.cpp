@@ -12,7 +12,7 @@ namespace input
 
 	void init( std::wstring_view window )
 	{
-				if ( m_window )
+		if ( m_window )
 			return;
 
 		m_window = FindWindowW( window.data(), NULL );
@@ -36,7 +36,7 @@ namespace input
 	{
 		switch ( msg )
 		{
-						case WM_LBUTTONDOWN:
+			case WM_LBUTTONDOWN:
 			case WM_LBUTTONDBLCLK:
 				if ( m_mouse_info.m_state == e_state::IDLE )
 					m_mouse_info.m_state = e_state::PRESSED;
@@ -45,7 +45,7 @@ namespace input
 				m_mouse_info.m_state = e_state::IDLE;
 				return true;
 
-							case WM_RBUTTONDOWN:
+			case WM_RBUTTONDOWN:
 			case WM_RBUTTONDBLCLK:
 				if ( m_mouse_info.m_state_right == e_state::IDLE )
 					m_mouse_info.m_state_right = e_state::PRESSED;
@@ -57,7 +57,7 @@ namespace input
 				break;
 		}
 
-				if ( m_mouse_info.m_state == e_state::PRESSED )
+		if ( m_mouse_info.m_state == e_state::PRESSED )
 			m_mouse_info.m_state = e_state::HELD;
 
 		if ( m_mouse_info.m_state_right == e_state::PRESSED )
@@ -81,12 +81,12 @@ namespace input
 
 		switch ( msg )
 		{
-						case WM_CHAR:
+			case WM_CHAR:
 				if ( param > 0 && param < 0x10000 )
 					m_last_char = static_cast< char >( param );
 				return true;
 
-							case WM_KEYDOWN:
+			case WM_KEYDOWN:
 				if ( param >= 0 && param < 256 )
 					m_key_info.at( param ).m_state = e_state::PRESSED;
 				return true;
@@ -97,7 +97,7 @@ namespace input
 				}
 				return true;
 
-							case WM_XBUTTONDOWN:
+			case WM_XBUTTONDOWN:
 			case WM_XBUTTONDBLCLK:
 				if ( GET_XBUTTON_WPARAM( param ) & XBUTTON1 )
 					m_key_info.at( VK_XBUTTON1 ).m_state = e_state::PRESSED;
@@ -111,7 +111,7 @@ namespace input
 					m_key_info.at( VK_XBUTTON2 ).m_state = e_state::IDLE;
 				return true;
 
-							case WM_SYSKEYDOWN:
+			case WM_SYSKEYDOWN:
 				if ( param >= 0 && param < 256 )
 					m_key_info.at( param ).m_state = e_state::PRESSED;
 				return true;
@@ -120,7 +120,7 @@ namespace input
 					m_key_info.at( param ).m_state = e_state::IDLE;
 				return true;
 
-							case WM_MBUTTONDOWN:
+			case WM_MBUTTONDOWN:
 			case WM_MBUTTONDBLCLK:
 				m_key_info.at( VK_MBUTTON ).m_state = e_state::PRESSED;
 				return true;
@@ -128,7 +128,7 @@ namespace input
 				m_key_info.at( VK_MBUTTON ).m_state = e_state::IDLE;
 				return true;
 
-							case WM_LBUTTONDOWN:
+			case WM_LBUTTONDOWN:
 			case WM_LBUTTONDBLCLK:
 				m_key_info.at( VK_LBUTTON ).m_state = e_state::PRESSED;
 				return true;
@@ -136,7 +136,7 @@ namespace input
 				m_key_info.at( VK_LBUTTON ).m_state = e_state::IDLE;
 				return true;
 
-							case WM_RBUTTONDOWN:
+			case WM_RBUTTONDOWN:
 			case WM_RBUTTONDBLCLK:
 				m_key_info.at( VK_RBUTTON ).m_state = e_state::PRESSED;
 				return true;
@@ -144,7 +144,7 @@ namespace input
 				m_key_info.at( VK_RBUTTON ).m_state = e_state::IDLE;
 				return true;
 
-							case WM_MOUSEWHEEL:
+			case WM_MOUSEWHEEL:
 				m_mouse_info.m_scroll = GET_WHEEL_DELTA_WPARAM( param ) / WHEEL_DELTA;
 				return true;
 			default:;
@@ -153,7 +153,7 @@ namespace input
 		return changed_state;
 	}
 
-		void update_mouse()
+	void update_mouse()
 	{
 		POINT p;
 		if ( !GetCursorPos( &p ) )

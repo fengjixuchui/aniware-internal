@@ -35,6 +35,7 @@ struct entity_t : public IClientEntity
 
 	NETVARADD( math::matrix3x4_t, get_coord_frame, "DT_BaseEntity", "m_CollisionGroup", -0x30 );
 
+	VFUNC( 8, model(), void * ( __thiscall* )( void* ) )( );
 	VFUNC( 17, get_pred_desc_map(), datamap_t * ( __thiscall* )( void* ) )( );
 
 	CUSTOM_VFUNC( set_abs_origin( math::vec3_t origin ), void( __thiscall* )( void*, const math::vec3_t& ), ctx::mem.CBaseEntity.SetAbsOrigin )( origin );
@@ -99,6 +100,7 @@ struct player_t : public combat_character_t
 	CUSTOM_VFUNC( weapon_shootpos( math::vec3_t* in ), float* ( __thiscall* )( void*, math::vec3_t* ), ctx::mem.CCSPlayer.Weapon_Shootpos )( in );
 
 	math::vec3_t get_eye_pos();
+	math::vec3_t get_hitbox_pos( int hitbox );
 
 	bool is_alive();
 	bool is_enemy();

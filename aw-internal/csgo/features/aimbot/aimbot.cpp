@@ -7,13 +7,10 @@ namespace aimbot
 		if ( !pl || pl->IsDormant() )
 			return false;
 
-		if ( !pl->is_alive() || pl->get_flags().has_flag( FL_FROZEN ) )
+		if( pl == ctx::client.local )
 			return false;
 
-		if ( pl->get_team() == ctx::client.local->get_team() && !config::get< bool >( ctx::cfg.aim_friendly ) )
-			return false;
-		
-		if (pl->get_survival_team() != -1 )
+		if ( !pl->is_alive() || pl->get_flags().has_flag( FL_FROZEN ) )
 			return false;
 
 		if ( pl->is_immune() )
@@ -51,24 +48,27 @@ namespace aimbot
 					reinterpret_cast< void*( * )( unsigned int )>( GetProcAddress( module_handle, "RandomSeed" ) )( seed );
 				}
 
-				const float rand[ 4 ] = { math::random( 0.f, 1.f ), 
-										  math::random( 0.f, float{ 2.f * M_PI } ), 
-										  math::random( 0.f, 1.f ), 
-										  math::random( 0.f, float{ 2.f * M_PI } ), 
+				const float rand[ 4 ] = { 
+					math::random( 0.f, 1.f ), 	  
+					math::random( 0.f, float{ 2.f * M_PI } ), 
+					math::random( 0.f, 1.f ), 
+					math::random( 0.f, float{ 2.f * M_PI } ), 
 				};
 
 				const float generated_spread = weapon_spread * rand[ 0 ];
 				const float generated_cone = weapon_cone * 2.f;
 
-				const math::vec3_t spread = { std::cos( rand[ 1 ] )* generated_spread + std::cos( rand[ 3 ] ) * generated_cone, 
-											  std::sin( rand[ 1 ] )* generated_spread + std::sin( rand[ 3 ] ) * generated_cone,
-											  0.f
+				const math::vec3_t spread = { 
+					std::cos( rand[ 1 ] ) * generated_spread + std::cos( rand[ 3 ] ) * generated_cone, 
+					std::sin( rand[ 1 ] ) * generated_spread + std::sin( rand[ 3 ] ) * generated_cone,
+					0.f
 				};
 
 				return math::vec3_t{ forward + right * -spread.x + up * -spread.y }.normalize();
 			};
 
-			for ( auto i = 1; i <= 256; i++ ) {
+			for ( auto i = 1; i <= 256; i++ )
+			{
 				static math::angle_t spread_angle;
 				static math::vec3_t predicted_bullet_end;
 
@@ -90,5 +90,32 @@ namespace aimbot
 		}
 
 		return false;
+	}
+
+	void work()
+	{
+		if( !config::get< bool >( ctx::cfg.aim_enable ) )
+			return;
+
+		if ( !ctx::client.local || !ctx::client.local->is_alive() )
+			return;
+
+		game::for_every_player( []( player_t * pl ) -> bool {
+			if ( !is_valid( pl ) )
+				return false;
+
+			auto ang = math::calc_angle( ctx::client.local->get_eye_pos(), pl->get_hitbox_pos( HITBOX_HEAD ) );
+
+			ang.x = std::clamp( ang.x, -89.0f, 89.0f );
+			ang.y = std::clamp( ang.y, -180.0f, 180.0f );
+			ang.z = 0;
+
+			ctx::client.cmd->viewangles = ang;
+
+			if ( !config::get< bool >( ctx::cfg.aim_silent ) )
+				ctx::csgo.engine->SetViewAngles( ctx::client.cmd->viewangles );
+
+			return false;
+		}, { game::ENEMY_ONLY } );
 	}
 }

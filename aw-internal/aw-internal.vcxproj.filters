@@ -116,6 +116,9 @@
     <ClInclude Include="csgo\sdk\source_engine\IVRenderView.hpp" />
     <ClInclude Include="csgo\features\aimbot\aimbot.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IEngineTrace.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\IVDebugOverlay.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\IVModelInfo.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\Studio.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="csgo\features\misc\movement.cpp" />

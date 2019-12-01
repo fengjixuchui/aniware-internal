@@ -12,6 +12,7 @@ namespace game
 
 	enum e_player_iteration_flags
 	{
+		NO_FLAG = 0 << 0,
 		ALLOW_DEAD = 1 << 0,
 		ENEMY_ONLY = 1 << 1,
 		ALLOW_DORMANT = 1 << 2
