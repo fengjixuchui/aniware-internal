@@ -52,6 +52,11 @@ namespace math
 			return ( x * x + y * y + z * z );
 		}
 
+		inline bool valid() const
+		{
+			return std::isfinite<float>( x ) && std::isfinite<float>( y ) && std::isfinite<float>( z );
+		}
+
 		inline float dot( const vec3_t & in ) const
 		{
 			return ( x * in.x + y * in.y + z * in.z );

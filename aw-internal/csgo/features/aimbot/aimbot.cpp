@@ -121,7 +121,7 @@ namespace aimbot
 			if ( !config::get< bool >( ctx::cfg.aim_silent ) )
 				ctx::csgo.engine->SetViewAngles( ctx::client.cmd->viewangles );
 
-			if ( hitchance( ang, pl ) )
+			if ( hitchance( ang + aim_punch, pl ) )
 				ctx::client.cmd->buttons.add_flag( IN_ATTACK );
 
 			return false;
