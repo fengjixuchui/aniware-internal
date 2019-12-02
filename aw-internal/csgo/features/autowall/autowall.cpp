@@ -8,64 +8,72 @@ namespace autowall
 			return;
 
 		Ray_t ray;
-		ray.initialize( src, dst );
-
 		TraceFilter filter;
+
+		ray.initialize( src, dst );
 		filter.skip = skip;
 		
 		ctx::csgo.enginetrace->TraceRay( ray, mask, &filter, trace );
 	}
 
-	void get_bullet_type( float& range, float& dist, char* type, bool penetration )
+	void get_bullet_type( float& range, float& dist, std::string type, bool penetration )
 	{
-		if (penetration)
+		if ( penetration )
 		{
 			range = 35.0;
 			dist = 3000.0;
 		}
 		else
 		{
-			if (!strcmp(type, "BULLET_PLAYER_338MAG"))
+			if ( type == "BULLET_PLAYER_338MAG" )
 			{
 				range = 45.0;
 				dist = 8000.0;
 			}
-			if (!strcmp(type, "BULLET_PLAYER_762MM"))
+
+			if (type == "BULLET_PLAYER_762MM" )
 			{
 				range = 39.0;
 				dist = 5000.0;
 			}
-			if (!strcmp(type, "BULLET_PLAYER_556MM") || !strcmp(type, "BULLET_PLAYER_556MM_SMALL") || !strcmp(type, "BULLET_PLAYER_556MM_BOX"))
+
+			if ( type == "BULLET_PLAYER_556MM" ||  type == "BULLET_PLAYER_556MM_SMALL" ||  type == "BULLET_PLAYER_556MM_BOX" )
 			{
 				range = 35.0;
 				dist = 4000.0;
 			}
-			if (!strcmp(type, "BULLET_PLAYER_57MM"))
+
+			if ( type == "BULLET_PLAYER_57MM" )
 			{
 				range = 30.0;
 				dist = 2000.0;
 			}
-			if (!strcmp(type, "BULLET_PLAYER_50AE"))
+
+			if ( type == "BULLET_PLAYER_50AE" )
 			{
 				range = 30.0;
 				dist = 1000.0;
 			}
-			if (!strcmp(type, "BULLET_PLAYER_357SIG") || !strcmp(type, "BULLET_PLAYER_357SIG_SMALL") || !strcmp(type, "BULLET_PLAYER_357SIG_P250") || !strcmp(type, "BULLET_PLAYER_357SIG_MIN"))
+
+			if ( type == "BULLET_PLAYER_357SIG" ||  type == "BULLET_PLAYER_357SIG_SMALL" ||  type == "BULLET_PLAYER_357SIG_P250" ||  type == "BULLET_PLAYER_357SIG_MIN" )
 			{
 				range = 25.0;
 				dist = 800.0;
 			}
-			if (!strcmp(type, "BULLET_PLAYER_9MM"))
+
+			if ( type == "BULLET_PLAYER_9MM" )
 			{
 				range = 21.0;
 				dist = 800.0;
 			}
-			if (!strcmp(type, "BULLET_PLAYER_45ACP"))
+
+			if ( type == "BULLET_PLAYER_45ACP" )
 			{
 				range = 15.0;
 				dist = 500.0;
 			}
-			if (!strcmp(type, "BULLET_PLAYER_BUCKSHOT"))
+
+			if ( type == "BULLET_PLAYER_BUCKSHOT" )
 			{
 				range = 0.0;
 				dist = 0.0;

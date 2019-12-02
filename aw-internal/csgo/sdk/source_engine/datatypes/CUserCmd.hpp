@@ -1,6 +1,6 @@
 #pragma once
 
-enum
+enum ButtonFlags_t
 {
 	IN_ATTACK = ( 1 << 0 ),
 	IN_JUMP = ( 1 << 1 ),
@@ -30,71 +30,41 @@ enum
 	IN_ATTACK3 = ( 1 << 25 ),
 };
 
-enum
+enum MoveType_t
 {
 	MOVETYPE_NONE = 0,
-	// never moves
 	MOVETYPE_ISOMETRIC,
-	// For players -- in TF2 commander view, etc.
 	MOVETYPE_WALK,
-	// player only - moving on the ground
 	MOVETYPE_STEP,
-	// gravity, special edge handling -- monsters use this
 	MOVETYPE_FLY,
-	// No gravity, but still collides with stuff
 	MOVETYPE_FLYGRAVITY,
-	// flies through the air + is affected by gravity
 	MOVETYPE_VPHYSICS,
-	// uses VPHYSICS for simulation
 	MOVETYPE_PUSH,
-	// no clip to world, push and crush
 	MOVETYPE_NOCLIP,
-	// No gravity, no collisions, still do velocity/avelocity
 	MOVETYPE_LADDER,
-	// Used by players only when going onto a ladder
 	MOVETYPE_OBSERVER,
-	// Observer movement, depends on player's observer mode
 	MOVETYPE_CUSTOM,
-	// Allows the entity to describe its own physics
 	MOVETYPE_LAST = MOVETYPE_CUSTOM,
-	// should always be defined as the last item in the list
 	MOVETYPE_MAX_BITS = 4
 };
 
 struct CUserCmd
 {
 	char pad_vtable[ 0x4 ];
-	// For matching server and client commands for debugging
-	int		command_number;
-
-	// the tick the client created this command
-	int		tick_count;
-
-	// Player instantaneous view angles.
-	math::angle_t	viewangles;
-
-	math::vec3_t	aim_direction;
-	// Intended velocities
-	//	forward velocity.
-	float	forwardmove;
-	//  sideways velocity.
-	float	sidemove;
-	//  upward velocity.
-	float	upmove;
-	// Attack button states
-	bitflag_t		buttons;
-	// Impulse command issued.
-	byte    impulse;
-	// Current weapon id
-	int		weaponselect;
-	int		weaponsubtype;
-
-	int		random_seed;	// For shared random functions
-
-	short	mousedx;		// mouse accum in x from create move
-	short	mousedy;		// mouse accum in y from create move
-
-	// Client only, tracks whether we've predicted this command at least once
-	bool	hasbeenpredicted;
-	char    pad_0x4C[ 0x18 ];
+	int command_number;     
+	int tick_count;      
+	math::vec3_t viewangles;         
+	math::vec3_t aimdirection;
+	float forwardmove;       
+	float sidemove;          
+	float upmove;            
+	bitflag_t buttons;           
+	unsigned char impulse;		  
+	int weaponselect;     
+	int weaponsubtype;     
+	int random_seed;        
+	short mousedx;           
+	short mousedy;           
+	bool hasbeenpredicted;  
+	char pad_0x4C[ 0x18 ];
 };

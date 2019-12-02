@@ -247,11 +247,11 @@ namespace math
 
 	struct __declspec( align( 16 ) ) vec3_aligned_t : public vec3_t
 	{
-		inline vec3_aligned_t& operator=( const vec3_t& vOther )
+		inline vec3_aligned_t& operator=( const vec3_t& vec )
 		{
-			x = vOther.x;
-			y = vOther.y;
-			z = vOther.z;
+			x = vec.x;
+			y = vec.y;
+			z = vec.z;
 			return *this;
 		}
 

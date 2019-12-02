@@ -124,7 +124,6 @@
     <ClInclude Include="shared\json\detail\value_t.hpp" />
     <ClInclude Include="shared\json\json.hpp" />
     <ClInclude Include="shared\json\json_fwd.hpp" />
-    <ClInclude Include="shared\math\datatypes\angle_t.hpp" />
     <ClInclude Include="shared\math\datatypes\matrix3x4_t.hpp" />
     <ClInclude Include="shared\math\datatypes\vec2_t.hpp" />
     <ClInclude Include="shared\math\datatypes\vec3_t.hpp" />

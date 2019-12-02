@@ -2,7 +2,7 @@
 
 namespace math
 {
-	angle_t calc_angle( const vec3_t& src, const vec3_t& dst )
+	vec3_t calc_angle( const vec3_t& src, const vec3_t& dst )
 	{
 		vec3_t delta = src - dst;
 		double hyp = std::sqrtf( delta.x * delta.x + delta.y * delta.y );
@@ -19,7 +19,7 @@ namespace math
 		return ang;
 	}
 
-	float random( const float& min, const float& max )
+	float random( const float min, const float max )
 	{
 		return min + ( ( static_cast<float>( std::rand() ) / static_cast<float>( RAND_MAX ) ) * ( max - min ) );
 	}
@@ -40,7 +40,7 @@ namespace math
 		}
 	}
 
-	void angle_vectors( const angle_t& ang, vec3_t& out_forward )
+	void angle_vectors( const vec3_t& ang, vec3_t& out_forward )
 	{
 		auto sine = vec2_t(),
 			cosine = vec2_t();
@@ -53,7 +53,7 @@ namespace math
 		out_forward.z = -sine.x;
 	}
 
-	void angle_vectors( const angle_t& ang, vec3_t& out_forward, vec3_t& out_right, vec3_t& out_up )
+	void angle_vectors( const vec3_t& ang, vec3_t* out_forward, vec3_t* out_right, vec3_t* out_up )
 	{
 		auto sine = vec3_t(),
 			cosine = vec3_t();
@@ -62,37 +62,30 @@ namespace math
 		sincos( deg2rad( ang.y ), sine.y, cosine.y );
 		sincos( deg2rad( ang.z ), sine.z, cosine.z );
 
-		out_forward.x = cosine.x * cosine.y;
-		out_forward.y = cosine.x * sine.y;
-		out_forward.z = -sine.x;
+		out_forward->x = cosine.x * cosine.y;
+		out_forward->y = cosine.x * sine.y;
+		out_forward->z = -sine.x;
 
-		out_right.x = ( -1 * sine.z * sine.x * cosine.y + -1 * cosine.z * -sine.y );
-		out_right.y = ( -1 * sine.z * sine.x * sine.y + -1 * cosine.z * cosine.y );
-		out_right.z = ( -1 * sine.z * cosine.x );
+		out_right->x = ( -1 * sine.z * sine.x * cosine.y + -1 * cosine.z * -sine.y );
+		out_right->y = ( -1 * sine.z * sine.x * sine.y + -1 * cosine.z * cosine.y );
+		out_right->z = ( -1 * sine.z * cosine.x );
 
-		out_up.x = ( cosine.z * sine.x * cosine.y + -sine.z * -sine.y );
-		out_up.y = ( cosine.z * sine.x * sine.y + -sine.z * cosine.y );
-		out_up.z = ( cosine.z * cosine.x );
+		out_up->x = ( cosine.z * sine.x * cosine.y + -sine.z * -sine.y );
+		out_up->y = ( cosine.z * sine.x * sine.y + -sine.z * cosine.y );
+		out_up->z = ( cosine.z * cosine.x );
 	}
 
-	void vector_angles( const vec3_t & vec, angle_t & out )
+	void vector_angles( const vec3_t& vec, vec3_t& out )
 	{
-		if ( vec.x == 0.0f && vec.y == 0.0f )
+		if ( vec.x == 0.f && vec.y == 0.f )
 		{
-			out.x = ( vec.z > 0.0f ) ? 270.0f : 90.0f;
-			out.y = 0.0f;
+			out.x = vec.z > 0.f ? -90.f : 90.f;
+			out.y = 0.f;
 		}
 		else
 		{
-			out.x = atan2( -vec.z, vec.length_2d() ) * ( -180.f / static_cast< float >( M_PI ) );
-			out.y = atan2( vec.y, vec.x ) * ( 180.f / static_cast< float >( M_PI ) );
-
-			if ( out.y > 90.f )
-				out.y -= 180.f;
-			else if ( out.y < 90.f )
-				out.y += 180.f;
-			else if ( out.y == 90.f )
-				out.y = 0.f;
+			out.x = rad2deg( std::atan2( -vec.z, vec.length_2d() ) );
+			out.y = rad2deg( std::atan2( vec.y, vec.x ) );
 		}
 
 		out.z = 0.f;

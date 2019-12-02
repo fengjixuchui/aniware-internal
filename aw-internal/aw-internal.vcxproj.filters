@@ -99,7 +99,6 @@
     <ClInclude Include="shared\json\detail\output\serializer.hpp" />
     <ClInclude Include="shared\math\math.hpp" />
     <ClInclude Include="shared\math\math_definitions.hpp" />
-    <ClInclude Include="shared\math\datatypes\angle_t.hpp" />
     <ClInclude Include="shared\math\datatypes\matrix3x4_t.hpp" />
     <ClInclude Include="shared\math\datatypes\vec2_t.hpp" />
     <ClInclude Include="shared\math\datatypes\vec3_t.hpp" />

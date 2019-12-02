@@ -39,7 +39,7 @@ struct entity_t : public IClientEntity
 	VFUNC( 17, get_pred_desc_map(), datamap_t * ( __thiscall* )( void* ) )( );
 
 	CUSTOM_VFUNC( set_abs_origin( math::vec3_t origin ), void( __thiscall* )( void*, const math::vec3_t& ), ctx::mem.CBaseEntity.SetAbsOrigin )( origin );
-	CUSTOM_VFUNC( set_abs_angles( math::angle_t origin ), void( __thiscall* )( void*, const math::angle_t& ), ctx::mem.CBaseEntity.SetAbsAngles )( origin );
+	CUSTOM_VFUNC( set_abs_angles( math::vec3_t origin ), void( __thiscall* )( void*, const math::vec3_t& ), ctx::mem.CBaseEntity.SetAbsAngles )( origin );
 	CUSTOM_VFUNC( think(), void( __thiscall* )( void* ), ctx::mem.CBaseEntity.Think )( );
 	CUSTOM_VFUNC( should_collide( int collision_group, int contents_mask ), bool( __thiscall* )( void*, int, int ), ctx::mem.CBaseEntity.ShouldCollide )( collision_group, contents_mask );
 
@@ -66,8 +66,8 @@ struct weapon_t : public econ_entity_t
 	NETVAR( CBaseHandle, get_owner, "DT_BaseCombatWeapon", "m_hOwner" );
 
 	VFUNC( 449, get_spread(), float( __thiscall* )( void* ) )( );
+	VFUNC( 457, get_weapon_info(), WeaponInfo_t*( __thiscall* )( void* ) )( );
 
-	CUSTOM_VFUNC( get_wpn_data(), CCSWeaponData* ( __thiscall* )( void* ), ctx::mem.CWeaponCSBase.GetCSWpnData )( );
 	CUSTOM_VFUNC( get_inaccuracy(), float( __thiscall* )( void* ), ctx::mem.CWeaponCSBase.GetInaccuracy )( );
 	CUSTOM_VFUNC( update_accuracy(), void( __thiscall* )( void* ), ctx::mem.CWeaponCSBase.UpdateAccuracy )( );
 };
@@ -88,7 +88,7 @@ struct player_t : public combat_character_t
 	NETVAR( CBaseHandle, get_weapon_handle, "DT_BaseCombatCharacter", "m_hActiveWeapon" );
 	NETVAR( math::vec3_t, get_velocity, "DT_BasePlayer", "m_vecVelocity[0]" );
 	NETVAR( math::vec3_t, get_view_offset, "DT_BasePlayer", "m_vecViewOffset[0]" );
-	NETVAR( math::angle_t, get_punch_angle, "DT_BasePlayer", "m_aimPunchAngle" );
+	NETVAR( math::vec3_t, get_punch_angle, "DT_BasePlayer", "m_aimPunchAngle" );
 	NETVAR( bitflag_t, get_flags, "DT_BasePlayer", "m_fFlags" );
 	NETVAR( float, get_health_boost_time, "DT_CSPlayer", "m_flHealthShotBoostExpirationTime" );
 

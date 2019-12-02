@@ -13,6 +13,6 @@ struct AimbotData {
 namespace aimbot
 {
 	bool is_valid( player_t* pl );
-	bool hitchance( const math::angle_t ang, player_t* pl );
+	bool hitchance( math::vec3_t& ang, player_t* pl );
 	void work();
 }

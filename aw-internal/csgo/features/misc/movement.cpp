@@ -54,7 +54,7 @@ namespace movement
 		if ( ctx::client.local->get_flags().has_flag( FL_ONGROUND ) && !ctx::client.cmd->buttons.has_flag( IN_JUMP ) )
 			return;
 			
-		math::angle_t viewangles;
+		math::vec3_t viewangles;
 		ctx::csgo.engine->GetViewAngles( viewangles );
 
 		static bool side_switch = false;
