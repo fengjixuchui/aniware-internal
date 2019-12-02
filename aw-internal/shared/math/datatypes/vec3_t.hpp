@@ -19,7 +19,6 @@ namespace math
 		inline float length_2d() const
 		{
 			float root = 0.0f;
-
 			float sqst = x * x + y * y;
 
 			__asm
@@ -62,7 +61,6 @@ namespace math
 		{
 			return ( x * in[ PITCH ] + y * in[ YAW ] + z * in[ ROLL ] );
 		}
-
 
 #pragma region assignment
 		inline vec3_t& operator=( const vec3_t & in )

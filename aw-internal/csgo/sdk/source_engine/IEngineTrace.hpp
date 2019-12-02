@@ -12,7 +12,7 @@ enum TraceContent
 	CONTENTS_MIST = 0x40,
 	CONTENTS_OPAQUE = 0x80,
 	LAST_VISIBLE_CONTENTS = 0x80,
-	ALL_VISIBLE_CONTENTS = ( LAST_VISIBLE_CONTENTS | ( LAST_VISIBLE_CONTENTS - 1 ) ),
+	ALL_VISIBLE_CONTENTS = 0xFF,
 	CONTENTS_TESTFOGVOLUME = 0x100,
 	CONTENTS_UNUSED5 = 0x200,
 	CONTENTS_UNUSED6 = 0x4000,
@@ -75,11 +75,11 @@ struct ITraceFilter
 
 struct TraceFilter : public ITraceFilter
 {
-	void* skip_ent;
+	void* skip;
 
 	bool ShouldHitEntity(void* ent, unsigned int mask) 
 	{
-		return (ent != skip_ent);
+		return (ent != skip);
 	}
 };
 
