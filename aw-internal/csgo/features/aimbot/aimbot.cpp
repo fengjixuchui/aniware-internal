@@ -37,7 +37,8 @@ namespace aimbot
 		const float weapon_spread = weapon->get_spread();
 		const float weapon_cone = weapon->get_inaccuracy();
 
-		const auto get_bullet_location = [&]( int seed ) {
+		const auto get_bullet_location = [&]( int seed ) 
+		{
 			if ( auto module_handle = GetModuleHandleA( "vstdlib.dll" ) )
 			{
 				reinterpret_cast< void*( * )( unsigned int ) >( GetProcAddress( module_handle, "RandomSeed" ) )( seed );

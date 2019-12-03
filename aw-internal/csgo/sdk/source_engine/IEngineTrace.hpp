@@ -84,7 +84,6 @@ struct Plane_t
 };
 
 struct player_t;
-struct entity_h;
 
 struct ITraceFilter
 {
@@ -124,14 +123,6 @@ struct Trace_t
 	short physics_bone;
 	player_t* entity;
 	int hitbox;
-
-	bool did_hit_world() const {
-		return false;
-	}
-
-	bool did_hit_non_world() const {
-		return entity != NULL && !did_hit_world();
-	}
 };
 
 struct Ray_t
@@ -161,7 +152,7 @@ struct Ray_t
 
 struct IEngineTrace
 {
-	virtual int GetPointContents( const math::vec3_t& pos, int mask = MASK_ALL, entity_h** ent = nullptr ) = 0;
+	virtual int GetPointContents( const math::vec3_t& pos, int mask = MASK_ALL, void** ent = nullptr ) = 0;
 	virtual int GetPointContentsWorld( const math::vec3_t& pos, int mask = MASK_ALL) = 0;
 	virtual int GetPointContentsCollideable( void* collide, const math::vec3_t& pos ) = 0;
 	virtual void ClipRayToEntity( const Ray_t& ray, unsigned int mask, player_t* ent, Trace_t* trace ) = 0;

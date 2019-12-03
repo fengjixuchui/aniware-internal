@@ -80,4 +80,26 @@ namespace autowall
 			}
 		}
 	}
+
+	bool is_breakable( entity_t* ent )
+	{
+		if ( !ent || !ent->EntIndex() )
+			return false;
+
+		const auto client_class = ent->GetClientClass();
+
+		if ( !client_class )
+			return false;
+
+		/*
+		
+		check prop name
+
+		*/
+
+		using is_breakable_entity_t = bool( __thiscall* )( entity_t* );
+		static const auto is_breakable_entity= mem::find_ida_sig( "client_panorama.dll", "55 8B EC 51 56 8B F1 85 F6 74 68" ).cast< is_breakable_entity_t>();
+
+		return is_breakable_entity( ent );
+	}
 }
