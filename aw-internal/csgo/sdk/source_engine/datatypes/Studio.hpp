@@ -82,7 +82,7 @@ struct studio_hitbox_set_t
 
 	studio_box_t* hitbox( int index )
 	{
-		return reinterpret_cast<studio_box_t* >( reinterpret_cast< unsigned char *>( this ) + hitbox_index)  + index;
+		return reinterpret_cast< studio_box_t* >( reinterpret_cast< unsigned char* >( this ) + hitbox_index )  + index;
 	}
 };
 

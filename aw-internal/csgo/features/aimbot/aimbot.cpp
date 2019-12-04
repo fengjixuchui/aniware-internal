@@ -108,6 +108,6 @@ namespace aimbot
 			/* insert */
 
 			return false;
-		}, ( config::get< bool >( ctx::cfg.aim_friendly ) ? game::e_player_iteration_flags::NO_FLAG : game::e_player_iteration_flags::ENEMY_ONLY ) );
+		}, ( config::get< bool >( ctx::cfg.aim_friendly ) ? game::NO_FLAG : game::ENEMY_ONLY ) );
 	}
 }
