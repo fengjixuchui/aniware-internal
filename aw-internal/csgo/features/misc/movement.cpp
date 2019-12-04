@@ -82,7 +82,7 @@ namespace movement
 		case RAGE:
 			break;
 		case LEGIT:
-			sin_rot *= static_cast< float >( std::sin( ctx::csgo.globals->tickcount ) * 0.12f );
+			sin_rot *= static_cast< float >( std::sin( ctx::csgo.globals->tickcount ) * 0.25f );
 			break;
 		}
 
