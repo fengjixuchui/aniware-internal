@@ -11,7 +11,7 @@ bool __fastcall hook_handler_t::create_move( REGISTERS, float flInputSampleTime,
 	INIT_STACKFRAME();
 	stack_frame.previous();
 
-	bool* bSendPacket = stack_frame.get_var<bool*>( -0x1C );
+	bool* send_packet = stack_frame.get_var< bool* >( -0x1C );
 
 	aimbot::work();
 

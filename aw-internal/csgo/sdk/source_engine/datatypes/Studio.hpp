@@ -1,6 +1,6 @@
 #pragma once
 
-enum hitboxes
+enum Hitboxes
 {
 	HITBOX_HEAD,
 	HITBOX_NECK,
@@ -22,6 +22,19 @@ enum hitboxes
 	HITBOX_LEFT_UPPER_ARM,
 	HITBOX_LEFT_FOREARM,
 	HITBOX_MAX
+};
+
+enum Hitgroups
+{
+	HITGROUP_GENERIC,
+	HITGROUP_HEAD,
+	HITGROUP_CHEST,
+	HITGROUP_STOMACH,
+	HITGROUP_LEFTARM,
+	HITGROUP_RIGHTARM,
+	HITGROUP_LEFTLEG,
+	HITGROUP_RIGHTLEG = 7,
+	HITGROUP_GEAR = 10
 };
 
 struct studio_bone_t

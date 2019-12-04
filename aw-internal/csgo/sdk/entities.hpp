@@ -1,5 +1,14 @@
 #pragma once
 
+enum entity_damage
+{
+	DAMAGE_NO,
+	DAMAGE_EVENTS_ONLY,
+	DAMAGE_YES,
+	DAMAGE_AIM
+};
+
+
 struct entity_t : public IClientEntity
 {
 	template< typename t = entity_t >
@@ -44,9 +53,6 @@ struct entity_t : public IClientEntity
 	CUSTOM_VFUNC( should_collide( int collision_group, int contents_mask ), bool( __thiscall* )( void*, int, int ), ctx::mem.CBaseEntity.ShouldCollide )( collision_group, contents_mask );
 
 	DATAMAPVAR( get_move_type, int, "m_MoveType" );
-
-	player_info_t get_player_info();
-	bool get_bbox( math::vec4_t& box );
 };
 
 struct animating_t : public entity_t
@@ -80,15 +86,21 @@ struct combat_character_t : public animating_t
 struct player_t : public combat_character_t
 {
 	NETVAR( bool, has_helmet, "DT_CSPlayer", "m_bHasHelmet" );
+	NETVAR( bool, has_heavy_armor, "DT_CSPlayer", "m_bHasHeavyArmor" );
 	NETVAR( bool, is_scoped, "DT_CSPlayer", "m_bIsScoped" );
 	NETVAR( bool, has_defuser, "DT_CSPlayer", "m_bHasDefuser" );
 	NETVAR( bool, is_immune, "DT_CSPlayer", "m_bGunGameImmunity" );
+
+	NETVAR(int, get_armor, "DT_CSPlayer", "m_ArmorValue");
 	NETVAR( int, get_health, "DT_BasePlayer", "m_iHealth" );
+
 	NETVAR( short, get_lifestate, "DT_BasePlayer", "m_lifeState" );
 	NETVAR( CBaseHandle, get_weapon_handle, "DT_BaseCombatCharacter", "m_hActiveWeapon" );
+
 	NETVAR( math::vec3_t, get_velocity, "DT_BasePlayer", "m_vecVelocity[0]" );
 	NETVAR( math::vec3_t, get_view_offset, "DT_BasePlayer", "m_vecViewOffset[0]" );
 	NETVAR( math::vec3_t, get_punch_angle, "DT_BasePlayer", "m_aimPunchAngle" );
+
 	NETVAR( bitflag_t, get_flags, "DT_BasePlayer", "m_fFlags" );
 	NETVAR( float, get_health_boost_time, "DT_CSPlayer", "m_flHealthShotBoostExpirationTime" );
 
@@ -98,6 +110,9 @@ struct player_t : public combat_character_t
 	CUSTOM_VFUNC( post_think(), void( __thiscall* )( void* ), ctx::mem.CBasePlayer.PostThink )( );
 	CUSTOM_VFUNC( update_animations(), void( __thiscall* )( void* ), ctx::mem.CCSPlayer.UpdateClientSideAnimations )( );
 	CUSTOM_VFUNC( weapon_shootpos( math::vec3_t* in ), float* ( __thiscall* )( void*, math::vec3_t* ), ctx::mem.CCSPlayer.Weapon_Shootpos )( in );
+
+	bool get_bbox(math::vec4_t& box);
+	player_info_t get_player_info();
 
 	math::vec3_t get_eye_pos();
 	math::vec3_t get_hitbox_pos( int hitbox );

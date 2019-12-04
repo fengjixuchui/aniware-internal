@@ -4,7 +4,7 @@ namespace aimbot
 {
 	bool is_valid( player_t* pl )
 	{
-		if ( !pl || pl->IsDormant() )
+		if ( pl->IsDormant() )
 			return false;
 
 		if( pl == ctx::client.local )
@@ -105,9 +105,9 @@ namespace aimbot
 			if ( !is_valid( pl ) )
 				return false;
 
-			hitchance( ctx::client.cmd->viewangles, pl ) ? ctx::client.cmd->buttons.add_flag( IN_ATTACK ) : ctx::client.cmd->buttons.remove_flag( IN_ATTACK );
+			/* insert */
 
 			return false;
-		}, ( config::get< bool >( ctx::cfg.aim_friendly ) ? game::NO_FLAG : game::ENEMY_ONLY ) );
+		}, ( config::get< bool >( ctx::cfg.aim_friendly ) ? game::e_player_iteration_flags::NO_FLAG : game::e_player_iteration_flags::ENEMY_ONLY ) );
 	}
 }

@@ -1,16 +1,6 @@
 #include "../csgo.hpp"
 
-player_info_t entity_t::get_player_info()
-{
-	if ( !this )
-		return {};
-
-	player_info_t info;
-	ctx::csgo.engine->GetPlayerInfo( this->EntIndex(), &info );
-	return info;
-}
-
-bool entity_t::get_bbox( math::vec4_t& box )
+bool player_t::get_bbox( math::vec4_t& box )
 {
 	math::matrix3x4_t& tran_frame = get_coord_frame();
 
@@ -72,6 +62,16 @@ bool entity_t::get_bbox( math::vec4_t& box )
 	box.z = bottom - top;
 
 	return true;
+}
+
+player_info_t player_t::get_player_info()
+{
+	if (!this)
+		return {};
+
+	player_info_t info;
+	ctx::csgo.engine->GetPlayerInfo(this->EntIndex(), &info);
+	return info;
 }
 
 math::vec3_t player_t::get_eye_pos()
