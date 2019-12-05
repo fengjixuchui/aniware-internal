@@ -10,12 +10,12 @@ struct AimbotData {
 	float distance;
 };
 
+std::vector< ::AimbotData > aim_data;
+player_t* aim_last_target;
+int aim_shots_fired;
+
 namespace aimbot
 {
-	std::vector< ::AimbotData > aim_data;
-	player_t* aim_last_target;
-	int aim_shots_fired;
-
 	bool is_valid( player_t* pl );
 	bool hitchance( math::vec3_t& ang, player_t* pl );
 	void work();
