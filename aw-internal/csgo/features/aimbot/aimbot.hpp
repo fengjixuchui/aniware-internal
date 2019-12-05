@@ -10,10 +10,6 @@ struct AimbotData {
 	float distance;
 };
 
-std::vector< ::AimbotData > aim_data;
-player_t* aim_last_target;
-int aim_shots_fired;
-
 namespace aimbot
 {
 	bool is_valid( player_t* pl );
