@@ -2,8 +2,8 @@
 
 bool __fastcall hook_handler_t::is_hltv( REGISTERS )
 {
-	static const auto accumulate_layers_call = static_cast<void*>( mem::find_ida_sig( "client_panorama.dll", "84 C0 75 0D F6 87" ) );
-	static const auto setupvelocity_call = static_cast<void*>( mem::find_ida_sig( "client_panorama.dll", "84 C0 75 38 8B 0D ? ? ? ? 8B 01 8B 80 ? ? ? ? FF D0" ) );
+	static const auto accumulate_layers_call = mem::find_ida_sig( "client_panorama.dll", "84 C0 75 0D F6 87" ).cast< void* >();
+	static const auto setupvelocity_call = mem::find_ida_sig( "client_panorama.dll", "84 C0 75 38 8B 0D ? ? ? ? 8B 01 8B 80 ? ? ? ? FF D0" ).cast< void* >();
 
 	auto original = hooks::get().orig_is_hltv( ecx, edx );
 

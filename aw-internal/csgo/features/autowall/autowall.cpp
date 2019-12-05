@@ -109,36 +109,26 @@ namespace autowall
 		if ( !ent || !ent->EntIndex() )
 			return false;
 
-		const int take_damage = 0x280;
-		const int old_damage = ent->read< int >( take_damage );
+		const int old_damage = ent->read< int >( TAKE_DAMAGE );
 
-		const ClientClass* client_class = ent->GetClientClass();
+		if ( const ClientClass* client_class = ent->GetClientClass() )
+		{
+			const std::string network_name = client_class->m_pNetworkName;
 
-		if ( !client_class )
-			return false;
+			if ( network_name[ 1 ] == 'B' && network_name[ 9 ] == 'e' && network_name[ 10 ] == 'S' && network_name[ 16 ] == 'e')
+				ent->write< int >( TAKE_DAMAGE, DAMAGE_YES );
 
-		const std::string network_name = client_class->m_pNetworkName;
-		try {
+			else if ( network_name[ 1 ] != 'B' && network_name[ 5 ] != 'D' )
+				ent->write< int >( TAKE_DAMAGE, DAMAGE_YES );
 
-			if (network_name.at( 1 ) == 'B' && network_name.at( 9 ) == 'e' && network_name.at( 10 ) == 'S' && network_name.at( 16 ) == 'e')
-				ent->write< int >( take_damage, DAMAGE_YES );
-
-			else if (network_name.at( 1 ) != 'B' && network_name.at( 5 ) != 'D')
-				ent->write< int >( take_damage, DAMAGE_YES );
-
-			else if (network_name.at( 1 ) != 'F' && network_name.at( 4 ) != 'c' && network_name.at( 5 ) != 'B' && network_name.at( 9 ) != 'h')
-				ent->write< int >( take_damage, DAMAGE_YES );
-
+			else if ( network_name[ 1 ] != 'F' && network_name[ 4 ] != 'c' && network_name[ 5 ] != 'B' && network_name[ 9 ] != 'h' )
+				ent->write< int >( TAKE_DAMAGE, DAMAGE_YES );
 		}
-		catch ( std::out_of_range & ex ) {}
 
-		using is_breakable_entity_t = bool( __thiscall* )( entity_t* );
-		static const auto is_breakable_entity_fn = mem::find_ida_sig( "client_panorama.dll", "55 8B EC 51 56 8B F1 85 F6 74 68" ).cast< is_breakable_entity_t >();
+		static const auto is_breakable_entity = mem::find_ida_sig( "client_panorama.dll", "55 8B EC 51 56 8B F1 85 F6 74 68" ).cast< bool( __thiscall*)( void* ) >();
 
-		ent->write< int >( take_damage, old_damage );
+		ent->write< int >( TAKE_DAMAGE, old_damage );
 
-		return is_breakable_entity_fn( ent );
+		return is_breakable_entity( ent );
 	}
-
-
 }
