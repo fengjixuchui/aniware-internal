@@ -19,6 +19,22 @@ namespace aimbot
 		return true;
 	}
 
+	bool can_shoot( weapon_t* weapon )
+	{
+		if ( !weapon )
+			return false;
+		
+		const float server_time = static_cast< float >( weapon->tickbase() * ctx::csgo.globals->interval_per_tick );
+
+		if ( weapon->get_next_primary_attack() > server_time)
+			return false;
+
+		if ( weapon->get_definition_index() == WEAPON_REVOLVER && weapon->ready_time() > server_time )
+			return false;
+
+		return true;
+	}
+
 	bool hitchance( math::vec3_t& ang, player_t* pl )
 	{
 		static int traces_hit = 0;
@@ -90,6 +106,13 @@ namespace aimbot
 		return false;
 	}
 
+	bool hitbox_multipoint( studio_box_t* hitbox )
+	{
+		return false;
+	}
+
+	std::deque< math::vec3_t > calculated_points;
+
 	void work()
 	{
 		if( !config::get< bool >( ctx::cfg.aim_enable ) )
@@ -101,11 +124,62 @@ namespace aimbot
 		if ( !ctx::client.local || !ctx::client.local->is_alive() )
 			return;
 
+		auto weapon = entity_t::get< weapon_t >( ctx::client.local->get_weapon_handle() );
+		if ( !weapon || weapon->get_ammo() <= 0 )
+			return;
+
 		game::for_every_player( []( player_t * pl ) -> bool {
 			if ( !is_valid( pl ) )
 				return false;
 
-			/* insert */
+			auto studio_hdr = ctx::csgo.modelinfo->GetStudioModel( pl->GetModel() );
+			
+			if ( !studio_hdr )
+				return false;
+
+			for ( auto i = 0; i < HITBOX_MAX; ++i )
+			{
+				const studio_box_t* hitbox_position = studio_hdr->hitbox_set( 0 )->hitbox( i );
+				
+				if ( !hitbox_position )
+					continue;
+
+				const auto max = hitbox_position->maxs;
+				const auto min = hitbox_position->maxs;
+				
+				/*
+
+				const auto bbmin = record.m_mins + record.m_origin;
+				const auto bbmax = record.m_maxs + record.m_origin;
+
+				vec3_t points[7];
+				points[0] = bbmax;
+				points[1] = (bbmin + bbmax) * 0.5f;
+				points[2] = (head_hitbox->bb_min + head_hitbox->bb_max) * 0.5f;
+				points[3] = vec3_t((bbmax.x + bbmin.x) * 0.5f, (bbmax.y + bbmin.y) * 0.5f, bbmin.z);
+				points[4] = vec3_t(bbmax.x, bbmin.y, bbmax.z);
+				points[5] = vec3_t(bbmin.x, bbmin.y, bbmax.z);
+				points[6] = vec3_t(bbmin.x, bbmax.y, bbmax.z);
+
+				*/
+			}
+
+			/* loop through hitboxes */
+
+			/* calculate multipoint */
+
+			/* checke bounds */
+
+			/* sort by visibility & damage */
+
+			/* slow down */
+
+			/* check hitchance */
+
+			/* set viewangles and shoot */
+
+			if ( !calculated_points.empty() )
+				calculated_points.clear();
 
 			return false;
 		}, ( config::get< bool >( ctx::cfg.aim_friendly ) ? game::NO_FLAG : game::ENEMY_ONLY ) );

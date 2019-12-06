@@ -1,13 +1,10 @@
 #pragma once
 
 struct AutowallData {
-	AutowallData(const math::vec3_t s, const math::vec3_t d, player_t* t, player_t* f) : src( s ), dst( d ), to( t ), from( f ){};
+	AutowallData(const math::vec3_t s, const math::vec3_t d, player_t* t, player_t* f) : src( s ), dst( d ){};
 
 	math::vec3_t src;
 	math::vec3_t dst;
-	
-	player_t* to;
-	player_t* from;
 };
 
 namespace autowall

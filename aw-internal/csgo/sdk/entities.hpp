@@ -46,9 +46,9 @@ struct entity_t : public IClientEntity
 	NETVAR( math::vec3_t, get_maxs, "DT_BaseEntity", "m_vecMaxs" );
 	NETVAR( float, get_simtime, "DT_BaseEntity", "m_flSimulationTime" );
 
+	NETVAR( int, tickbase, "DT_BasePlayer", "m_nTickBase" );
 	NETVARADD( math::matrix3x4_t, get_coord_frame, "DT_BaseEntity", "m_CollisionGroup", -0x30 );
 
-	VFUNC( 8, model(), void * ( __thiscall* )( void* ) )( );
 	VFUNC( 17, get_pred_desc_map(), datamap_t * ( __thiscall* )( void* ) )( );
 
 	CUSTOM_VFUNC( set_abs_origin( math::vec3_t origin ), void( __thiscall* )( void*, const math::vec3_t& ), ctx::mem.CBaseEntity.SetAbsOrigin )( origin );
@@ -73,7 +73,12 @@ struct weapon_t : public econ_entity_t
 {
 	NETVAR( short, get_definition_index, "DT_WeaponBaseItem", "m_iItemDefinitionIndex" );
 	NETVAR( int, get_ammo, "DT_WeaponBaseItem", "m_iClip1" );
+	NETVAR( float, ready_time, "DT_WeaponBaseItem", "m_flPostponeFireReadyTime" );
+	
 	NETVAR( CBaseHandle, get_owner, "DT_BaseCombatWeapon", "m_hOwner" );
+	
+	NETVAR( float, get_next_primary_attack, "DT_BaseCombatWeapon", "m_flNextPrimaryAttack" );
+	NETVAR( float, get_next_secondary_attack, "DT_BaseCombatWeapon", "m_flNextSecondaryAttack" );
 
 	VFUNC( 449, get_spread(), float( __thiscall* )( void* ) )( );
 	VFUNC( 457, get_weapon_info(), WeaponInfo_t*( __thiscall* )( void* ) )( );
