@@ -87,11 +87,9 @@ namespace autowall
 	void clip_trace_to_players( const math::vec3_t& src, math::vec3_t& dst, unsigned int mask, TraceFilter* filter, Trace_t* trace )
 	{
 		static const auto clip_trace_to_players_fn = mem::find_ida_sig( "client_panorama.dll", "53 8B DC 83 EC 08 83 E4 F0 83 C4 04 55 8B 6B 04 89 6C 24 04 8B EC 81 EC D8 ?? ?? ?? 0F 57 C9" ).cast< int >();
-		
-		if ( !clip_trace_to_players_fn )
-			return;
 
-		_asm {
+		_asm 
+		{
 			mov		eax, filter
 			lea		ecx, trace
 			push	ecx

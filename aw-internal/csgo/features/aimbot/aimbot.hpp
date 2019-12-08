@@ -1,12 +1,12 @@
 #pragma once
 
-struct AimbotData {
-	AimbotData( player_t* pl, int i, int dmg, math::vec3_t pnt, float dist ) : player( pl ), index( i ), damage( dmg ), best_point ( pnt ){};
+struct AimbotData
+{
+	math::vec3_t src;
+	math::vec3_t dst;
 
-	player_t* player;
-	math::vec3_t best_point;
-	int index;
-	int damage;
+	weapon_t* wp;
+	player_t* pl;
 };
 
 namespace aimbot

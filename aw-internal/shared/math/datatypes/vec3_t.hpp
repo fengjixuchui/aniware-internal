@@ -54,7 +54,9 @@ namespace math
 
 		inline bool valid() const
 		{
-			return std::isfinite<float>( x ) && std::isfinite<float>( y ) && std::isfinite<float>( z );
+			return std::isfinite< float >( x ) 
+				&& std::isfinite< float >( y ) 
+				&& std::isfinite< float >( z );
 		}
 
 		inline float dot( const vec3_t & in ) const

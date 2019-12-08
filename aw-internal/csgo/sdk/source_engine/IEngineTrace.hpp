@@ -100,7 +100,7 @@ struct Plane_t
 	float distance;
 	unsigned char type;
 	unsigned char bits;
-	unsigned char pad_0x2[2];
+	unsigned char pad_0x2[ 2 ];
 };
 
 struct player_t;

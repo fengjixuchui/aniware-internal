@@ -1,5 +1,9 @@
 #include "../../csgo.hpp"
 
+AimbotData data;
+
+std::vector< math::vec3_t > calculated_points;
+
 namespace aimbot
 {
 	bool is_valid( player_t* pl )
@@ -19,9 +23,27 @@ namespace aimbot
 		return true;
 	}
 
+	bool is_visible( player_t* pl, const math::vec3_t& dst )
+	{
+		if ( !dst.valid() )
+			return false;
+
+		Ray_t ray;
+		Trace_t trace;
+
+		TraceFilter filter;
+		filter.skip = ctx::client.local;
+
+		ray.initialize( ctx::client.local->get_eye_pos(), dst );
+
+		ctx::csgo.enginetrace->TraceRay( ray, ( MASK_SHOT | CONTENTS_GRATE ), &filter, &trace );
+
+		return trace.entity == pl || trace.fraction > 0.97f;
+	}
+
 	bool can_shoot( weapon_t* weapon )
 	{
-		if ( !weapon )
+		if ( !weapon || weapon->get_ammo() <= 0 )
 			return false;
 		
 		const float server_time = static_cast< float >( weapon->tickbase() * ctx::csgo.globals->interval_per_tick );
@@ -96,9 +118,7 @@ namespace aimbot
 			if ( trace.entity == pl )
 				++traces_hit;
 
-			const float hitchance = config::get< float >( ctx::cfg.aim_hitchance );
-
-			if ( traces_hit >= static_cast< int >( hitchance * 2.56f ) )
+			if ( traces_hit >= static_cast< int >( config::get< float >( ctx::cfg.aim_hitchance ) * 2.56f ) )
 				return true;
 
 		}
@@ -106,12 +126,111 @@ namespace aimbot
 		return false;
 	}
 
-	bool hitbox_multipoint( studio_box_t* hitbox )
+	void select_target()
 	{
-		return false;
+		auto studio_hdr = ctx::csgo.modelinfo->GetStudioModel( data.pl->GetModel() );
+			
+		if ( !studio_hdr )
+			return;
+
+		math::matrix3x4_t bone_matrix[ 128 ];
+
+		if ( !data.pl->SetupBones( bone_matrix, 128, 256, 0.0f ) )
+			return;
+
+		const auto get_hitbox_multipoint = [&]( math::matrix3x4_t bones[ 128 ], studio_box_t* set )
+		{
+			math::vec3_t hitbox_min{}, hitbox_max{};
+
+			math::vector_transform( set->mins, bone_matrix[ set->bone ], hitbox_min );
+			math::vector_transform( set->maxs, bone_matrix[ set->bone ], hitbox_max );
+
+			return math::vec3_t {
+				( hitbox_min.x + hitbox_max.x ) * math::random( 0.f, 1.f ),
+				( hitbox_min.y + hitbox_max.y ) * math::random( 0.f, 1.f ),
+				( hitbox_min.z + hitbox_max.z ) * math::random( 0.f, 1.f )
+			};
+		};
+
+		for ( auto i = 0; i < HITBOX_MAX; ++i )
+		{
+			auto studio_box = studio_hdr->hitbox_set( 0 )->hitbox( i );
+				
+			if ( !studio_box )
+				continue;
+
+			math::vec3_t point = data.pl->get_hitbox_pos( i );
+
+			if ( !is_visible( data.pl, point ) )
+					continue;
+
+			calculated_points.push_back( point );
+
+		}
+
+		data.src = ctx::client.local->get_eye_pos();
+
+		if ( calculated_points.empty() )
+			return;
+
+		static float best_distance = std::numeric_limits< float >::max();
+
+		for ( auto &point : calculated_points )
+		{
+			const float distance = math::vec3_t{ data.src - point }.length();
+
+			if ( distance < best_distance )
+			{
+				best_distance = distance;
+				data.dst = point;
+			}
+		}
 	}
 
-	std::deque< math::vec3_t > calculated_points;
+	void choose_angles()
+	{
+		if ( !data.pl || !data.wp || !data.src.valid() || !data.dst.valid() )
+			return;
+
+		auto angle = math::calc_angle( data.src, data.dst );
+
+		if ( angle.valid() )
+		{
+			angle = {
+				std::clamp< float >( angle.x, -89.f, 89.f ),
+				std::clamp< float >( angle.y, -180.f, 180.f ),
+				std::clamp< float >( angle.z, 0.f, 0.f )
+			};
+
+			if ( !hitchance( angle, data.pl ) )
+				return;
+
+			data.wp->update_accuracy();
+			
+			ctx::client.cmd->viewangles = angle - ( ctx::client.local->get_punch_angle() * 2.0f );
+
+			if( config::get< bool >( ctx::cfg.aim_shoot ) )
+				ctx::client.cmd->buttons.add_flag( IN_ATTACK );
+
+			if( !config::get< bool >( ctx::cfg.aim_silent ) )
+				ctx::csgo.engine->SetViewAngles( ctx::client.cmd->viewangles );
+		}
+	}
+
+	void restore_players()
+	{
+		if ( data.pl )
+			data.pl = nullptr;
+
+		if ( data.src.valid() )
+			data.src = math::vec3_t{};
+
+		if ( data.dst.valid() )
+			data.dst = math::vec3_t{};
+
+		if ( !calculated_points.empty() )
+			calculated_points.clear();
+	}
 
 	void work()
 	{
@@ -124,62 +243,20 @@ namespace aimbot
 		if ( !ctx::client.local || !ctx::client.local->is_alive() )
 			return;
 
-		auto weapon = entity_t::get< weapon_t >( ctx::client.local->get_weapon_handle() );
-		if ( !weapon || weapon->get_ammo() <= 0 )
+		data.wp = entity_t::get< weapon_t >( ctx::client.local->get_weapon_handle() );
+
+		if ( !can_shoot( data.wp ) )
 			return;
 
 		game::for_every_player( []( player_t * pl ) -> bool {
 			if ( !is_valid( pl ) )
 				return false;
 
-			auto studio_hdr = ctx::csgo.modelinfo->GetStudioModel( pl->GetModel() );
-			
-			if ( !studio_hdr )
-				return false;
+			data.pl = pl;
 
-			for ( auto i = 0; i < HITBOX_MAX; ++i )
-			{
-				const studio_box_t* hitbox_position = studio_hdr->hitbox_set( 0 )->hitbox( i );
-				
-				if ( !hitbox_position )
-					continue;
-
-				const auto max = hitbox_position->maxs;
-				const auto min = hitbox_position->maxs;
-				
-				/*
-
-				const auto bbmin = record.m_mins + record.m_origin;
-				const auto bbmax = record.m_maxs + record.m_origin;
-
-				vec3_t points[7];
-				points[0] = bbmax;
-				points[1] = (bbmin + bbmax) * 0.5f;
-				points[2] = (head_hitbox->bb_min + head_hitbox->bb_max) * 0.5f;
-				points[3] = vec3_t((bbmax.x + bbmin.x) * 0.5f, (bbmax.y + bbmin.y) * 0.5f, bbmin.z);
-				points[4] = vec3_t(bbmax.x, bbmin.y, bbmax.z);
-				points[5] = vec3_t(bbmin.x, bbmin.y, bbmax.z);
-				points[6] = vec3_t(bbmin.x, bbmax.y, bbmax.z);
-
-				*/
-			}
-
-			/* loop through hitboxes */
-
-			/* calculate multipoint */
-
-			/* checke bounds */
-
-			/* sort by visibility & damage */
-
-			/* slow down */
-
-			/* check hitchance */
-
-			/* set viewangles and shoot */
-
-			if ( !calculated_points.empty() )
-				calculated_points.clear();
+			select_target();
+			choose_angles();
+			restore_players();
 
 			return false;
 		}, ( config::get< bool >( ctx::cfg.aim_friendly ) ? game::NO_FLAG : game::ENEMY_ONLY ) );
