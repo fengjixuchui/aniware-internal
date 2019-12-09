@@ -11,8 +11,5 @@ struct AimbotData
 
 namespace aimbot
 {
-	bool is_valid( player_t* pl );
-	bool can_shoot( weapon_t* weapon );
-	bool hitchance( math::vec3_t& ang, player_t* pl );
 	void work();
 }

@@ -57,6 +57,7 @@ namespace aimbot
 		return true;
 	}
 
+	/*
 	bool hitchance( math::vec3_t& ang, player_t* pl )
 	{
 		static int traces_hit = 0;
@@ -125,47 +126,18 @@ namespace aimbot
 
 		return false;
 	}
+	*/
 
 	void select_target()
 	{
-		auto studio_hdr = ctx::csgo.modelinfo->GetStudioModel( data.pl->GetModel() );
-			
-		if ( !studio_hdr )
-			return;
-
-		math::matrix3x4_t bone_matrix[ 128 ];
-
-		if ( !data.pl->SetupBones( bone_matrix, 128, 256, 0.0f ) )
-			return;
-
-		const auto get_hitbox_multipoint = [&]( math::matrix3x4_t bones[ 128 ], studio_box_t* set )
-		{
-			math::vec3_t hitbox_min{}, hitbox_max{};
-
-			math::vector_transform( set->mins, bone_matrix[ set->bone ], hitbox_min );
-			math::vector_transform( set->maxs, bone_matrix[ set->bone ], hitbox_max );
-
-			return math::vec3_t {
-				( hitbox_min.x + hitbox_max.x ) * math::random( 0.f, 1.f ),
-				( hitbox_min.y + hitbox_max.y ) * math::random( 0.f, 1.f ),
-				( hitbox_min.z + hitbox_max.z ) * math::random( 0.f, 1.f )
-			};
-		};
-
 		for ( auto i = 0; i < HITBOX_MAX; ++i )
 		{
-			auto studio_box = studio_hdr->hitbox_set( 0 )->hitbox( i );
-				
-			if ( !studio_box )
-				continue;
-
 			math::vec3_t point = data.pl->get_hitbox_pos( i );
 
 			if ( !is_visible( data.pl, point ) )
 					continue;
 
 			calculated_points.push_back( point );
-
 		}
 
 		data.src = ctx::client.local->get_eye_pos();
@@ -202,9 +174,6 @@ namespace aimbot
 				std::clamp< float >( angle.z, 0.f, 0.f )
 			};
 
-			if ( !hitchance( angle, data.pl ) )
-				return;
-
 			data.wp->update_accuracy();
 			
 			ctx::client.cmd->viewangles = angle - ( ctx::client.local->get_punch_angle() * 2.0f );
@@ -219,14 +188,11 @@ namespace aimbot
 
 	void restore_players()
 	{
-		if ( data.pl )
-			data.pl = nullptr;
+		data.src = math::vec3_t{};
+		data.dst = math::vec3_t{};
 
-		if ( data.src.valid() )
-			data.src = math::vec3_t{};
-
-		if ( data.dst.valid() )
-			data.dst = math::vec3_t{};
+		data.wp = nullptr;
+		data.pl = nullptr;
 
 		if ( !calculated_points.empty() )
 			calculated_points.clear();

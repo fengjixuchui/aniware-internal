@@ -27,6 +27,7 @@
     <ClInclude Include="csgo\features\aimbot\aimbot.hpp" />
     <ClInclude Include="csgo\features\autowall\autowall.hpp" />
     <ClInclude Include="csgo\features\features.hpp" />
+    <ClInclude Include="csgo\features\lagcompensation\lagcompensation.hpp" />
     <ClInclude Include="csgo\features\misc\movement.hpp" />
     <ClInclude Include="csgo\features\visuals\players.hpp" />
     <ClInclude Include="csgo\hooks\hook_handler.hpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="csgo\sdk\source_engine\datatypes\CViewSetup.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\datamap.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\IGameEvent.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\INetChannelInfo.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\player_info_t.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\ServerClass.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\Studio.hpp" />
@@ -141,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="csgo\features\aimbot\aimbot.cpp" />
     <ClCompile Include="csgo\features\autowall\autowall.cpp" />
+    <ClCompile Include="csgo\features\lagcompensation\lagcompensation.cpp" />
     <ClCompile Include="csgo\features\misc\movement.cpp" />
     <ClCompile Include="csgo\features\visuals\players.cpp" />
     <ClCompile Include="csgo\hooks\functions\create_move.cpp" />

@@ -9,6 +9,7 @@
 #include "source_engine/datatypes/ServerClass.hpp"
 #include "source_engine/datatypes/CCSWeaponData.hpp"
 #include "source_engine/datatypes/IGameEvent.hpp"
+#include "source_engine/datatypes/INetChannelInfo.hpp"
 #include "source_engine/datatypes/Studio.hpp"
 #include "source_engine/datatypes/client_frame_stage_t.hpp"
 

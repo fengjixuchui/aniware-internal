@@ -14,4 +14,6 @@ struct IVEngineClient
 	CUSTOM_VFUNC( IsConnected(), bool( __thiscall* )( void* ), ctx::mem.IVEngineClient.IsConnected )( );
 	CUSTOM_VFUNC( WorldToScreenMatrix(), const math::view_matrix_t&( __thiscall* )( void* ), ctx::mem.IVEngineClient.WorldToScreenMatrix )( );
 	CUSTOM_VFUNC( ClientCmd_Unrestricted( const char* cmd, const char* unk_flag = nullptr ), void( __thiscall* )( void*, const char*, const char* ), ctx::mem.IVEngineClient.ClientCmd_Unrestricted )( cmd, unk_flag );
+
+	VFUNC( 78, GetNetChannelInfo(), INetChannelInfo*( __thiscall* )( void* ) )( );
 };

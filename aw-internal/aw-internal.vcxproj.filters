@@ -119,6 +119,8 @@
     <ClInclude Include="csgo\sdk\source_engine\IVModelInfo.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\Studio.hpp" />
     <ClInclude Include="csgo\features\autowall\autowall.hpp" />
+    <ClInclude Include="csgo\features\lagcompensation\lagcompensation.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\datatypes\INetChannelInfo.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="csgo\features\misc\movement.cpp" />
@@ -157,5 +159,6 @@
     <ClCompile Include="csgo\features\aimbot\aimbot.cpp" />
     <ClCompile Include="csgo\hooks\functions\is_hltv.cpp" />
     <ClCompile Include="csgo\features\autowall\autowall.cpp" />
+    <ClCompile Include="csgo\features\lagcompensation\lagcompensation.cpp" />
   </ItemGroup>
 </Project>
