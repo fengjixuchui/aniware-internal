@@ -1,4 +1,5 @@
 #include "../../csgo.hpp"
+#include "../lagcompensation/lagcompensation.hpp"
 
 enum HealthType {
 	NOHEALTH,
@@ -14,6 +15,73 @@ enum BoxType {
 
 namespace players
 {
+	void name( math::vec4_t bbox, player_t* pl )
+	{
+		auto player_info = pl->get_player_info();
+
+		render::text( render::fonts::m_main, { bbox.x + bbox.w * 0.5f, bbox.y - 7 }, { 255, 255, 255 }, { render::fonts::FONT_RIGHT | render::fonts::FONT_CENTER_Y }, player_info.name );
+	}
+
+	void ticks( player_t* pl )
+	{
+		for ( auto record : records[ pl->Index() ] )
+		{
+			if ( !record.matrix || !lagcompensation::valid_tick( record.simulation_time ) )
+				continue;
+
+			math::vec3_t dst{};
+
+			if ( static_cast< bool >( ctx::csgo.debugoverlay->WorldToScreen( record.head, dst ) != 1 ) )
+			{
+				render::text(render::fonts::m_main, { dst.x, dst.y }, { 255, 255, 255 }, { render::fonts::FONT_CENTER_X | render::fonts::FONT_CENTER_Y }, "O");
+			}
+		}
+	}
+
+	void health( math::vec4_t bbox, player_t* pl )
+	{
+		const auto get_health_color = []( player_t* pl, int health )
+		{
+			col_t health_color { static_cast< int >( 255 - health * 2.55 ), static_cast< int >(health * 2.55 ), 0, 255 };
+			{
+				health > 100 ? health_color = col_t{ 0, 255, 0 } : col_t{};
+			}
+
+			return health_color;
+		};
+
+		const auto player_health = pl->get_health();
+		const auto player_color = get_health_color( pl, player_health );
+
+		switch ( config::get< int >( ctx::cfg.extrasensory_health_type ) )
+		{
+		case HealthType::BAR:
+			render::rect_filled( { bbox.x - 6, bbox.y - 1 }, { 3, bbox.z + 2 }, { 0, 0, 0, 255 } );
+			render::rect_filled( { bbox.x - 5, bbox.y + ( bbox.z - bbox.z * ( std::clamp< int >( player_health, 0, 100.f) / 100.f) ) }, { 1, bbox.z * ( std::clamp< int >( player_health, 0, 100 ) / 100.f ) - ( player_health >= 100 ? 0 : -1 ) }, player_color );
+			break;
+		case HealthType::NUMBER:
+			render::text( render::fonts::m_main, { bbox.x + bbox.w * 0.5f, bbox.y - 7 }, { 255, 255, 255 }, { render::fonts::FONT_CENTER_Y }, fmt::format( " [ {:d} ]", pl->get_health() ) );
+			break;
+		}
+	}
+
+	void box( math::vec4_t bbox, player_t* pl )
+	{
+		switch ( config::get< int >( ctx::cfg.extrasensory_box_type ) )
+		{
+		case BoxType::RECTANGLE:
+			render::rect( { bbox.x - 1, bbox.y - 1 }, { bbox.w + 2, bbox.z + 2 }, { 10, 10, 10 } );
+			render::rect( { bbox.x + 1, bbox.y + 1 }, { bbox.w - 2, bbox.z - 2 }, { 10, 10, 10 } );
+			render::rect( { bbox.x, bbox.y }, { bbox.w, bbox.z }, { 255, 255, 255 } );
+			break;
+		case BoxType::CORNERS:
+			render::corner( { bbox.x - 1, bbox.y - 1 }, { bbox.w + 2, bbox.z + 2 }, { 10, 10, 10 } );
+			render::corner( { bbox.x + 1, bbox.y + 1 }, { bbox.w - 2, bbox.z - 2 }, { 10, 10, 10 } );
+			render::corner( { bbox.x, bbox.y }, { bbox.w, bbox.z }, { 255, 255, 255 } );
+			break;
+		}
+	}
+
 	void render()
 	{
 		if ( !ctx::csgo.engine->IsInGame() || !ctx::csgo.engine->IsConnected() )
@@ -25,45 +93,16 @@ namespace players
 				return false;
 
 			if ( config::get< bool >( ctx::cfg.extrasensory_name ) )
-			{
-				auto player_info = pl->get_player_info();
-				render::text( render::fonts::m_main, { bbox.x + bbox.w * 0.5f, bbox.y - 7 }, { 255, 255, 255 }, { render::fonts::FONT_RIGHT | render::fonts::FONT_CENTER_Y }, player_info.name );
-			}
+				name( bbox, pl );
 
-			const int player_health = pl->get_health();
+			if ( config::get< bool >( ctx::cfg.lagcompensation_show ) )
+				ticks( pl );
 
-			col_t health_color { static_cast< int >( 255 - player_health * 2.55 ), static_cast< int >( player_health * 2.55 ), 0, 255 };
-			
-			player_health > 100 ? health_color = col_t{ 0, 255, 0 } : col_t {};
+			if ( config::get< int >( ctx::cfg.extrasensory_health_type ) )
+				health( bbox, pl );
 
-			switch ( config::get< int >( ctx::cfg.extrasensory_health_type ) )
-			{
-			case HealthType::NOHEALTH:
-				break;
-			case HealthType::BAR:
-				render::rect_filled( { bbox.x - 6, bbox.y - 1 }, { 3, bbox.z + 2 }, { 0, 0, 0, 255 } );
-				render::rect_filled( { bbox.x - 5, bbox.y + ( bbox.z - bbox.z * ( std::clamp< int >( player_health, 0, 100.f) / 100.f) ) }, { 1, bbox.z * ( std::clamp< int >( player_health, 0, 100 ) / 100.f ) - ( player_health >= 100 ? 0 : -1 ) }, health_color );
-				break;
-			case HealthType::NUMBER:
-				render::text( render::fonts::m_main, { bbox.x + bbox.w * 0.5f, bbox.y - 7 }, { 255, 255, 255 }, { render::fonts::FONT_CENTER_Y }, fmt::format( " [ {:d} ]", pl->get_health() ) );
-				break;
-			}
-
-			switch ( config::get< int >( ctx::cfg.extrasensory_box_type ) )
-			{
-			case BoxType::NOBOX:
-				break;
-			case BoxType::RECTANGLE:
-				render::rect( { bbox.x - 1, bbox.y - 1 }, { bbox.w + 2, bbox.z + 2 }, { 10, 10, 10 } );
-				render::rect( { bbox.x + 1, bbox.y + 1 }, { bbox.w - 2, bbox.z - 2 }, { 10, 10, 10 } );
-				render::rect( { bbox.x, bbox.y }, { bbox.w, bbox.z }, { 255, 255, 255 } );
-				break;
-			case BoxType::CORNERS:
-				render::corner( { bbox.x - 1, bbox.y - 1 }, { bbox.w + 2, bbox.z + 2 }, { 10, 10, 10 } );
-				render::corner( { bbox.x + 1, bbox.y + 1 }, { bbox.w - 2, bbox.z - 2 }, { 10, 10, 10 } );
-				render::corner( { bbox.x, bbox.y }, { bbox.w, bbox.z }, { 255, 255, 255 } );
-				break;
-			}
+			if ( config::get< int >( ctx::cfg.extrasensory_health_type ) )
+				box( bbox, pl );
 
 			return false;
 		}, { game::ENEMY_ONLY } );

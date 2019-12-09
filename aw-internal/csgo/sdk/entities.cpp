@@ -66,11 +66,12 @@ bool player_t::get_bbox( math::vec4_t& box )
 
 player_info_t player_t::get_player_info()
 {
-	if (!this)
+	if ( !this )
 		return {};
 
 	player_info_t info;
-	ctx::csgo.engine->GetPlayerInfo(this->EntIndex(), &info);
+	ctx::csgo.engine->GetPlayerInfo( this->Index(), &info );
+	
 	return info;
 }
 
@@ -109,7 +110,7 @@ math::vec3_t player_t::get_hitbox_pos( int hitbox )
 
 bool player_t::is_alive()
 {
-	if ( !ctx::client.local )
+	if ( !this )
 		return false;
 
 	return get_lifestate() == ALIVE;
@@ -117,7 +118,7 @@ bool player_t::is_alive()
 
 bool player_t::is_enemy()
 {
-	if ( !ctx::client.local )
+	if ( !this || !ctx::client.local )
 		return false;
 
 	return ctx::client.local->get_team() != this->get_team();

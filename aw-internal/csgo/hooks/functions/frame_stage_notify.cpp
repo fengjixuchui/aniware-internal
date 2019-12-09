@@ -13,6 +13,11 @@ void __fastcall hook_handler_t::frame_stage_notify( REGISTERS, client_frame_stag
 		{
 
 		} break;
+
+		case FRAME_NET_UPDATE_END:
+		{
+			lagcompensation::update();
+		} break;
 	}
 
 	return hooks::get().orig_frame_stage_notify( ecx, edx, stage );

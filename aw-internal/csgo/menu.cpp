@@ -52,7 +52,15 @@ namespace menu
 				tab1->add( std::make_shared<gui::controls::c_checkbox>( "enable", &config::get_item( ctx::cfg.aim_enable ) ) );
 				tab1->add( std::make_shared<gui::controls::c_checkbox>( "friendly", &config::get_item( ctx::cfg.aim_friendly ) ) );
 				tab1->add( std::make_shared<gui::controls::c_checkbox>( "silent", &config::get_item( ctx::cfg.aim_silent ) ) );
+				tab1->add( std::make_shared<gui::controls::c_checkbox>( "lag compensation", &config::get_item( ctx::cfg.aim_lagcompensation ) ) );
 				tab1->add( std::make_shared<gui::controls::c_slider>( "hitchance", &config::get_item( ctx::cfg.aim_hitchance ), 0.f, 100.f ) );
+			}
+
+			tab1->add( std::make_shared<gui::controls::c_separator>( ".lag compensation" ) );
+			{
+				tab1->add( std::make_shared<gui::controls::c_checkbox>( "enable", &config::get_item( ctx::cfg.lagcompensation ) ) );
+				tab1->add( std::make_shared<gui::controls::c_checkbox>( "show", &config::get_item( ctx::cfg.lagcompensation_show ) ) );
+				tab1->add( std::make_shared<gui::controls::c_slider>( "ms", &config::get_item( ctx::cfg.lagcompensation_ms ), 0.f, 200.f ) );
 			}
 		}
 

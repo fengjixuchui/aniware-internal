@@ -19,7 +19,7 @@ public:
 	virtual void PostDataUpdate( int updateType ) = 0;
 	virtual void __unkn() = 0;
 	virtual bool IsDormant() = 0;
-	virtual int EntIndex() const = 0;
+	virtual int Index() const = 0;
 	virtual void ReceiveMessage( int classID, bf_read& msg ) = 0;
 	virtual void* GetDataTableBasePtr() = 0;
 	virtual void SetDestroyedOnRecreateEntities() = 0;

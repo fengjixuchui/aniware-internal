@@ -53,6 +53,7 @@ struct entity_t : public IClientEntity
 
 	CUSTOM_VFUNC( set_abs_origin( math::vec3_t origin ), void( __thiscall* )( void*, const math::vec3_t& ), ctx::mem.CBaseEntity.SetAbsOrigin )( origin );
 	CUSTOM_VFUNC( set_abs_angles( math::vec3_t origin ), void( __thiscall* )( void*, const math::vec3_t& ), ctx::mem.CBaseEntity.SetAbsAngles )( origin );
+
 	CUSTOM_VFUNC( think(), void( __thiscall* )( void* ), ctx::mem.CBaseEntity.Think )( );
 	CUSTOM_VFUNC( should_collide( int collision_group, int contents_mask ), bool( __thiscall* )( void*, int, int ), ctx::mem.CBaseEntity.ShouldCollide )( collision_group, contents_mask );
 
@@ -108,6 +109,7 @@ struct player_t : public combat_character_t
 
 	NETVAR( math::vec3_t, get_velocity, "DT_BasePlayer", "m_vecVelocity[0]" );
 	NETVAR( math::vec3_t, get_view_offset, "DT_BasePlayer", "m_vecViewOffset[0]" );
+	NETVAR( math::vec3_t, get_eye_angles, "DT_CSPlayer", "m_angEyeAngles" );
 	NETVAR( math::vec3_t, get_punch_angle, "DT_BasePlayer", "m_aimPunchAngle" );
 
 	NETVAR( bitflag_t, get_flags, "DT_BasePlayer", "m_fFlags" );

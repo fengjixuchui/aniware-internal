@@ -23,10 +23,6 @@ namespace math
 			m_matrix[ 2 ][ 2 ] = m22;
 			m_matrix[ 2 ][ 3 ] = m23;
 		}
-		matrix3x4_t( const vec3_t& x_axis, const vec3_t& y_axis, const vec3_t& z_axis, const vec3_t& vec_origin )
-		{
-			init( x_axis, y_axis, z_axis, vec_origin );
-		}
 
 		void init( const vec3_t& x_axis, const vec3_t& y_axis, const vec3_t& z_axis, const vec3_t& vec_origin )
 		{
@@ -42,6 +38,11 @@ namespace math
 			m_matrix[ 2 ][ 1 ] = y_axis.z;
 			m_matrix[ 2 ][ 2 ] = z_axis.z;
 			m_matrix[ 2 ][ 3 ] = vec_origin.z;
+		}
+
+		matrix3x4_t( const vec3_t& x_axis, const vec3_t& y_axis, const vec3_t& z_axis, const vec3_t& vec_origin )
+		{
+			init( x_axis, y_axis, z_axis, vec_origin );
 		}
 
 		float* operator[]( int i )

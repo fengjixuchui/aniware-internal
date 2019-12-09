@@ -104,7 +104,7 @@ namespace autowall
 
 	bool is_breakable( entity_t* ent )
 	{
-		if ( !ent || !ent->EntIndex() )
+		if ( !ent || !ent->Index() )
 			return false;
 
 		const int old_damage = ent->read< int >( TAKE_DAMAGE );
