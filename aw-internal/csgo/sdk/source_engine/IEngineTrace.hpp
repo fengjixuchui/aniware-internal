@@ -121,7 +121,7 @@ struct TraceFilter : public ITraceFilter
 	}
 };
 
-struct Trace_t
+struct Trace
 {
 	bool did_hit() const {
 		return fraction < 1.f;
@@ -175,7 +175,7 @@ struct IEngineTrace
 	virtual int GetPointContents( const math::vec3_t& pos, int mask = MASK_ALL, void** ent = nullptr ) = 0;
 	virtual int GetPointContentsWorld( const math::vec3_t& pos, int mask = MASK_ALL) = 0;
 	virtual int GetPointContentsCollideable( void* collide, const math::vec3_t& pos ) = 0;
-	virtual void ClipRayToEntity( const Ray_t& ray, unsigned int mask, player_t* ent, Trace_t* trace ) = 0;
-	virtual void ClipRayToCollideable( const Ray_t& ray, unsigned int mask, void* collide, Trace_t* trace ) = 0;
-	virtual void TraceRay( const Ray_t& ray, unsigned int mask, TraceFilter* filter, Trace_t* trace ) = 0;
+	virtual void ClipRayToEntity( const Ray_t& ray, unsigned int mask, player_t* ent, Trace* trace ) = 0;
+	virtual void ClipRayToCollideable( const Ray_t& ray, unsigned int mask, void* collide, Trace* trace ) = 0;
+	virtual void TraceRay( const Ray_t& ray, unsigned int mask, TraceFilter* filter, Trace* trace ) = 0;
 };

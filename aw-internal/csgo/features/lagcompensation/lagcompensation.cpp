@@ -169,7 +169,7 @@ namespace lagcompensation
 
 			best_fov = 255.f;
 
-			for (auto record : records[ index ] )
+			for ( auto record : records[ index ] )
 			{
 				if ( !record.simulation_time || !valid_tick( record.simulation_time ) )
 					continue;

@@ -31,6 +31,7 @@
 #include "source_engine/CGlobalVarsBase.hpp"
 #include "source_engine/ISchemeManager.hpp"
 #include "source_engine/IGameEventManager.hpp"
+#include "source_engine/IPhysicsSurface.hpp"
 #include "source_engine/CInputSystem.hpp"
 
 #include "helper/render.hpp"

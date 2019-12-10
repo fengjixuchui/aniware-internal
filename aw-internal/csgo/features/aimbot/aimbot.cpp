@@ -29,7 +29,7 @@ namespace aimbot
 			return false;
 
 		Ray_t ray;
-		Trace_t trace;
+		Trace trace;
 
 		TraceFilter filter;
 		filter.skip = ctx::client.local;
@@ -111,7 +111,7 @@ namespace aimbot
 			math::angle_vectors( ang - ( spread_angle - ang ), bullet_end );
 
 			Ray_t ray;
-			Trace_t trace;
+			Trace trace;
 			
 			ray.initialize( eye_position, eye_position + bullet_end * weapon->get_weapon_info()->range );
 			ctx::csgo.enginetrace->ClipRayToEntity( ray, MASK_SHOT, pl, &trace );
