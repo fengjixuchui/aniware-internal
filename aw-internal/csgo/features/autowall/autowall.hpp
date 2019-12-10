@@ -2,18 +2,17 @@
 
 struct AutowallData
 {
-	SurfaceData* surface;
+	math::vec3_t dst;
+	math::vec3_t dir;
 	
 	Trace enter;
 	Trace exit;
 
-	float penetration;
 	float damage;
+	float penetration;
 
-	int hits;
+	SurfaceData* surface;
 
-	math::vec3_t dst;
-	math::vec3_t dir;
 };
 
 extern AutowallData autowall_data;
