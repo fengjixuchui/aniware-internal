@@ -87,14 +87,14 @@ enum TraceType
 	TRACE_EVERYTHING_FILTER_PROPS,
 };
 
-struct Surface_t
+struct Surface
 {
 	const char* name;
 	short props;
 	unsigned short flags;
 };
 
-struct Plane_t
+struct Plane
 {
 	math::vec3_t normal;
 	float distance;
@@ -113,7 +113,7 @@ struct ITraceFilter
 
 struct TraceFilter : public ITraceFilter
 {
-	void* skip;
+	player_t* skip;
 
 	bool should_hit_entity( player_t* ent, unsigned int mask ) 
 	{
@@ -130,14 +130,14 @@ struct Trace
 	math::vec3_t start;
 	math::vec3_t end;
 
-	Plane_t plane;
+	Plane plane;
 	float fraction;
 	int contents;
 	unsigned short flags;
 	bool all_solid;
 	bool start_solid;
 	float fraction_left_solid;
-	Surface_t surface;
+	Surface surface;
 
 	int hitgroup;
 	short physics_bone;
@@ -145,7 +145,7 @@ struct Trace
 	int hitbox;
 };
 
-struct Ray_t
+struct Ray
 {
 	math::vec3_aligned_t start;
 	math::vec3_aligned_t delta;
@@ -163,7 +163,7 @@ struct Ray_t
 		start = src;
 
 		is_ray = true;
-		is_swept = ( delta.length() != 0 );
+		is_swept = delta.length() != 0;
 
 		start_offset.x = start_offset.y = start_offset.z = 0.0f;
 		extents.x = extents.y = extents.z = 0.0f;
@@ -172,10 +172,5 @@ struct Ray_t
 
 struct IEngineTrace
 {
-	virtual int GetPointContents( const math::vec3_t& pos, int mask = MASK_ALL, void** ent = nullptr ) = 0;
-	virtual int GetPointContentsWorld( const math::vec3_t& pos, int mask = MASK_ALL) = 0;
-	virtual int GetPointContentsCollideable( void* collide, const math::vec3_t& pos ) = 0;
-	virtual void ClipRayToEntity( const Ray_t& ray, unsigned int mask, player_t* ent, Trace* trace ) = 0;
-	virtual void ClipRayToCollideable( const Ray_t& ray, unsigned int mask, void* collide, Trace* trace ) = 0;
-	virtual void TraceRay( const Ray_t& ray, unsigned int mask, TraceFilter* filter, Trace* trace ) = 0;
+	VFUNC( 6, TraceRay( const Ray& ray, unsigned int mask, TraceFilter* filter, Trace* trace ), void( __thiscall* )( void*, const Ray&, unsigned int, TraceFilter*, Trace* ) )( ray, mask, filter, trace );
 };

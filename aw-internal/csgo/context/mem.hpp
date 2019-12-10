@@ -93,12 +93,6 @@ namespace ctx
 			ADD_ADDRESS( Weapon_Shootpos, "client_panorama.dll", { "55 8B EC 56 8B 75 08 57 8B F9 56 8B 07 FF 90 ? ? ? ?" } );
 		} CCSPlayer;
 
-		struct CWeaponCSBase_t
-		{
-			ADD_ADDRESS( GetInaccuracy, "client_panorama.dll", { "55 8B EC 83 E4 F8 83 EC 10 56 8B F1 57 8B 96 ? ? ? ? 83 FA FF 74 25 0F B7 C2 C1 E0 04 05 ? ? ? ? C1 EA 10 39 50 04 75 12 8B 08 85 C9 74 0C 8B 01 8B 80 ? ? ? ? FF D0 EB 02 33 C0 6A 00 68 ? ? ? ? 68 ? ? ? ? 6A 00 50 E8 ? ? ? ? 8B F8 83 C4 14 85 FF 75 08" } );
-			ADD_ADDRESS( UpdateAccuracy, "client_panorama.dll", { "55 8B EC 83 E4 F8 83 EC 18 56 57 8B F9 8B 8F ? ? ? ?" } ); 
-		} CWeaponCSBase;
-
 		struct CInputSystem_t
 		{
 			ADD_ADDRESS( EnableInput, "inputsystem.dll", { "55 8B EC 8A 45 08 88 81 ? ? ? ? 5D C2 04 00 55 8B EC 8A 45 08" } );

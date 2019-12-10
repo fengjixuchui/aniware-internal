@@ -46,7 +46,6 @@ struct entity_t : public IClientEntity
 	NETVAR( math::vec3_t, get_maxs, "DT_BaseEntity", "m_vecMaxs" );
 	NETVAR( float, get_simtime, "DT_BaseEntity", "m_flSimulationTime" );
 
-	NETVAR( int, tickbase, "DT_BasePlayer", "m_nTickBase" );
 	NETVARADD( math::matrix3x4_t, get_coord_frame, "DT_BaseEntity", "m_CollisionGroup", -0x30 );
 
 	VFUNC( 17, get_pred_desc_map(), datamap_t * ( __thiscall* )( void* ) )( );
@@ -83,9 +82,8 @@ struct weapon_t : public econ_entity_t
 
 	VFUNC( 449, get_spread(), float( __thiscall* )( void* ) )( );
 	VFUNC( 457, get_weapon_info(), WeaponInfo_t*( __thiscall* )( void* ) )( );
-
-	CUSTOM_VFUNC( get_inaccuracy(), float( __thiscall* )( void* ), ctx::mem.CWeaponCSBase.GetInaccuracy )( );
-	CUSTOM_VFUNC( update_accuracy(), void( __thiscall* )( void* ), ctx::mem.CWeaponCSBase.UpdateAccuracy )( );
+	VFUNC( 477, get_inaccuracy(), float( __thiscall* )( void* ) )( );
+	VFUNC( 480, update_accuracy(), void( __thiscall* )( void* ) )( );
 };
 
 struct combat_character_t : public animating_t

@@ -47,6 +47,13 @@ namespace math
 			return out;
 		}
 
+		inline vec3_t normalized() const
+		{
+			this->normalize();
+
+			return *this;
+		}
+
 		inline float self_dot() const
 		{
 			return ( x * x + y * y + z * z );

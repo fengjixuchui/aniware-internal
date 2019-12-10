@@ -13,7 +13,6 @@ bool __fastcall hook_handler_t::create_move( REGISTERS, float flInputSampleTime,
 
 	auto send_packet = stack_frame.get_var< bool* >( -0x1C );
 
-	aimbot::work();
 	lagcompensation::work();
 
 	movement::bunnyhop();
