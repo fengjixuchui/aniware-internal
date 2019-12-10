@@ -49,9 +49,11 @@ namespace math
 
 		inline vec3_t normalized() const
 		{
-			this->normalize();
+			vec3_t out( *this );
 
-			return *this;
+			out.normalize();
+
+			return out;
 		}
 
 		inline float self_dot() const

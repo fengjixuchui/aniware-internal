@@ -111,6 +111,15 @@ namespace lagcompensation
 			if ( records[ index ].size() && ( records[ index ].front().simulation_time == pl->get_simtime() ) )
 				return false;
 
+			///
+
+			auto var_map = reinterpret_cast<uintptr_t>(pl) + 0x24;
+			auto vars_count = *reinterpret_cast<int*>(static_cast<uintptr_t>(var_map) + 0x14);
+			for (int j = 0; j < vars_count; j++)
+				* reinterpret_cast<uintptr_t*>(*reinterpret_cast<uintptr_t*>(var_map) + j * 0xC) = 0;
+			
+			///
+
 			CompensationRecord record{};
 
 			if ( get_player_record( pl, &record ) )
@@ -143,7 +152,7 @@ namespace lagcompensation
 
 			const auto pos = pl->get_hitbox_pos( HITBOX_HEAD );
 			const auto ang = math::calc_angle( ctx::client.local->get_eye_pos(), pos );
-
+				
 			if ( !ang.valid() )
 				return false;
 
@@ -159,40 +168,5 @@ namespace lagcompensation
 
 			return false;
 		}, { game::ENEMY_ONLY } );
-
-		if ( best_record.target )
-		{
-			const auto index = best_record.target->Index();
-
-			if ( records[ index ].size() <= 3)
-				return;
-
-			best_fov = 255.f;
-
-			for ( auto record : records[ index ] )
-			{
-				if ( !record.simulation_time || !valid_tick( record.simulation_time ) )
-					continue;
-
-				const auto ang = math::calc_angle( ctx::client.local->get_eye_pos(), record.head );
-				
-				if ( !ang.valid() )
-					continue;
-
-				const auto fov = std::hypotf( ang.x, ang.y );
-
-				if ( fov < best_fov )
-				{
-					best_fov = fov;
-					
-					best_record.record = record;
-				}
-			}
-		}
-
-		if ( best_record.record.simulation_time )
-		{
-			ctx::client.cmd->tick_count = time_to_ticks( best_record.record.simulation_time );
-		}
 	}
 }

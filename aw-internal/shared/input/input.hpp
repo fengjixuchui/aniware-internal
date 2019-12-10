@@ -5,7 +5,7 @@
 
 namespace input
 {
-				enum e_state
+	enum e_state
 	{
 		IDLE,
 		PRESSED,
@@ -14,74 +14,69 @@ namespace input
 
 	struct mouse_info_t
 	{
-								mouse_info_t() :
-			m_state( e_state::IDLE ),
-			m_state_right( e_state::IDLE ),
-			m_scroll( 0 ),
-			m_pos( math::vec2_t{ } )
-		{}
+		mouse_info_t() : m_state( e_state::IDLE ), m_state_right( e_state::IDLE ), m_scroll( 0 ), m_pos( math::vec2_t{} ) {};
 
-								void reset_scroll()
+		void reset_scroll()
 		{
 			m_scroll = 0;
 		}
 
-								e_state m_state;
+		e_state m_state;
+		e_state m_state_right;
 
-								e_state m_state_right;
+		int m_scroll;
 
-								int m_scroll;
-
-								math::vec2_t m_pos;
+		math::vec2_t m_pos;
 	};
 
 	struct key_info_t
 	{
-								e_state m_state;
+		e_state m_state;
 
-								bool is_pressed()
+		bool is_pressed()
 		{
 			bool pressed = m_state == PRESSED;
+
 			if ( pressed )
 				m_state = HELD;
 
 			return pressed;
 		}
 
-								bool is_held()
+		bool is_held()
 		{
 			return m_state == HELD;
 		}
 	};
 
-						void init( std::wstring_view window );
+	void init( std::wstring_view window );
 
-				void undo();
+	void undo();
 
-	
-						bool handle_mouse( const UINT msg );
 
-							bool handle_keyboard( const UINT msg, const WPARAM param );
+	bool handle_mouse( const UINT msg );
 
-									unsigned long WINAPI hook( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam );
+	bool handle_keyboard( const UINT msg, const WPARAM param );
 
-	
-				void update_mouse();
+	unsigned long WINAPI hook( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam );
 
-				mouse_info_t& get_mouse();
 
-				void reset_mouse();
+	void update_mouse();
 
-							bool mouse_in_bounds( const math::vec2_t& pos, const math::vec2_t& size );
+	mouse_info_t& get_mouse();
 
-						bool mouse_in_bounds( const math::vec4_t& bounds );
+	void reset_mouse();
 
-	
-						key_info_t& get_key_info( const int key );
+	bool mouse_in_bounds( const math::vec2_t& pos, const math::vec2_t& size );
 
-						std::string_view get_key_name( const int key );
+	bool mouse_in_bounds( const math::vec4_t& bounds );
 
-					char get_last_char();
 
-				void clear_char();
+	key_info_t& get_key_info( const int key );
+
+	std::string_view get_key_name( const int key );
+
+	char get_last_char();
+
+	void clear_char();
 }

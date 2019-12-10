@@ -2,5 +2,5 @@
 
 namespace aimbot
 {
-
+	void work();
 }
