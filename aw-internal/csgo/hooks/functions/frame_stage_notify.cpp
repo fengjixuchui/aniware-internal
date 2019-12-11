@@ -6,10 +6,8 @@ void __fastcall hook_handler_t::frame_stage_notify( REGISTERS, client_frame_stag
 	{
 		case FRAME_RENDER_START:
 			break;
-
 		case FRAME_NET_UPDATE_START:
 			break;
-
 		case FRAME_NET_UPDATE_END:
 			lagcompensation::update();
 			break;

@@ -77,6 +77,6 @@ namespace aimbot
 			}
 
 			return false;
-		}, { game::ENEMY_ONLY } );
+		}, ( config::get< bool >( ctx::cfg.aim_friendly ) ? game::NO_FLAG : game::ENEMY_ONLY ) );
 	}
 }

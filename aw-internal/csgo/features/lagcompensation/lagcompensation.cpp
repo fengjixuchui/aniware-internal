@@ -31,7 +31,7 @@ namespace lagcompensation
 			return false;
 
 		const float delta_time = std::clamp( net_channel->GetLatency( FLOW_OUTGOING ) + lerp_time(),
-			0.f, cvars.max_unlag->GetFloat() ) - (ctx::csgo.globals->curtime - time);
+			0.f, cvars.max_unlag->GetFloat() ) - ( ctx::csgo.globals->curtime - time );
 
 		if ( delta_time )
 		{
@@ -56,16 +56,16 @@ namespace lagcompensation
 		return true;
 	}
 
-	bool get_player_record( player_t* pl, CompensationRecord* record )
+	bool get_player_record( player_t* pl, CompensationRecord& record )
 	{
-		if ( !pl->SetupBones( record->matrix, 128, 0x7FF00, ctx::csgo.globals->curtime ) )
+		if ( !pl->SetupBones( record.matrix, 128, 0x7FF00, ctx::csgo.globals->curtime ) )
 			return false;
 
-		record->head = pl->get_hitbox_pos( HITBOX_HEAD );
-		record->view = pl->get_eye_angles();
-		record->simulation_time = pl->get_simtime();
+		record.head = pl->get_hitbox_pos( HITBOX_HEAD );
+		record.view = pl->get_eye_angles();
+		record.simulation_time = pl->get_simtime();
 		
-		if ( valid_tick( record->simulation_time ) && record->head.valid() && record->view.valid() )
+		if ( valid_tick( record.simulation_time ) && record.matrix->m_matrix )
 			return true;
 	}
 
@@ -85,6 +85,17 @@ namespace lagcompensation
 			cvars.max_unlag = ctx::csgo.cvar->FindVar( "sv_maxunlag" );
 
 			cvars.initialize = false;
+		}
+	}
+
+	void clear_variables( player_t* pl )
+	{
+		const auto vars_map = reinterpret_cast< uintptr_t> ( pl ) + 0x24;
+		const auto vars_count = *reinterpret_cast< int* >( static_cast< uintptr_t >( vars_map ) + 0x14 );
+
+		for ( auto i = 0; i < vars_count; i++ )
+		{
+			*reinterpret_cast< uintptr_t* >( *reinterpret_cast< uintptr_t* >( vars_map ) + i * 0xC ) = 0;
 		}
 	}
 
@@ -111,18 +122,11 @@ namespace lagcompensation
 			if ( records[ index ].size() && ( records[ index ].front().simulation_time == pl->get_simtime() ) )
 				return false;
 
-			///
-
-			auto var_map = reinterpret_cast<uintptr_t>(pl) + 0x24;
-			auto vars_count = *reinterpret_cast<int*>(static_cast<uintptr_t>(var_map) + 0x14);
-			for (int j = 0; j < vars_count; j++)
-				* reinterpret_cast<uintptr_t*>(*reinterpret_cast<uintptr_t*>(var_map) + j * 0xC) = 0;
-			
-			///
+			clear_variables( pl );
 
 			CompensationRecord record{};
 
-			if ( get_player_record( pl, &record ) )
+			if ( get_player_record( pl, record ) )
 				records[ index ].push_front( record );
 
 			while ( records[ index ].size() <= 3 && ( records[ index ].size() > static_cast< size_t >( time_to_ticks ( config::get< float >( ctx::cfg.lagcompensation_ms ) / 1000.f ) ) ) )

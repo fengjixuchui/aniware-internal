@@ -171,14 +171,15 @@ namespace gui
 	std::function<void()> m_reset_clip_fn;
 	std::function<void( const math::vec2_t&, const math::vec2_t&, bool )> m_clip_fn;
 
-	void setup_helper( const std::function<float()> & curtime,
-					   const std::function<float()> & frametime,
-					   const std::function<void( const math::vec2_t&, const math::vec2_t&, const col_t& )> & rect_filled,
-					   const std::function<void( const math::vec2_t&, const math::vec2_t&, const col_t& )> & rect,
-					   const std::function<void( const math::vec2_t&, const col_t & col, std::string_view )> & text,
-					   const std::function<math::vec2_t( std::string_view )> & text_size,
-					   const std::function<void()> & reset_clip,
-					   const std::function<void( const math::vec2_t&, const math::vec2_t&, bool )> & clip )
+	void setup_helper( 
+		const std::function<float()> & curtime,
+		const std::function<float()> & frametime,
+		const std::function<void( const math::vec2_t&, const math::vec2_t&, const col_t& )> & rect_filled,
+		const std::function<void( const math::vec2_t&, const math::vec2_t&, const col_t& )> & rect,
+		const std::function<void( const math::vec2_t&, const col_t & col, std::string_view )> & text,
+		const std::function<math::vec2_t( std::string_view )> & text_size,
+		const std::function<void()> & reset_clip,
+		const std::function<void( const math::vec2_t&, const math::vec2_t&, bool )> & clip )
 	{
 		m_curtime_fn = curtime;
 		m_frametime_fn = frametime;

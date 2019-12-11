@@ -17,8 +17,8 @@ void __fastcall hook_handler_t::paint( REGISTERS, int mode )
 			render::init();
 
 			players::render();
-
 			menu::render();
+
 			input::update_mouse();
 		}
 		ctx::csgo.surface->FinishDrawing();
