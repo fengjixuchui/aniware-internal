@@ -161,5 +161,6 @@
     <ClCompile Include="csgo\hooks\functions\is_hltv.cpp" />
     <ClCompile Include="csgo\features\autowall\autowall.cpp" />
     <ClCompile Include="csgo\features\lagcompensation\lagcompensation.cpp" />
+    <ClCompile Include="csgo\hooks\functions\trace_ray.cpp" />
   </ItemGroup>
 </Project>

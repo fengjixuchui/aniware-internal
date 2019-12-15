@@ -42,6 +42,8 @@ namespace hooks
 		DO_POST_SCREEN_SPACE_FX = 44,
 		//IVEngine
 		IS_HLTV = 93,
+		//IEngineTrace
+		TRACE_RAY = 5,
 		// IBaseClient
 		LEVEL_INIT_POST_ENTITY = 6,
 		LEVEL_SHUTDOWN = 7,
@@ -124,6 +126,7 @@ struct hook_handler_t
 	static bool __fastcall do_screen_effects( REGISTERS, const CViewSetup* setup);
 	static bool __fastcall is_hltv( REGISTERS );
 	static void __fastcall reload_fonts( REGISTERS );
+	static void __fastcall trace_ray( REGISTERS, const Ray& ray, unsigned int mask, TraceFilter filter, Trace* trace );
 
 	static void player_hurt( IGameEvent* e );
 
@@ -135,6 +138,7 @@ struct hook_handler_t
 	CREATE_HOOK( ctx::csgo.clientmode, idx::OVERRIDE_VIEW, override_view );
 	CREATE_HOOK( ctx::csgo.clientmode, idx::DO_POST_SCREEN_SPACE_FX, do_screen_effects );
 	CREATE_HOOK( ctx::csgo.engine, idx::IS_HLTV, is_hltv );
+	CREATE_HOOK( ctx::csgo.enginetrace, idx::TRACE_RAY, trace_ray );
 
 	CREATE_HOOK( ctx::csgo.scheme_manager, idx::RELOAD_FONT, reload_fonts );
 

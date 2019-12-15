@@ -91,7 +91,7 @@ struct Surface
 {
 	const char* name;
 	short props;
-	unsigned short flags;
+	bitflag_t flags;
 };
 
 struct Plane

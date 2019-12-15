@@ -33,7 +33,7 @@ namespace autowall
 			mod_damage = 0.05f;
 			mod_penetration = 3.0f;
 		}
-		else if ( autowall_data.enter.contents >> 3 & 1 || autowall_data.enter.surface.flags >> 7 & 1 )
+		else if ( autowall_data.enter.contents >> 3 & 1 || autowall_data.enter.surface.flags.m_flags >> 7 & 1 )
 		{
 			mod_penetration = 1.0f;
 		}
