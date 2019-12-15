@@ -20,6 +20,7 @@
 #include "source_engine/CFontManager.hpp"
 #include "source_engine/IVEngineVGui.hpp"
 #include "source_engine/IEngineTrace.hpp"
+#include "source_engine/IEngineSound.hpp"
 #include "source_engine/ICVar.hpp"
 #include "source_engine/CHLClient.hpp"
 #include "source_engine/IClientEntity.hpp"

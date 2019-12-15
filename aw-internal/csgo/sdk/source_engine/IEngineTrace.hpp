@@ -38,7 +38,8 @@ enum TraceContent
 	CONTENTS_HITBOX = 0x40000000,
 };
 
-enum SurfProps {
+enum SurfProps
+{
 	SURF_LIGHT = 0X1,
 	SURF_SKY2D = 0X2,
 	SURF_SKY = 0X4,
@@ -182,9 +183,14 @@ struct Ray
 struct IEngineTrace
 {
 	virtual int GetPointContents( const math::vec3_t& pos, int mask = MASK_ALL, void** ent = nullptr ) = 0;
+
 	virtual int GetPointContentsEntity( const math::vec3_t& pos, int mask = MASK_ALL ) = 0;
+
 	virtual int GetPointContentsCollideable( void* collide, const math::vec3_t& pos ) = 0;
+
 	virtual void ClipRayToEntity( const Ray& ray, unsigned int mask, player_t* ent, Trace* trace ) = 0;
+
 	virtual void ClipRayToCollideable( const Ray& ray, unsigned int mask, void* collide, Trace* trace ) = 0;
+
 	virtual void TraceRay( const Ray& ray, unsigned int mask, TraceFilter* filter, Trace* trace ) = 0;
 };

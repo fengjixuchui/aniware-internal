@@ -2,9 +2,9 @@
 
 namespace hooks
 {
-	std::unordered_map<uint32_t, hook_t>& get_map()
+	std::unordered_map< uint32_t, hook_t >& get_map()
 	{
-		static std::unordered_map<uint32_t, hook_t> map{};
+		static std::unordered_map< uint32_t, hook_t > map{};
 		return map;
 	}
 

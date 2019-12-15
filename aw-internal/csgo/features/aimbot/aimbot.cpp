@@ -21,16 +21,6 @@ namespace aimbot
 		return true;
 	}
 
-	bool is_visible( player_t* pl, math::vec3_t dst )
-	{
-		TraceFilter filter{ ctx::client.local };
-		Trace trace;
-
-		ctx::csgo.enginetrace->TraceRay( Ray{ ctx::client.local->get_eye_pos(), dst }, MASK_SHOT, &filter, &trace );
-		
-		return ( trace.entity == pl || trace.fraction > 0.97f );
-	}
-
 	bool can_shoot( weapon_t* weapon )
 	{
 		if ( !weapon || weapon->get_ammo() <= 0 )
@@ -70,12 +60,14 @@ namespace aimbot
 			if ( !position.valid() )
 				return false;
 
-			if ( !is_visible( pl, position ) )
-				return false;
-
 			if ( ctx::client.cmd->buttons.has_flag( IN_ATTACK ) )
 			{
 				ctx::client.cmd->viewangles = math::calc_angle( ctx::client.local->get_eye_pos(), position );
+
+				if (  !config::get< bool >( ctx::cfg.aim_silent ) )
+				{
+					ctx::csgo.engine->SetViewAngles( ctx::client.cmd->viewangles );
+				}
 			}
 
 			return false;

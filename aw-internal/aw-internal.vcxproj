@@ -62,6 +62,7 @@
     <ClInclude Include="csgo\sdk\source_engine\IClientEntityList.h" />
     <ClInclude Include="csgo\sdk\source_engine\IClientMode.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\ICVar.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\IEngineSound.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IEngineTrace.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IGameEventManager.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IPhysicsSurface.hpp" />

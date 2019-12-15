@@ -2,4 +2,5 @@
 
 struct ISchemeManager
 {
-	};
+
+};

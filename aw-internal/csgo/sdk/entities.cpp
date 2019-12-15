@@ -21,9 +21,10 @@ bool player_t::get_bbox( math::vec4_t& box )
 		{ max.x, min.y, max.z }
 	};
 
-	for ( int i = 0; i <= 7; i++ )
+	for ( auto i = 0; i <= 7; i++ )
 	{
 		math::vec3_t out_vec; math::vector_transform( points[ i ], tran_frame, out_vec );
+
 		if ( !static_cast< bool >( ctx::csgo.debugoverlay->WorldToScreen( out_vec, screen_boxes[ i ] ) != 1 ) )
 			return false;
 	}

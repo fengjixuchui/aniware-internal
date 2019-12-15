@@ -122,6 +122,7 @@
     <ClInclude Include="csgo\features\lagcompensation\lagcompensation.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\INetChannelInfo.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IPhysicsSurface.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\IEngineSound.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="csgo\features\misc\movement.cpp" />

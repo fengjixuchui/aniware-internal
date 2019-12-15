@@ -24,6 +24,7 @@ namespace ctx
 		ADD_INTERFACE( ISchemeManager, scheme_manager, "VGUI_Scheme" );
 		ADD_INTERFACE( IGameEventManager2, events, "GAMEEVENTSMANAGER002" );
 		ADD_INTERFACE( IEngineTrace, enginetrace, "EngineTraceClient004" );
+		ADD_INTERFACE( IEngineSound, enginesound, "IEngineSoundClient003" );
 		ADD_INTERFACE( CInputSystem, inputsys, "InputSystemVersion0" );
 
 		ADD_INTERFACE_CUSTOM( CFontManager, font_manager, mem::find_ida_sig( "vguimatsurface.dll", { "74 1D 8B 0D ? ? ? ? 68 ? ? ? ?" } ).self_offset( 0x4 ).self_get() );
