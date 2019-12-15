@@ -21,20 +21,14 @@ namespace aimbot
 		return true;
 	}
 
-	bool is_visible( player_t* pl, const math::vec3_t& dst )
+	bool is_visible( player_t* pl, math::vec3_t dst )
 	{
-		Trace tr;
-		Ray ray;
-		TraceFilter filter;
-		filter.skip = ctx::client.local;
+		TraceFilter filter{ ctx::client.local };
+		Trace trace;
 
-		auto start = ctx::client.local->get_eye_pos();
-		auto dir = (dst - start).normalized();
-
-		ray.initialize(start, dst);
-		ctx::csgo.enginetrace->TraceRay(ray, MASK_SHOT | CONTENTS_GRATE, &filter, &tr);
-
-		return tr.entity == pl || tr.fraction > 0.97f;
+		ctx::csgo.enginetrace->TraceRay( Ray{ ctx::client.local->get_eye_pos(), dst }, MASK_SHOT, &filter, &trace );
+		
+		return ( trace.entity == pl || trace.fraction > 0.97f );
 	}
 
 	bool can_shoot( weapon_t* weapon )
@@ -62,6 +56,11 @@ namespace aimbot
 		if ( !ctx::client.local || !ctx::client.local->is_alive() )
 			return;
 
+		const auto weapon = entity_t::get< weapon_t >( ctx::client.local->get_weapon_handle() );
+
+		if ( !can_shoot( weapon ) )
+			return;
+
 		game::for_every_player( []( player_t * pl ) -> bool {
 			if ( !is_valid( pl ) )
 				return false;
@@ -69,6 +68,9 @@ namespace aimbot
 			const auto position = pl->get_hitbox_pos( HITBOX_HEAD );
 			
 			if ( !position.valid() )
+				return false;
+
+			if ( !is_visible( pl, position ) )
 				return false;
 
 			if ( ctx::client.cmd->buttons.has_flag( IN_ATTACK ) )

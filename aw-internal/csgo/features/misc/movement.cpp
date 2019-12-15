@@ -19,9 +19,8 @@ namespace movement
 			return;
 
 		const auto move_type = ctx::client.local->get_move_type();
-		if ( move_type == MOVETYPE_LADDER ||
-			 move_type == MOVETYPE_NOCLIP ||
-			 move_type == MOVETYPE_OBSERVER )
+
+		if ( move_type == MOVETYPE_LADDER || move_type == MOVETYPE_NOCLIP || move_type == MOVETYPE_OBSERVER )
 			return;
 
 		if ( ctx::client.local->get_water_level() >= 2 )
@@ -43,9 +42,8 @@ namespace movement
 			return;
 
 		const auto move_type = ctx::client.local->get_move_type();
-		if ( move_type == MOVETYPE_LADDER ||
-			 move_type == MOVETYPE_NOCLIP ||
-			 move_type == MOVETYPE_OBSERVER )
+
+		if ( move_type == MOVETYPE_LADDER || move_type == MOVETYPE_NOCLIP || move_type == MOVETYPE_OBSERVER )
 			return;
 
 		if ( ctx::client.local->get_water_level() >= 2 )
@@ -86,7 +84,7 @@ namespace movement
 			break;
 		}
 
-		ctx::client.cmd->forwardmove = (cos_rot * forwardmove) - (sin_rot * sidemove);
-		ctx::client.cmd->sidemove = (sin_rot * forwardmove) + (cos_rot * sidemove);
+		ctx::client.cmd->forwardmove = ( cos_rot * forwardmove ) - ( sin_rot * sidemove );
+		ctx::client.cmd->sidemove = ( sin_rot * forwardmove ) + ( cos_rot * sidemove );
 	}
 }

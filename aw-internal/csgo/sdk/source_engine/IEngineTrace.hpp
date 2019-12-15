@@ -113,6 +113,9 @@ struct ITraceFilter
 
 struct TraceFilter : public ITraceFilter
 {
+	TraceFilter() = default;
+	TraceFilter( void* pl ) : skip( pl ) {};
+
 	void* skip;
 
 	bool should_hit_entity( player_t* ent, unsigned int mask ) 
@@ -178,10 +181,10 @@ struct Ray
 
 struct IEngineTrace
 {
-	virtual int GetPointContents(const math::vec3_t& pos, int mask = MASK_ALL, void* ent = nullptr) = 0;
-	virtual int GetPointContentsEntity(const math::vec3_t& pos, int mask = MASK_ALL) = 0;
-	virtual int GetPointContentsCollideable(void* collide, const math::vec3_t& pos) = 0;
-	virtual void ClipRayToEntity(const Ray& ray, unsigned int mask, player_t* ent, Trace* trace) = 0;
-	virtual void ClipRayToCollideable(const Ray& ray, unsigned int mask, void* collide, Trace* trace) = 0;
-	virtual void TraceRay(const Ray& ray, unsigned int mask, TraceFilter* filter, Trace* trace) = 0;
+	virtual int GetPointContents( const math::vec3_t& pos, int mask = MASK_ALL, void** ent = nullptr ) = 0;
+	virtual int GetPointContentsEntity( const math::vec3_t& pos, int mask = MASK_ALL ) = 0;
+	virtual int GetPointContentsCollideable( void* collide, const math::vec3_t& pos ) = 0;
+	virtual void ClipRayToEntity( const Ray& ray, unsigned int mask, player_t* ent, Trace* trace ) = 0;
+	virtual void ClipRayToCollideable( const Ray& ray, unsigned int mask, void* collide, Trace* trace ) = 0;
+	virtual void TraceRay( const Ray& ray, unsigned int mask, TraceFilter* filter, Trace* trace ) = 0;
 };
