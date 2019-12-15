@@ -17,11 +17,11 @@ namespace game
 		ENEMY_ONLY = 1 << 1,
 		ALLOW_DORMANT = 1 << 2
 	};
-	void for_every_player( const std::function<bool( player_t* pl )>& func, bitflag_t flags = {} );
+	void for_every_player( const std::function< bool( player_t* pl ) >& func, bitflag_t flags = {} );
 
 	enum e_entity_iteration_flags
 	{
 		FILTER_CLASSID = 1 << 0
 	};
-	void for_every_entity( const std::function<void( entity_t* ent )>& func, bitflag_t flags = {}, int classid = 0 );
+	void for_every_entity( const std::function< void( entity_t* ent ) >& func, bitflag_t flags = {}, int classid = 0 );
 }
