@@ -134,6 +134,5 @@ namespace lagcompensation
 
 			return false;
 		}, { game::ENEMY_ONLY } );
-
 	}
 }

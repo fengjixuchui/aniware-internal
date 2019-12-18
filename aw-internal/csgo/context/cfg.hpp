@@ -7,6 +7,7 @@ namespace ctx
 		ADD_CFG_ITEM( bool, aim_enable, false );
 		ADD_CFG_ITEM( bool, aim_friendly, false );
 		ADD_CFG_ITEM( bool, aim_silent, false );
+		ADD_CFG_ITEM( bool, aim_body, false );
 		ADD_CFG_ITEM( bool, aim_shoot, false );
 		ADD_CFG_ITEM( bool, aim_lagcompensation, false );
 		ADD_CFG_ITEM( float, aim_hitchance, 0.f );
