@@ -129,6 +129,7 @@ struct hook_handler_t
 	static void __fastcall trace_ray( REGISTERS, const Ray& ray, unsigned int mask, TraceFilter filter, Trace* trace );
 
 	static void player_hurt( IGameEvent* e );
+	static void player_step( IGameEvent* e );
 
 	CREATE_HOOK( ctx::csgo.enginevgui, idx::ENGINE_PAINT, paint );
 	CREATE_HOOK( ctx::csgo.clientmode, idx::CREATE_MOVE, create_move );
@@ -143,4 +144,5 @@ struct hook_handler_t
 	CREATE_HOOK( ctx::csgo.scheme_manager, idx::RELOAD_FONT, reload_fonts );
 
 	CREATE_EVENT_CALLBACK( player_hurt );
+	CREATE_EVENT_CALLBACK( player_step );
 };
