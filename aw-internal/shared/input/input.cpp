@@ -191,7 +191,7 @@ namespace input
 		return mouse_in_bounds( bounds.get_pos(), bounds.get_size() );
 	}
 
-		key_info_t& get_key_info( const int key )
+	key_info_t& get_key_info( const int key )
 	{
 		return m_key_info.at( key );
 	}
