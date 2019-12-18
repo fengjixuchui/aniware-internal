@@ -3,7 +3,6 @@
 </p>
 
 <p align="center">
-  <a href="https://ci.appveyor.com/project/iBambooFox/aniware-internal"><img src="https://img.shields.io/appveyor/ci/ibamboofox/aniware-internal?style=for-the-badge"></a>
   <a href="https://github.com/iBambooFox/aniware-internal/issues"><img src="https://img.shields.io/github/issues/ibamboofox/aniware-internal?style=for-the-badge"></a>
   <a href="https://github.com/iBambooFox/aniware-internal/blob/master/LICENSE"><img src="https://img.shields.io/github/license/ibamboofox/aniware-internal?style=for-the-badge"></a>
 </p>
