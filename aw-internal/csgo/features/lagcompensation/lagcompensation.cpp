@@ -136,41 +136,4 @@ namespace lagcompensation
 		}, { game::ENEMY_ONLY } );
 
 	}
-
-	void work()
-	{
-		if ( !config::get< bool >( ctx::cfg.lagcompensation ) || config::get< bool >( ctx::cfg.aim_lagcompensation ) )
-			return;
-
-		if ( !ctx::client.local || !ctx::client.local->is_alive() )
-			return;
-
-		if ( !ctx::client.cmd->buttons.has_flag( IN_ATTACK ) )
-			return;
-
-		static float best_fov { 255.f };
-
-		game::for_every_player( []( player_t * pl ) -> bool {
-			if ( !is_valid( pl ) )
-				return false;
-
-			const auto pos = pl->get_hitbox_pos( HITBOX_HEAD );
-			const auto ang = math::calc_angle( ctx::client.local->get_eye_pos(), pos );
-				
-			if ( !ang.valid() )
-				return false;
-
-			const auto fov = std::hypotf( ang.x, ang.y );
-
-			if ( fov < best_fov )
-			{
-				best_fov = fov;
-
-				best_record.target = pl;
-				best_record.head = pos;
-			}
-
-			return false;
-		}, { game::ENEMY_ONLY } );
-	}
 }

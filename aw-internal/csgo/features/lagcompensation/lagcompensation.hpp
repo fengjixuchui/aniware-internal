@@ -39,5 +39,4 @@ namespace lagcompensation
 {
 	bool valid_tick( float time );
 	void update();
-	void work();
 }
