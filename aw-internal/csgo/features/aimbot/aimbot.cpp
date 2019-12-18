@@ -35,35 +35,15 @@ namespace aimbot
 
 	void select_points( AimbotData& data )
 	{
-		if ( !data.pl->SetupBones( data.bones, 128, 256, 0.f ) )
-			return;
-
-		auto studio = ctx::csgo.modelinfo->GetStudioModel( data.pl->GetModel() );
-
-		if ( !studio )
-			return;
-
-		auto aim_body = config::get< bool >( ctx::cfg.aim_body ) ? 0 : 2;
+		auto aim_body = config::get< bool >( ctx::cfg.aim_body ) ? 2 : 0;
 
 		for ( auto i = aim_body; i < HITBOX_MAX; i++ )
 		{
-			auto hitboxes = studio->hitbox_set( 0 )->hitbox( i );
+			auto point = data.pl->get_hitbox_pos( i );
 
-			if ( !hitboxes )
-				continue;
-
-			static math::vec3_t min{}, max{};
-
-			math::vector_transform( hitboxes->mins, data.bones[ hitboxes->bone ], min );
-			math::vector_transform( hitboxes->maxs, data.bones[ hitboxes->bone ], max );
-
-			for ( auto p = 1; p <= 10; p++ )
+			if ( !point.zero() )
 			{
-				data.points.push_back( math::vec3_t{ 
-					( min.x + max.x ) * ( p / 10 ), 
-					( min.y + max.y ) * ( p / 10 ),
-					( min.z + max.z ) * ( p / 10 ),
-				} );
+				data.points.push_back( point );
 			}
 		}
 	}
@@ -84,11 +64,6 @@ namespace aimbot
 
 	void select_angles( AimbotData& data )
 	{
-		auto weapon = entity_t::get< weapon_t >( ctx::client.local->get_weapon_handle() );
-
-		if ( !can_shoot( weapon ) )
-			return;
-
 		ctx::client.cmd->viewangles = math::calc_angle( ctx::client.local->get_eye_pos(), data.points.front() );
 
 		if ( !config::get< bool >( ctx::cfg.aim_silent ) )
@@ -111,6 +86,11 @@ namespace aimbot
 			return;
 
 		if ( !ctx::client.local || !ctx::client.local->is_alive() )
+			return;
+
+		auto weapon = entity_t::get< weapon_t >( ctx::client.local->get_weapon_handle() );
+
+		if ( !can_shoot( weapon ) )
 			return;
 
 		game::for_every_player( []( player_t * pl ) -> bool {

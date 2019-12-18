@@ -68,6 +68,13 @@ namespace math
 				&& std::isfinite< float >( z );
 		}
 
+		inline bool zero() const
+		{
+			return x == 0.f
+				&& y == 0.f
+				&& z == 0.f;
+		}
+
 		inline float dot( const vec3_t & in ) const
 		{
 			return ( x * in.x + y * in.y + z * in.z );

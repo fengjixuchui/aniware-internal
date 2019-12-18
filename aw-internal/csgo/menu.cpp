@@ -51,6 +51,7 @@ namespace menu
 			{
 				tab1->add( std::make_shared<gui::controls::c_checkbox>( "enable", &config::get_item( ctx::cfg.aim_enable ) ) );
 				tab1->add( std::make_shared<gui::controls::c_checkbox>( "friendly", &config::get_item( ctx::cfg.aim_friendly ) ) );
+				tab1->add( std::make_shared<gui::controls::c_checkbox>( "body only", &config::get_item( ctx::cfg.aim_body ) ) );
 				tab1->add( std::make_shared<gui::controls::c_checkbox>( "silent", &config::get_item( ctx::cfg.aim_silent ) ) );
 				tab1->add( std::make_shared<gui::controls::c_checkbox>( "lag compensation", &config::get_item( ctx::cfg.aim_lagcompensation ) ) );
 				tab1->add( std::make_shared<gui::controls::c_slider>( "hitchance", &config::get_item( ctx::cfg.aim_hitchance ), 0.f, 100.f ) );
