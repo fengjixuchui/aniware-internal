@@ -11,7 +11,7 @@
 - Features not fully implemented
 - Very incomplete; bare bones at this stage.
 
-If you would like to commit a change or otherwise fix that might help the project, go ahead.
+If you would like to commit a change or otherwise fix issues, go ahead.
 Naturally, please follow the general style which is pursued and is consistent throughout.
 
 ## FAQ
