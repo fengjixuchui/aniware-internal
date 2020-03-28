@@ -15,7 +15,7 @@ namespace netvars
 
 	void init()
 	{
-				if ( !ctx::csgo.client )
+		if ( !ctx::csgo.client )
 			throw std::runtime_error( "netvars::init - client pointer not valid" );
 
 		if ( auto client_class_list = ctx::csgo.client->GetAllClasses() )
@@ -27,15 +27,16 @@ namespace netvars
 				RecvProp* prop;
 				RecvTable* child;
 
-								for ( int i = 0; i < table->m_nProps; ++i )
+				for ( int i = 0; i < table->m_nProps; ++i )
 				{
-										prop = &table->m_pProps[ i ];
+					prop = &table->m_pProps[ i ];
 					child = prop->m_pDataTable;
 
-										if ( child && child->m_nProps > 0 )
+					if ( child && child->m_nProps > 0 )
 						store( name, child, prop->m_Offset + offset );
+					
+					var = HASH( prop->m_pVarName );
 
-										var = HASH( prop->m_pVarName );
 					if ( !m_offsets[ base ][ var ].m_offset )
 					{
 						m_offsets[ base ][ var ].m_ptr = prop;
@@ -54,7 +55,7 @@ namespace netvars
 		return m_offsets[ table ][ field ].m_offset;
 	}
 
-			uint16_t get( std::string_view table, std::string_view field )
+	uint16_t get( std::string_view table, std::string_view field )
 	{
 		return m_offsets[ HASH( table.data() ) ][ HASH( field.data() ) ].m_offset;
 	}

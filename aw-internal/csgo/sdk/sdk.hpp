@@ -26,7 +26,6 @@
 #include "source_engine/IClientEntity.hpp"
 #include "source_engine/IClientMode.hpp"
 #include "source_engine/IClientEntityList.h"
-#include "source_engine/CItemSystem.hpp"
 #include "source_engine/IServer.hpp"
 #include "source_engine/IVRenderView.hpp"
 #include "source_engine/CGlobalVarsBase.hpp"
@@ -39,7 +38,6 @@
 #include "helper/interfaces.hpp"
 #include "helper/netvars.hpp"
 #include "helper/classids.hpp"
-#include "helper/weaponids.hpp"
 #include "helper/game.hpp"
 #include "helper/events.hpp"
 

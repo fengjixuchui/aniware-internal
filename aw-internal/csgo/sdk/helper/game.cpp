@@ -2,17 +2,6 @@
 
 namespace game
 {
-	CCStrike15ItemSystem* get_item_system()
-	{
-		static auto fn = ctx::mem.CItemSystem.Get.cast < CCStrike15ItemSystem * ( __stdcall* )( )>();
-		return fn();
-	}
-
-	CCStrike15ItemSchema* get_item_schema()
-	{
-		return get_item_system()->GetItemSchemaInterface();
-	}
-
 	bool world_to_screen( const math::vec3_t& origin, math::vec3_t& screen )
 	{
 		const auto screen_transform = [ & ]( const math::vec3_t & in, math::vec3_t & out ) -> bool
