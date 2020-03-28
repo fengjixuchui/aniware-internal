@@ -16,50 +16,50 @@ namespace gui::controls
 	{
 		m_pos = pos;
 
-		setup_style();
+		setup_style( );
 
 		const auto control_name_pos = math::vec2_t( m_pos.x + m_style.m_inner_padding, m_pos.y + m_size.y * 0.5f - m_name_size.y * 0.5f );
 
 		gui::text( control_name_pos, m_is_active ? m_style.m_col_text_hover : m_style.m_col_text, m_name );
 
-		render_checkbox();
+		render_checkbox( );
 
 		pos.y += m_size.y;
 	}
 
-	void c_checkbox::handle_input()
+	void c_checkbox::handle_input( )
 	{
 		if ( !m_is_active )
 			return;
 
-		if ( input::get_mouse().m_state == input::PRESSED
-			 || input::get_mouse().m_state_right == input::PRESSED )
+		if ( input::get_mouse( ).m_state == input::PRESSED
+			 || input::get_mouse( ).m_state_right == input::PRESSED )
 		{
-			if ( get_curtime() - m_last_action > 0.25f )
+			if ( get_curtime( ) - m_last_action > 0.25f )
 			{
-				push_action( get_curtime() );
+				push_action( get_curtime( ) );
 
-				m_var->get<bool>() = !m_var->get<bool>();
+				m_var->get<bool>( ) = !m_var->get<bool>( );
 			}
 		}
 	}
 
-	void c_checkbox::setup_style()
+	void c_checkbox::setup_style( )
 	{
 		m_style.m_col_text = col_t( 220, 220, 220 );
-		m_style.m_col_text_hover = col_t::palette_t::red();
+		m_style.m_col_text_hover = col_t::palette_t::red( );
 
-		m_style.m_col_checkbox = col_t::palette_t::grey();
-		m_style.m_col_checkbox_active = col_t::palette_t::red();
+		m_style.m_col_checkbox = col_t::palette_t::grey( );
+		m_style.m_col_checkbox_active = col_t::palette_t::red( );
 		m_style.m_col_checkbox_inner = col_t::palette_t::black( 100 );
-		m_style.m_col_checkbox_outline = col_t::palette_t::light_black();
+		m_style.m_col_checkbox_outline = col_t::palette_t::light_black( );
 
 		m_style.m_inner_padding = 4;
 
 		m_style.m_checkbox_width = 22;
 	}
 
-	void c_checkbox::render_checkbox()
+	void c_checkbox::render_checkbox( )
 	{
 		const auto checkbox_pos = math::vec2_t( m_pos.x + m_style.m_inner_padding, m_pos.y + m_size.y * 0.5f - m_name_size.y * 0.5f + 1 );
 		const auto checkbox_size = math::vec2_t( m_size.x - m_style.m_inner_padding * 2, m_name_size.y - 4 );
@@ -68,18 +68,18 @@ namespace gui::controls
 
 		gui::clip( math::vec2_t( checkbox_pos.x + checkbox_size.x - m_style.m_checkbox_width + 1, checkbox_pos.y ), math::vec2_t( m_style.m_checkbox_width - 2.f, checkbox_size.y ) );
 
-		const auto dot_factor = static_cast< float >( easing::in_out_sine( std::clamp( get_curtime() - m_last_action, 0.f, .25f ) * 4.f ) );
+		const auto dot_factor = static_cast< float >( easing::in_out_sine( std::clamp( get_curtime( ) - m_last_action, 0.f, .25f ) * 4.f ) );
 		const auto dot_offset = dot_factor * m_style.m_checkbox_width * 0.5f;
 		
-		gui::rect_filled( math::vec2_t( m_var->get<bool>() ? checkbox_pos.x + checkbox_size.x - m_style.m_checkbox_width + dot_offset
+		gui::rect_filled( math::vec2_t( m_var->get<bool>( ) ? checkbox_pos.x + checkbox_size.x - m_style.m_checkbox_width + dot_offset
 										: checkbox_pos.x + checkbox_size.x - m_style.m_checkbox_width * 0.5f - dot_offset, checkbox_pos.y ),
 						  math::vec2_t( m_style.m_checkbox_width * 0.5f, checkbox_size.y ), m_style.m_col_checkbox );
 
-		gui::rect_filled( math::vec2_t( m_var->get<bool>() ? checkbox_pos.x + checkbox_size.x - m_style.m_checkbox_width + dot_offset
+		gui::rect_filled( math::vec2_t( m_var->get<bool>( ) ? checkbox_pos.x + checkbox_size.x - m_style.m_checkbox_width + dot_offset
 										: checkbox_pos.x + checkbox_size.x - m_style.m_checkbox_width * 0.5f - dot_offset, checkbox_pos.y ),
-						  math::vec2_t( m_style.m_checkbox_width * 0.5f, checkbox_size.y ), col_t( m_style.m_col_checkbox_active, static_cast< int >( ( m_var->get<bool>() ? dot_factor : 1.f - dot_factor ) * 255.f ) ) );
+						  math::vec2_t( m_style.m_checkbox_width * 0.5f, checkbox_size.y ), col_t( m_style.m_col_checkbox_active, static_cast< int >( ( m_var->get<bool>( ) ? dot_factor : 1.f - dot_factor ) * 255.f ) ) );
 
-		gui::reset_clip();
+		gui::reset_clip( );
 
 		gui::rect( math::vec2_t( checkbox_pos.x + checkbox_size.x - m_style.m_checkbox_width, checkbox_pos.y ), math::vec2_t( static_cast< float >( m_style.m_checkbox_width ), checkbox_size.y ), m_style.m_col_checkbox_outline );
 	}

@@ -48,12 +48,12 @@ struct entity_t : public IClientEntity
 
 	NETVARADD( math::matrix3x4_t, get_coord_frame, "DT_BaseEntity", "m_CollisionGroup", -0x30 );
 
-	VFUNC( 17, get_pred_desc_map(), datamap_t * ( __thiscall* )( void* ) )( );
+	VFUNC( 17, get_pred_desc_map( ), datamap_t * ( __thiscall* )( void* ) )( );
 
 	CUSTOM_VFUNC( set_abs_origin( math::vec3_t origin ), void( __thiscall* )( void*, const math::vec3_t& ), ctx::mem.CBaseEntity.SetAbsOrigin )( origin );
 	CUSTOM_VFUNC( set_abs_angles( math::vec3_t origin ), void( __thiscall* )( void*, const math::vec3_t& ), ctx::mem.CBaseEntity.SetAbsAngles )( origin );
 
-	CUSTOM_VFUNC( think(), void( __thiscall* )( void* ), ctx::mem.CBaseEntity.Think )( );
+	CUSTOM_VFUNC( think( ), void( __thiscall* )( void* ), ctx::mem.CBaseEntity.Think )( );
 	CUSTOM_VFUNC( should_collide( int collision_group, int contents_mask ), bool( __thiscall* )( void*, int, int ), ctx::mem.CBaseEntity.ShouldCollide )( collision_group, contents_mask );
 
 	DATAMAPVAR( get_move_type, int, "m_MoveType" );
@@ -80,10 +80,10 @@ struct weapon_t : public econ_entity_t
 	NETVAR( float, get_next_primary_attack, "DT_BaseCombatWeapon", "m_flNextPrimaryAttack" );
 	NETVAR( float, get_next_secondary_attack, "DT_BaseCombatWeapon", "m_flNextSecondaryAttack" );
 
-	VFUNC( 449, get_spread(), float( __thiscall* )( void* ) )( );
-	VFUNC( 457, get_weapon_info(), WeaponInfo_t*( __thiscall* )( void* ) )( );
-	VFUNC( 477, get_inaccuracy(), float( __thiscall* )( void* ) )( );
-	VFUNC( 480, update_accuracy(), void( __thiscall* )( void* ) )( );
+	VFUNC( 449, get_spread( ), float( __thiscall* )( void* ) )( );
+	VFUNC( 457, get_weapon_info( ), WeaponInfo_t*( __thiscall* )( void* ) )( );
+	VFUNC( 477, get_inaccuracy( ), float( __thiscall* )( void* ) )( );
+	VFUNC( 480, update_accuracy( ), void( __thiscall* )( void* ) )( );
 };
 
 struct combat_character_t : public animating_t
@@ -115,17 +115,17 @@ struct player_t : public combat_character_t
 
 	DATAMAPVAR( get_water_level, char, "m_nWaterLevel" );
 
-	CUSTOM_VFUNC( pre_think(), void( __thiscall* )( void* ), ctx::mem.CBasePlayer.PreThink )( );
-	CUSTOM_VFUNC( post_think(), void( __thiscall* )( void* ), ctx::mem.CBasePlayer.PostThink )( );
-	CUSTOM_VFUNC( update_animations(), void( __thiscall* )( void* ), ctx::mem.CCSPlayer.UpdateClientSideAnimations )( );
+	CUSTOM_VFUNC( pre_think( ), void( __thiscall* )( void* ), ctx::mem.CBasePlayer.PreThink )( );
+	CUSTOM_VFUNC( post_think( ), void( __thiscall* )( void* ), ctx::mem.CBasePlayer.PostThink )( );
+	CUSTOM_VFUNC( update_animations( ), void( __thiscall* )( void* ), ctx::mem.CCSPlayer.UpdateClientSideAnimations )( );
 	CUSTOM_VFUNC( weapon_shootpos( math::vec3_t* in ), float* ( __thiscall* )( void*, math::vec3_t* ), ctx::mem.CCSPlayer.Weapon_Shootpos )( in );
 
 	bool get_bbox(math::vec4_t& box);
-	player_info_t get_player_info();
+	player_info_t get_player_info( );
 
-	math::vec3_t get_eye_pos();
+	math::vec3_t get_eye_pos( );
 	math::vec3_t get_hitbox_pos( int hitbox );
 
-	bool is_alive();
-	bool is_enemy();
+	bool is_alive( );
+	bool is_enemy( );
 };

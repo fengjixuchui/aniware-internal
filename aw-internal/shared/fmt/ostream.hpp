@@ -32,8 +32,8 @@ template <class Char> class formatbuf : public std::basic_streambuf<Char> {
   // to overflow. There is no disadvantage here for sputn since this always
   // results in a call to xsputn.
 
-  int_type overflow(int_type ch = traits_type::eof()) FMT_OVERRIDE {
-    if (!traits_type::eq_int_type(ch, traits_type::eof()))
+  int_type overflow(int_type ch = traits_type::eof( )) FMT_OVERRIDE {
+    if (!traits_type::eq_int_type(ch, traits_type::eof( )))
       buffer_.push_back(static_cast<Char>(ch));
     return ch;
   }
@@ -56,9 +56,9 @@ template <typename Char> struct test_stream : std::basic_ostream<Char> {
 template <typename T, typename Char> class is_streamable {
  private:
   template <typename U>
-  static decltype((void)(internal::declval<test_stream<Char>&>()
-                         << internal::declval<U>()),
-                  std::true_type())
+  static decltype((void)(internal::declval<test_stream<Char>&>( )
+                         << internal::declval<U>( )),
+                  std::true_type( ))
   test(int);
 
   template <typename> static std::false_type test(...);
@@ -72,11 +72,11 @@ template <typename T, typename Char> class is_streamable {
 // Write the content of buf to os.
 template <typename Char>
 void write(std::basic_ostream<Char>& os, buffer<Char>& buf) {
-  const Char* buf_data = buf.data();
+  const Char* buf_data = buf.data( );
   typedef std::make_unsigned<std::streamsize>::type UnsignedStreamSize;
-  UnsignedStreamSize size = buf.size();
+  UnsignedStreamSize size = buf.size( );
   UnsignedStreamSize max_size =
-      internal::to_unsigned((std::numeric_limits<std::streamsize>::max)());
+      internal::to_unsigned((std::numeric_limits<std::streamsize>::max)( ));
   do {
     UnsignedStreamSize n = size <= max_size ? size : max_size;
     os.write(buf_data, static_cast<std::streamsize>(n));
@@ -91,7 +91,7 @@ void format_value(buffer<Char>& buf, const T& value) {
   std::basic_ostream<Char> output(&format_buf);
   output.exceptions(std::ios_base::failbit | std::ios_base::badbit);
   output << value;
-  buf.resize(buf.size());
+  buf.resize(buf.size( ));
 }
 
 // Formats an object of type T that has an overloaded ostream operator<<.
@@ -101,10 +101,10 @@ struct fallback_formatter<
     typename std::enable_if<internal::is_streamable<T, Char>::value>::type>
     : formatter<basic_string_view<Char>, Char> {
   template <typename Context>
-  auto format(const T& value, Context& ctx) -> decltype(ctx.out()) {
+  auto format(const T& value, Context& ctx) -> decltype(ctx.out( )) {
     basic_memory_buffer<Char> buffer;
     internal::format_value(buffer, value);
-    basic_string_view<Char> str(buffer.data(), buffer.size());
+    basic_string_view<Char> str(buffer.data( ), buffer.size( ));
     return formatter<basic_string_view<Char>, Char>::format(str, ctx);
   }
 };

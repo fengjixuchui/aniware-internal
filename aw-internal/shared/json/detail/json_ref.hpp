@@ -39,9 +39,9 @@ class json_ref
     json_ref(const json_ref&) = delete;
     json_ref& operator=(const json_ref&) = delete;
     json_ref& operator=(json_ref&&) = delete;
-    ~json_ref() = default;
+    ~json_ref( ) = default;
 
-    value_type moved_or_copied() const
+    value_type moved_or_copied( ) const
     {
         if (is_rvalue)
         {
@@ -50,12 +50,12 @@ class json_ref
         return *value_ref;
     }
 
-    value_type const& operator*() const
+    value_type const& operator*( ) const
     {
         return *static_cast<value_type const*>(value_ref);
     }
 
-    value_type const* operator->() const
+    value_type const* operator->( ) const
     {
         return static_cast<value_type const*>(value_ref);
     }

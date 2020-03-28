@@ -4,7 +4,7 @@ namespace math
 {
 	struct matrix3x4_t
 	{
-		matrix3x4_t() = default;
+		matrix3x4_t( ) = default;
 		matrix3x4_t(
 			float m00, float m01, float m02, float m03,
 			float m10, float m11, float m12, float m13,

@@ -3,9 +3,9 @@
 class IGameEvent
 {
 public:
-	virtual ~IGameEvent() = 0;
-	virtual const char* GetName() const = 0; 
-	virtual bool  IsReliable() const = 0; 	virtual bool  IsLocal() const = 0; 	virtual bool  IsEmpty( const char* keyName = NULL ) = 0; 
+	virtual ~IGameEvent( ) = 0;
+	virtual const char* GetName( ) const = 0; 
+	virtual bool  IsReliable( ) const = 0; 	virtual bool  IsLocal( ) const = 0; 	virtual bool  IsEmpty( const char* keyName = NULL ) = 0; 
 	virtual bool  GetBool( const char* keyName = NULL, bool defaultValue = false ) = 0;
 	virtual int   GetInt( const char* keyName = NULL, int defaultValue = 0 ) = 0;
 	virtual unsigned long GetUint64( const char* keyName = NULL, unsigned long defaultValue = 0 ) = 0;

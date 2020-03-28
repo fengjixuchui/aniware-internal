@@ -17,14 +17,14 @@ namespace players
 {
 	void name( math::vec4_t bbox, player_t* pl )
 	{
-		auto player_info = pl->get_player_info();
+		auto player_info = pl->get_player_info( );
 
 		render::text( render::fonts::m_main, { bbox.x + bbox.w * 0.5f, bbox.y - 7 }, { 255, 255, 255 }, { render::fonts::FONT_RIGHT | render::fonts::FONT_CENTER_Y }, player_info.name );
 	}
 
 	void ticks( player_t* pl )
 	{
-		for ( auto record : records[ pl->Index() ] )
+		for ( auto record : records[ pl->Index( ) ] )
 		{
 			if ( !record.matrix || !lagcompensation::valid_tick( record.simulation_time ) )
 				continue;
@@ -50,14 +50,14 @@ namespace players
 			return health_color;
 		};
 
-		const auto player_health = pl->get_health();
+		const auto player_health = pl->get_health( );
 
 		const auto player_color = get_health_color( pl, player_health );
 
 		switch ( config::get< int >( ctx::cfg.extrasensory_health_type ) )
 		{
 		case HealthType::NUMBER:
-			render::text( render::fonts::m_main, { bbox.x + bbox.w * 0.5f, bbox.y - 7 }, { 255, 255, 255 }, { render::fonts::FONT_CENTER_Y }, fmt::format( " [ {:d} ]", pl->get_health() ) );
+			render::text( render::fonts::m_main, { bbox.x + bbox.w * 0.5f, bbox.y - 7 }, { 255, 255, 255 }, { render::fonts::FONT_CENTER_Y }, fmt::format( " [ {:d} ]", pl->get_health( ) ) );
 			break;
 
 		case HealthType::BAR:
@@ -84,9 +84,9 @@ namespace players
 		}
 	}
 
-	void render()
+	void render( )
 	{
-		if ( !ctx::csgo.engine->IsInGame() || !ctx::csgo.engine->IsConnected() )
+		if ( !ctx::csgo.engine->IsInGame( ) || !ctx::csgo.engine->IsConnected( ) )
 			return;
 
 		game::for_every_player( []( player_t * pl ) -> bool {

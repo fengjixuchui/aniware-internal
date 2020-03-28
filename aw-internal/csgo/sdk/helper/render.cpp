@@ -7,11 +7,11 @@ namespace render
 		HFont m_main;
 		HFont m_menu;
 
-		void init()
+		void init( )
 		{
 			const auto font = [ & ]( HFont & font, const char* name, const int size, const int weight, const int flags ) -> void
 			{
-				font = ctx::csgo.surface->CreateFont_();
+				font = ctx::csgo.surface->CreateFont_( );
 				ctx::csgo.font_manager->SetFontGlyphSet( font, name, size, weight, NULL, NULL, flags );
 			};
 
@@ -26,7 +26,7 @@ namespace render
 
 	std::deque<RECT> m_clip_records = {};
 
-	void init()
+	void init( )
 	{
 		int x, y;
 		ctx::csgo.engine->GetScreenSize( x, y );
@@ -35,31 +35,31 @@ namespace render
 		if ( m_init )
 			return;
 
-		fonts::init();
+		fonts::init( );
 
 		m_init = true;
 	}
 
-	void undo()
+	void undo( )
 	{
 		m_init = false;
 	}
 
-	math::vec2_t get_screen_size()
+	math::vec2_t get_screen_size( )
 	{
 		return m_screen;
 	}
 
 	void get_screen_size( math::vec2_t& size )
 	{
-		size = get_screen_size();
+		size = get_screen_size( );
 	}
 
 	void text( const HFont& font, const math::vec2_t& pos, const col_t& col, bitflag_t flags, const char* txt )
 	{
 				auto text_pos = pos;
 
-		if ( !flags.is_empty() )
+		if ( !flags.is_empty( ) )
 		{
 			const auto size = text_size( font, txt );
 
@@ -76,12 +76,12 @@ namespace render
 		ctx::csgo.surface->DrawColoredText( font,
 											static_cast< int >( text_pos.x ),
 											static_cast< int >( text_pos.y ),
-											col.r(), col.g(), col.b(), col.a(), txt );
+											col.r( ), col.g( ), col.b( ), col.a( ), txt );
 	}
 
 	void text( const HFont& font, const math::vec2_t& pos, const col_t& col, bitflag_t flags, std::string_view txt )
 	{
-		text( font, pos, col, flags, txt.data() );
+		text( font, pos, col, flags, txt.data( ) );
 	}
 
 	math::vec2_t text_size( const HFont& font, std::string_view txt )
@@ -89,9 +89,9 @@ namespace render
 		auto width = 0,
 			height = 0;
 
-		auto str = std::wstring( txt.begin(), txt.end() );
+		auto str = std::wstring( txt.begin( ), txt.end( ) );
 
-		ctx::csgo.font_manager->GetTextSize( font, str.c_str(), width, height );
+		ctx::csgo.font_manager->GetTextSize( font, str.c_str( ), width, height );
 
 		return math::vec2_t( static_cast< float >( width ),
 							 static_cast< float >( height ) );
@@ -183,9 +183,9 @@ namespace render
 			vertices.push_back( math::vert_t( math::vec2_t( radius * cosf( a ) + pos.x,
 															radius * sinf( a ) + pos.y ) ) );
 
-		polygon( segments, vertices.data(), col );
+		polygon( segments, vertices.data( ), col );
 
-		vertices.clear();
+		vertices.clear( );
 	}
 
 	void circle( const math::vec2_t & pos, const int radius, const int segments, const col_t & col )
@@ -213,7 +213,7 @@ namespace render
 		static int texture_id;
 
 		if ( !ctx::csgo.surface->IsTextureIDValid( texture_id ) )
-			texture_id = ctx::csgo.surface->CreateNewTextureID();
+			texture_id = ctx::csgo.surface->CreateNewTextureID( );
 
 		set_color( col );
 		ctx::csgo.surface->DrawSetTexture( texture_id );
@@ -222,7 +222,7 @@ namespace render
 
 	void set_color( const col_t & col )
 	{
-		ctx::csgo.surface->DrawSetColor( col.r(), col.g(), col.b(), col.a() );
+		ctx::csgo.surface->DrawSetColor( col.r( ), col.g( ), col.b( ), col.a( ) );
 	}
 
 	void set_color( const int r, const int g, const int b, const int a )
@@ -238,9 +238,9 @@ namespace render
 		rec.right = static_cast< LONG >( pos.x + size.x + 1 );
 		rec.bottom = static_cast< LONG >( pos.y + size.y + 1 );
 
-		if ( !override && !m_clip_records.empty() )
+		if ( !override && !m_clip_records.empty( ) )
 		{
-			auto& last_record = m_clip_records.back();
+			auto& last_record = m_clip_records.back( );
 			rec.left = std::clamp( rec.left, last_record.left, last_record.right );
 			rec.right = std::clamp( rec.right, last_record.left, last_record.right );
 			rec.top = std::clamp( rec.top, last_record.top, last_record.bottom );
@@ -254,9 +254,9 @@ namespace render
 
 	void clip( RECT rec, bool override )
 	{
-		if ( !override && !m_clip_records.empty() )
+		if ( !override && !m_clip_records.empty( ) )
 		{
-			auto& last_record = m_clip_records.back();
+			auto& last_record = m_clip_records.back( );
 			rec.left = std::clamp( rec.left, last_record.left, last_record.right );
 			rec.right = std::clamp( rec.right, last_record.left, last_record.right );
 			rec.top = std::clamp( rec.top, last_record.top, last_record.bottom );
@@ -268,31 +268,31 @@ namespace render
 		ctx::csgo.surface->SetClipRect( rec.left, rec.top, rec.right, rec.bottom );
 	}
 
-	void reset_clip()
+	void reset_clip( )
 	{
-		m_clip_records.pop_back();
+		m_clip_records.pop_back( );
 
-				if ( !m_clip_records.empty() )
+				if ( !m_clip_records.empty( ) )
 		{
-			auto& latest_record = m_clip_records.back();
+			auto& latest_record = m_clip_records.back( );
 			ctx::csgo.surface->SetClipRect( latest_record.left, latest_record.top, latest_record.right, latest_record.bottom );
 		}
 		else 			ctx::csgo.surface->SetClipRect( 0, 0, static_cast< int >( m_screen.x ), static_cast< int >( m_screen.y ) );
 	}
 
-	RECT get_current_clip()
+	RECT get_current_clip( )
 	{
-		if ( m_clip_records.empty() )
+		if ( m_clip_records.empty( ) )
 		{
 			RECT rec;
 			rec.left = 0;
 			rec.top = 0;
-			rec.right = static_cast< int >( render::get_screen_size().x );
-			rec.bottom = static_cast< int >( render::get_screen_size().y );
+			rec.right = static_cast< int >( render::get_screen_size( ).x );
+			rec.bottom = static_cast< int >( render::get_screen_size( ).y );
 
 			return rec;
 		}
 
-		return m_clip_records.back();
+		return m_clip_records.back( );
 	}
 }

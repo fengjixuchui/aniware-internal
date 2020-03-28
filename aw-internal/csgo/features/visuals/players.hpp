@@ -2,5 +2,5 @@
 
 namespace players
 {
-	void render();
+	void render( );
 }

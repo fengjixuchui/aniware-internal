@@ -4,7 +4,7 @@ struct col_t
 {
 	std::array<uint8_t, 4> m_color;
 
-	col_t() = default;
+	col_t( ) = default;
 
 	col_t(const int r, const int g, const int b) : m_color({ 0,0,0,0 })
 	{
@@ -33,7 +33,7 @@ struct col_t
 
 	col_t(const col_t& col, const int a) : m_color({ 0,0,0,0 })
 	{
-		set(col.r(), col.g(), col.b(), a);
+		set(col.r( ), col.g( ), col.b( ), a);
 	}
 
 	inline void set(const int r, const int g, const int b, const int a)
@@ -44,29 +44,29 @@ struct col_t
 		m_color[3] = static_cast<uint8_t>(a);
 	}
 
-	inline int r() const
+	inline int r( ) const
 	{
 		return m_color[0];
 	}
 
-	inline int g() const
+	inline int g( ) const
 	{
 		return m_color[1];
 	}
 
-	inline int b() const
+	inline int b( ) const
 	{
 		return m_color[2];
 	}
 
-	inline int a() const
+	inline int a( ) const
 	{
 		return m_color[3];
 	}
 
 	inline col_t& operator=(const col_t& in)
 	{
-		set(in.r(), in.g(), in.b(), in.a());
+		set(in.r( ), in.g( ), in.b( ), in.a( ));
 		return *this;
 	}
 
@@ -91,7 +91,7 @@ struct col_t
 		static col_t red(int alpha = 255) { return col_t(236, 98, 95, alpha); }
 	};
 
-					float hue() const
+					float hue( ) const
 	{
 		float r = m_color[0] / 255.0f;
 		float g = m_color[1] / 255.0f;
@@ -119,7 +119,7 @@ struct col_t
 		return hue / 360.f;
 	}
 
-					float saturation() const
+					float saturation( ) const
 	{
 		float r = m_color[0] / 255.0f;
 		float g = m_color[1] / 255.0f;
@@ -136,7 +136,7 @@ struct col_t
 		return delta / mx;
 	}
 
-					float brightness() const
+					float brightness( ) const
 	{
 		float r = m_color[0] / 255.0f;
 		float g = m_color[1] / 255.0f;

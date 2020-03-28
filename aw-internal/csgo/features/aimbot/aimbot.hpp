@@ -2,7 +2,7 @@
 
 struct AimbotData
 {
-	AimbotData() = default;
+	AimbotData( ) = default;
 	AimbotData( player_t* p ) : pl( p ){};
 
 	std::vector< math::vec3_t > points;
@@ -11,5 +11,5 @@ struct AimbotData
 
 namespace aimbot
 {
-	void work();
+	void work( );
 }

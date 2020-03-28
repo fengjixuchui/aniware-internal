@@ -14,7 +14,7 @@ namespace gui::controls
 	{
 		m_pos = pos;
 
-		setup_style();
+		setup_style( );
 
 		const auto separator_name_pos = math::vec2_t( m_pos.x + m_style.m_inner_padding * 3, m_pos.y + m_size.y * 0.5f - m_name_size.y * 0.5f );
 		const auto separator_line_pos = math::vec2_t( m_pos.x + m_style.m_inner_padding * 4 + m_name_size.x, m_pos.y + m_size.y * 0.5f );
@@ -27,11 +27,11 @@ namespace gui::controls
 		pos.y += m_size.y;
 	}
 
-	void c_separator::handle_input()
+	void c_separator::handle_input( )
 	{
 			}
 
-	void c_separator::setup_style()
+	void c_separator::setup_style( )
 	{
 		m_style.m_col_text = col_t( 220, 220, 220 );
 

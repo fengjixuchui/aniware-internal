@@ -32,13 +32,13 @@ std::istream, a buffer, or some other input type. Accepts the return of
 exactly one non-EOF character for future input. The int_type characters
 returned consist of all valid char values as positive values (typically
 unsigned char), plus an EOF value outside that range, specified by the value
-of the function std::char_traits<char>::eof(). This value is typically -1, but
+of the function std::char_traits<char>::eof( ). This value is typically -1, but
 could be any arbitrary value which is not a valid char value.
 */
 struct input_adapter_protocol
 {
-        virtual std::char_traits<char>::int_type get_character() = 0;
-    virtual ~input_adapter_protocol() = default;
+        virtual std::char_traits<char>::int_type get_character( ) = 0;
+    virtual ~input_adapter_protocol( ) = default;
 };
 
 using input_adapter_t = std::shared_ptr<input_adapter_protocol>;
@@ -59,9 +59,9 @@ class file_input_adapter : public input_adapter_protocol
     file_input_adapter(file_input_adapter&&) = default;
     file_input_adapter& operator=(const file_input_adapter&) = delete;
     file_input_adapter& operator=(file_input_adapter&&) = default;
-    ~file_input_adapter() override = default;
+    ~file_input_adapter( ) override = default;
 
-    std::char_traits<char>::int_type get_character() noexcept override
+    std::char_traits<char>::int_type get_character( ) noexcept override
     {
         return std::fgetc(m_file);
     }
@@ -83,15 +83,15 @@ subsequent call for input from the std::istream.
 class input_stream_adapter : public input_adapter_protocol
 {
   public:
-    ~input_stream_adapter() override
+    ~input_stream_adapter( ) override
     {
         // clear stream flags; we use underlying streambuf I/O, do not
         // maintain ifstream flags, except eof
-        is.clear(is.rdstate() & std::ios::eofbit);
+        is.clear(is.rdstate( ) & std::ios::eofbit);
     }
 
     explicit input_stream_adapter(std::istream& i)
-        : is(i), sb(*i.rdbuf())
+        : is(i), sb(*i.rdbuf( ))
     {}
 
     // delete because of pointer members
@@ -101,15 +101,15 @@ class input_stream_adapter : public input_adapter_protocol
     input_stream_adapter& operator=(input_stream_adapter&&) = delete;
 
     // std::istream/std::streambuf use std::char_traits<char>::to_int_type, to
-    // ensure that std::char_traits<char>::eof() and the character 0xFF do not
+    // ensure that std::char_traits<char>::eof( ) and the character 0xFF do not
     // end up as the same value, eg. 0xFFFFFFFF.
-    std::char_traits<char>::int_type get_character() override
+    std::char_traits<char>::int_type get_character( ) override
     {
-        auto res = sb.sbumpc();
+        auto res = sb.sbumpc( );
         // set eof manually, as we don't use the istream interface.
         if (res == EOF)
         {
-            is.clear(is.rdstate() | std::ios::eofbit);
+            is.clear(is.rdstate( ) | std::ios::eofbit);
         }
         return res;
     }
@@ -131,16 +131,16 @@ class input_buffer_adapter : public input_adapter_protocol
     input_buffer_adapter& operator=(input_buffer_adapter&) = delete;
     input_buffer_adapter(input_buffer_adapter&&) = delete;
     input_buffer_adapter& operator=(input_buffer_adapter&&) = delete;
-    ~input_buffer_adapter() override = default;
+    ~input_buffer_adapter( ) override = default;
 
-    std::char_traits<char>::int_type get_character() noexcept override
+    std::char_traits<char>::int_type get_character( ) noexcept override
     {
         if (JSON_LIKELY(cursor < limit))
         {
             return std::char_traits<char>::to_int_type(*(cursor++));
         }
 
-        return std::char_traits<char>::eof();
+        return std::char_traits<char>::eof( );
     }
 
   private:
@@ -160,9 +160,9 @@ struct wide_string_input_helper
     {
         utf8_bytes_index = 0;
 
-        if (current_wchar == str.size())
+        if (current_wchar == str.size( ))
         {
-            utf8_bytes[0] = std::char_traits<char>::eof();
+            utf8_bytes[0] = std::char_traits<char>::eof( );
             utf8_bytes_filled = 1;
         }
         else
@@ -219,9 +219,9 @@ struct wide_string_input_helper<WideStringType, 2>
     {
         utf8_bytes_index = 0;
 
-        if (current_wchar == str.size())
+        if (current_wchar == str.size( ))
         {
-            utf8_bytes[0] = std::char_traits<char>::eof();
+            utf8_bytes[0] = std::char_traits<char>::eof( );
             utf8_bytes_filled = 1;
         }
         else
@@ -250,7 +250,7 @@ struct wide_string_input_helper<WideStringType, 2>
             }
             else
             {
-                if (current_wchar < str.size())
+                if (current_wchar < str.size( ))
                 {
                     const auto wc2 = static_cast<unsigned int>(str[current_wchar++]);
                     const auto charcode = 0x10000u + (((wc & 0x3FFu) << 10u) | (wc2 & 0x3FFu));
@@ -280,12 +280,12 @@ class wide_string_input_adapter : public input_adapter_protocol
         : str(w)
     {}
 
-    std::char_traits<char>::int_type get_character() noexcept override
+    std::char_traits<char>::int_type get_character( ) noexcept override
     {
         // check if buffer needs to be filled
         if (utf8_bytes_index == utf8_bytes_filled)
         {
-            fill_buffer<sizeof(typename WideStringType::value_type)>();
+            fill_buffer<sizeof(typename WideStringType::value_type)>( );
 
             assert(utf8_bytes_filled > 0);
             assert(utf8_bytes_index == 0);
@@ -299,7 +299,7 @@ class wide_string_input_adapter : public input_adapter_protocol
 
   private:
     template<size_t T>
-    void fill_buffer()
+    void fill_buffer( )
     {
         wide_string_input_helper<WideStringType, T>::fill_buffer(str, current_wchar, utf8_bytes, utf8_bytes_index, utf8_bytes_filled);
     }
@@ -399,12 +399,12 @@ class input_adapter
 
         template<class ContiguousContainer, typename
              std::enable_if<not std::is_pointer<ContiguousContainer>::value and
-                            std::is_base_of<std::random_access_iterator_tag, typename iterator_traits<decltype(std::begin(std::declval<ContiguousContainer const>()))>::iterator_category>::value,
+                            std::is_base_of<std::random_access_iterator_tag, typename iterator_traits<decltype(std::begin(std::declval<ContiguousContainer const>( )))>::iterator_category>::value,
                             int>::type = 0>
     input_adapter(const ContiguousContainer& c)
         : input_adapter(std::begin(c), std::end(c)) {}
 
-    operator input_adapter_t()
+    operator input_adapter_t( )
     {
         return ia;
     }

@@ -7,12 +7,12 @@ namespace hook
 {
 	struct hook_t
 	{
-		hook_t() = default;
+		hook_t( ) = default;
 		hook_t( uintptr_t ptr ) : m_vtable( reinterpret_cast< uintptr_t** >( ptr ) ), m_table_length( 0 ), m_orig( nullptr ), m_replace( nullptr ) {};
 		hook_t( void* ptr ) : m_vtable( reinterpret_cast< uintptr_t** >( ptr ) ), m_table_length( 0 ), m_orig( nullptr ), m_replace( nullptr ) {};
-		hook_t( address_t ptr ) : m_vtable( ptr.cast<uintptr_t**>() ), m_table_length( 0 ), m_orig( nullptr ), m_replace( nullptr ) {};
+		hook_t( address_t ptr ) : m_vtable( ptr.cast<uintptr_t**>( ) ), m_table_length( 0 ), m_orig( nullptr ), m_replace( nullptr ) {};
 
-		bool init()
+		bool init( )
 		{
 			if ( !m_vtable )
 				return false;
@@ -27,9 +27,9 @@ namespace hook
 
 			m_replace = std::make_unique<uintptr_t[]>( m_table_length + 1 );
 
-			std::memset( m_replace.get(), NULL, m_table_length * sizeof( uintptr_t ) + sizeof( uintptr_t ) );
+			std::memset( m_replace.get( ), NULL, m_table_length * sizeof( uintptr_t ) + sizeof( uintptr_t ) );
 			std::memcpy( &m_replace[ 1 ], m_orig, m_table_length * sizeof( uintptr_t ) );
-			std::memcpy( m_replace.get(), &m_orig[ -1 ], sizeof( uintptr_t ) );
+			std::memcpy( m_replace.get( ), &m_orig[ -1 ], sizeof( uintptr_t ) );
 
 			*m_vtable = &m_replace[ 1 ];
 			return true;
@@ -61,7 +61,7 @@ namespace hook
 			m_replace[ index + 1 ] = m_orig[ index ];
 		}
 
-		void unhook()
+		void unhook( )
 		{
 			if ( !m_orig )
 				return;

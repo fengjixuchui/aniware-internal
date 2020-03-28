@@ -8,12 +8,12 @@ namespace ctx
 	cfg_t cfg = cfg_t{};
 }
 
-int __stdcall detach()
+int __stdcall detach( )
 {
-	event_handler::undo();
+	event_handler::undo( );
 
-	input::undo();
-	hooks::undo();
+	input::undo( );
+	hooks::undo( );
 
 	return TRUE;
 }
@@ -24,11 +24,11 @@ unsigned long __stdcall entry( void* instance )
 	{
 		input::init( L"Valve001" );
 
-		netvars::init();
-		classids.init();
-		render::init();
-		menu::init();
-		hooks::init();
+		netvars::init( );
+		classids.init( );
+		render::init( );
+		menu::init( );
+		hooks::init( );
 
 		config::set_config_directory( "aniware_cfg" );
 
@@ -42,7 +42,7 @@ unsigned long __stdcall entry( void* instance )
 
 	std::this_thread::sleep_for( std::chrono::milliseconds( 400 ) );
 
-	detach();
+	detach( );
 	FreeLibraryAndExitThread( static_cast< HMODULE >( instance ), EXIT_SUCCESS );
 }
 
@@ -58,7 +58,7 @@ int __stdcall DllMain( void* instance, unsigned long call_reason, void* reserved
 	}
 	else if ( call_reason == DLL_PROCESS_DETACH && !reserved )
 	{
-		return detach();
+		return detach( );
 	}
 
 	return TRUE;

@@ -102,10 +102,10 @@ template <typename Char> class basic_cstring_view {
     Constructs a string reference from an ``std::string`` object.
     \endrst
    */
-  basic_cstring_view(const std::basic_string<Char>& s) : data_(s.c_str()) {}
+  basic_cstring_view(const std::basic_string<Char>& s) : data_(s.c_str( )) {}
 
   /** Returns the pointer to a C string. */
-  const Char* c_str() const { return data_; }
+  const Char* c_str( ) const { return data_; }
 };
 
 typedef basic_cstring_view<char> cstring_view;
@@ -119,7 +119,7 @@ class error_code {
  public:
   explicit error_code(int value = 0) FMT_NOEXCEPT : value_(value) {}
 
-  int get() const FMT_NOEXCEPT { return value_; }
+  int get( ) const FMT_NOEXCEPT { return value_; }
 };
 
 // A buffered file.
@@ -133,10 +133,10 @@ class buffered_file {
 
  public:
   // Constructs a buffered_file object which doesn't represent any file.
-  buffered_file() FMT_NOEXCEPT : file_(FMT_NULL) {}
+  buffered_file( ) FMT_NOEXCEPT : file_(FMT_NULL) {}
 
   // Destroys the object closing the file it represents if any.
-  FMT_API ~buffered_file() FMT_NOEXCEPT;
+  FMT_API ~buffered_file( ) FMT_NOEXCEPT;
 
  private:
   buffered_file(const buffered_file&) = delete;
@@ -148,7 +148,7 @@ class buffered_file {
   }
 
   buffered_file& operator=(buffered_file&& other) {
-    close();
+    close( );
     file_ = other.file_;
     other.file_ = FMT_NULL;
     return *this;
@@ -158,14 +158,14 @@ class buffered_file {
   FMT_API buffered_file(cstring_view filename, cstring_view mode);
 
   // Closes the file.
-  FMT_API void close();
+  FMT_API void close( );
 
   // Returns the pointer to a FILE object representing this file.
-  FILE* get() const FMT_NOEXCEPT { return file_; }
+  FILE* get( ) const FMT_NOEXCEPT { return file_; }
 
   // We place parentheses around fileno to workaround a bug in some versions
   // of MinGW that define fileno as a macro.
-  FMT_API int(fileno)() const;
+  FMT_API int(fileno)( ) const;
 
   void vprint(string_view format_str, format_args args) {
     fmt::vprint(file_, format_str, args);
@@ -199,7 +199,7 @@ class file {
   };
 
   // Constructs a file object which doesn't represent any file.
-  file() FMT_NOEXCEPT : fd_(-1) {}
+  file( ) FMT_NOEXCEPT : fd_(-1) {}
 
   // Opens a file and constructs a file object representing this file.
   FMT_API file(cstring_view path, int oflag);
@@ -212,24 +212,24 @@ class file {
   file(file&& other) FMT_NOEXCEPT : fd_(other.fd_) { other.fd_ = -1; }
 
   file& operator=(file&& other) {
-    close();
+    close( );
     fd_ = other.fd_;
     other.fd_ = -1;
     return *this;
   }
 
   // Destroys the object closing the file it represents if any.
-  FMT_API ~file() FMT_NOEXCEPT;
+  FMT_API ~file( ) FMT_NOEXCEPT;
 
   // Returns the file descriptor.
-  int descriptor() const FMT_NOEXCEPT { return fd_; }
+  int descriptor( ) const FMT_NOEXCEPT { return fd_; }
 
   // Closes the file.
-  FMT_API void close();
+  FMT_API void close( );
 
   // Returns the file size. The size has signed type for consistency with
   // stat::st_size.
-  FMT_API long long size() const;
+  FMT_API long long size( ) const;
 
   // Attempts to read count bytes from the file into the specified buffer.
   FMT_API std::size_t read(void* buffer, std::size_t count);
@@ -259,7 +259,7 @@ class file {
 };
 
 // Returns the memory page size.
-long getpagesize();
+long getpagesize( );
 
 #if (defined(LC_NUMERIC_MASK) || defined(_MSC_VER)) &&                        \
     !defined(__ANDROID__) && !defined(__CYGWIN__) && !defined(__OpenBSD__) && \
@@ -295,12 +295,12 @@ class Locale {
  public:
   typedef locale_t Type;
 
-  Locale() : locale_(newlocale(LC_NUMERIC_MASK, "C", FMT_NULL)) {
+  Locale( ) : locale_(newlocale(LC_NUMERIC_MASK, "C", FMT_NULL)) {
     if (!locale_) FMT_THROW(system_error(errno, "cannot create locale"));
   }
-  ~Locale() { freelocale(locale_); }
+  ~Locale( ) { freelocale(locale_); }
 
-  Type get() const { return locale_; }
+  Type get( ) const { return locale_; }
 
   // Converts string to floating-point number and advances str past the end
   // of the parsed input.

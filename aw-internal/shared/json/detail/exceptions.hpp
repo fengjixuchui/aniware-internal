@@ -43,9 +43,9 @@ caught.,exception}
 class exception : public std::exception
 {
   public:
-        const char* what() const noexcept override
+        const char* what( ) const noexcept override
     {
-        return m.what();
+        return m.what( );
     }
 
         const int id;
@@ -122,7 +122,7 @@ class parse_error : public exception
     {
         std::string w = exception::name("parse_error", id_) + "parse error" +
                         position_string(pos) + ": " + what_arg;
-        return parse_error(id_, pos.chars_read_total, w.c_str());
+        return parse_error(id_, pos.chars_read_total, w.c_str( ));
     }
 
     static parse_error create(int id_, std::size_t byte_, const std::string& what_arg)
@@ -130,7 +130,7 @@ class parse_error : public exception
         std::string w = exception::name("parse_error", id_) + "parse error" +
                         (byte_ != 0 ? (" at byte " + std::to_string(byte_)) : "") +
                         ": " + what_arg;
-        return parse_error(id_, byte_, w.c_str());
+        return parse_error(id_, byte_, w.c_str( ));
     }
 
     /*!
@@ -168,17 +168,17 @@ name / id                           | example message | description
 json.exception.invalid_iterator.201 | iterators are not compatible | The iterators passed to constructor @ref basic_json(InputIT first, InputIT last) are not compatible, meaning they do not belong to the same container. Therefore, the range (@a first, @a last) is invalid.
 json.exception.invalid_iterator.202 | iterator does not fit current value | In an erase or insert function, the passed iterator @a pos does not belong to the JSON value for which the function was called. It hence does not define a valid position for the deletion/insertion.
 json.exception.invalid_iterator.203 | iterators do not fit current value | Either iterator passed to function @ref erase(IteratorType first, IteratorType last) does not belong to the JSON value from which values shall be erased. It hence does not define a valid range to delete values from.
-json.exception.invalid_iterator.204 | iterators out of range | When an iterator range for a primitive type (number, boolean, or string) is passed to a constructor or an erase function, this range has to be exactly (@ref begin(), @ref end()), because this is the only way the single stored value is expressed. All other ranges are invalid.
-json.exception.invalid_iterator.205 | iterator out of range | When an iterator for a primitive type (number, boolean, or string) is passed to an erase function, the iterator has to be the @ref begin() iterator, because it is the only way to address the stored value. All other iterators are invalid.
+json.exception.invalid_iterator.204 | iterators out of range | When an iterator range for a primitive type (number, boolean, or string) is passed to a constructor or an erase function, this range has to be exactly (@ref begin( ), @ref end( )), because this is the only way the single stored value is expressed. All other ranges are invalid.
+json.exception.invalid_iterator.205 | iterator out of range | When an iterator for a primitive type (number, boolean, or string) is passed to an erase function, the iterator has to be the @ref begin( ) iterator, because it is the only way to address the stored value. All other iterators are invalid.
 json.exception.invalid_iterator.206 | cannot construct with iterators from null | The iterators passed to constructor @ref basic_json(InputIT first, InputIT last) belong to a JSON null value and hence to not define a valid range.
-json.exception.invalid_iterator.207 | cannot use key() for non-object iterators | The key() member function can only be used on iterators belonging to a JSON object, because other types do not have a concept of a key.
+json.exception.invalid_iterator.207 | cannot use key( ) for non-object iterators | The key( ) member function can only be used on iterators belonging to a JSON object, because other types do not have a concept of a key.
 json.exception.invalid_iterator.208 | cannot use operator[] for object iterators | The operator[] to specify a concrete offset cannot be used on iterators belonging to a JSON object, because JSON objects are unordered.
 json.exception.invalid_iterator.209 | cannot use offsets with object iterators | The offset operators (+, -, +=, -=) cannot be used on iterators belonging to a JSON object, because JSON objects are unordered.
 json.exception.invalid_iterator.210 | iterators do not fit | The iterator range passed to the insert function are not compatible, meaning they do not belong to the same container. Therefore, the range (@a first, @a last) is invalid.
 json.exception.invalid_iterator.211 | passed iterators may not belong to container | The iterator range passed to the insert function must not be a subrange of the container to insert to.
 json.exception.invalid_iterator.212 | cannot compare iterators of different containers | When two iterators are compared, they must belong to the same container.
 json.exception.invalid_iterator.213 | cannot compare order of object iterators | The order of object iterators cannot be compared, because JSON objects are unordered.
-json.exception.invalid_iterator.214 | cannot get value | Cannot get value for iterator: Either the iterator belongs to a null value or it is an iterator to a primitive type (number, boolean, or string), but the iterator is different to @ref begin().
+json.exception.invalid_iterator.214 | cannot get value | Cannot get value for iterator: Either the iterator belongs to a null value or it is an iterator to a primitive type (number, boolean, or string), but the iterator is different to @ref begin( ).
 
 @liveexample{The following code shows how an `invalid_iterator` exception can be
 caught.,invalid_iterator}
@@ -198,7 +198,7 @@ class invalid_iterator : public exception
     static invalid_iterator create(int id_, const std::string& what_arg)
     {
         std::string w = exception::name("invalid_iterator", id_) + what_arg;
-        return invalid_iterator(id_, w.c_str());
+        return invalid_iterator(id_, w.c_str( ));
     }
 
   private:
@@ -219,15 +219,15 @@ name / id                     | example message | description
 json.exception.type_error.301 | cannot create object from initializer list | To create an object from an initializer list, the initializer list must consist only of a list of pairs whose first element is a string. When this constraint is violated, an array is created instead.
 json.exception.type_error.302 | type must be object, but is array | During implicit or explicit value conversion, the JSON type must be compatible to the target type. For instance, a JSON string can only be converted into string types, but not into numbers or boolean types.
 json.exception.type_error.303 | incompatible ReferenceType for get_ref, actual type is object | To retrieve a reference to a value stored in a @ref basic_json object with @ref get_ref, the type of the reference must match the value type. For instance, for a JSON array, the @a ReferenceType must be @ref array_t &.
-json.exception.type_error.304 | cannot use at() with string | The @ref at() member functions can only be executed for certain JSON types.
+json.exception.type_error.304 | cannot use at( ) with string | The @ref at( ) member functions can only be executed for certain JSON types.
 json.exception.type_error.305 | cannot use operator[] with string | The @ref operator[] member functions can only be executed for certain JSON types.
-json.exception.type_error.306 | cannot use value() with string | The @ref value() member functions can only be executed for certain JSON types.
-json.exception.type_error.307 | cannot use erase() with string | The @ref erase() member functions can only be executed for certain JSON types.
-json.exception.type_error.308 | cannot use push_back() with string | The @ref push_back() and @ref operator+= member functions can only be executed for certain JSON types.
-json.exception.type_error.309 | cannot use insert() with | The @ref insert() member functions can only be executed for certain JSON types.
-json.exception.type_error.310 | cannot use swap() with number | The @ref swap() member functions can only be executed for certain JSON types.
-json.exception.type_error.311 | cannot use emplace_back() with string | The @ref emplace_back() member function can only be executed for certain JSON types.
-json.exception.type_error.312 | cannot use update() with string | The @ref update() member functions can only be executed for certain JSON types.
+json.exception.type_error.306 | cannot use value( ) with string | The @ref value( ) member functions can only be executed for certain JSON types.
+json.exception.type_error.307 | cannot use erase( ) with string | The @ref erase( ) member functions can only be executed for certain JSON types.
+json.exception.type_error.308 | cannot use push_back( ) with string | The @ref push_back( ) and @ref operator+= member functions can only be executed for certain JSON types.
+json.exception.type_error.309 | cannot use insert( ) with | The @ref insert( ) member functions can only be executed for certain JSON types.
+json.exception.type_error.310 | cannot use swap( ) with number | The @ref swap( ) member functions can only be executed for certain JSON types.
+json.exception.type_error.311 | cannot use emplace_back( ) with string | The @ref emplace_back( ) member function can only be executed for certain JSON types.
+json.exception.type_error.312 | cannot use update( ) with string | The @ref update( ) member functions can only be executed for certain JSON types.
 json.exception.type_error.313 | invalid value to unflatten | The @ref unflatten function converts an object whose keys are JSON Pointers back into an arbitrary nested JSON value. The JSON Pointers must not overlap, because then the resulting value would not be well defined.
 json.exception.type_error.314 | only objects can be unflattened | The @ref unflatten function only works for an object whose keys are JSON Pointers.
 json.exception.type_error.315 | values in object must be primitive | The @ref unflatten function only works for an object whose keys are JSON Pointers and whose values are primitive.
@@ -251,7 +251,7 @@ class type_error : public exception
     static type_error create(int id_, const std::string& what_arg)
     {
         std::string w = exception::name("type_error", id_) + what_arg;
-        return type_error(id_, w.c_str());
+        return type_error(id_, w.c_str( ));
     }
 
   private:
@@ -297,7 +297,7 @@ class out_of_range : public exception
     static out_of_range create(int id_, const std::string& what_arg)
     {
         std::string w = exception::name("out_of_range", id_) + what_arg;
-        return out_of_range(id_, w.c_str());
+        return out_of_range(id_, w.c_str( ));
     }
 
   private:
@@ -334,7 +334,7 @@ class other_error : public exception
     static other_error create(int id_, const std::string& what_arg)
     {
         std::string w = exception::name("other_error", id_) + what_arg;
-        return other_error(id_, w.c_str());
+        return other_error(id_, w.c_str( ));
     }
 
   private:

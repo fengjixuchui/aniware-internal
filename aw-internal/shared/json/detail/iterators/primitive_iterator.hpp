@@ -23,30 +23,30 @@ class primitive_iterator_t
     static constexpr difference_type begin_value = 0;
     static constexpr difference_type end_value = begin_value + 1;
 
-        difference_type m_it = (std::numeric_limits<std::ptrdiff_t>::min)();
+        difference_type m_it = (std::numeric_limits<std::ptrdiff_t>::min)( );
 
   public:
-    constexpr difference_type get_value() const noexcept
+    constexpr difference_type get_value( ) const noexcept
     {
         return m_it;
     }
 
-        void set_begin() noexcept
+        void set_begin( ) noexcept
     {
         m_it = begin_value;
     }
 
-        void set_end() noexcept
+        void set_end( ) noexcept
     {
         m_it = end_value;
     }
 
-        constexpr bool is_begin() const noexcept
+        constexpr bool is_begin( ) const noexcept
     {
         return m_it == begin_value;
     }
 
-        constexpr bool is_end() const noexcept
+        constexpr bool is_end( ) const noexcept
     {
         return m_it == end_value;
     }
@@ -73,7 +73,7 @@ class primitive_iterator_t
         return lhs.m_it - rhs.m_it;
     }
 
-    primitive_iterator_t& operator++() noexcept
+    primitive_iterator_t& operator++( ) noexcept
     {
         ++m_it;
         return *this;
@@ -86,7 +86,7 @@ class primitive_iterator_t
         return result;
     }
 
-    primitive_iterator_t& operator--() noexcept
+    primitive_iterator_t& operator--( ) noexcept
     {
         --m_it;
         return *this;

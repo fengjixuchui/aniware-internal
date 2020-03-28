@@ -4,19 +4,19 @@ namespace math
 {
 	struct vec3_t
 	{
-		vec3_t() = default;
+		vec3_t( ) = default;
 
 		vec3_t( float xyz ) : x( xyz ), y( xyz ), z( xyz ) {};
 		vec3_t( float x, float y ) : x( x ), y( y ), z( 0 ) {};
 		vec3_t( float x, float y, float z ) : x( x ), y( y ), z( z ) {};
 		vec3_t( float* arr ) : x( arr[ PITCH ] ), y( arr[ YAW ] ), z( arr[ ROLL ] ) {};
 
-		inline float length() const
+		inline float length( ) const
 		{
 			return sqrt( x * x + y * y + z * z );
 		}
 
-		inline float length_2d() const
+		inline float length_2d( ) const
 		{
 			float root = 0.0f;
 			float sqst = x * x + y * y;
@@ -30,10 +30,10 @@ namespace math
 			return root;
 		}
 
-		inline vec3_t normalize() const
+		inline vec3_t normalize( ) const
 		{
 			vec3_t out{};
-			float l = length();
+			float l = length( );
 
 			if ( l != 0 )
 			{
@@ -47,28 +47,28 @@ namespace math
 			return out;
 		}
 
-		inline vec3_t normalized() const
+		inline vec3_t normalized( ) const
 		{
 			vec3_t out( *this );
 
-			out.normalize();
+			out.normalize( );
 
 			return out;
 		}
 
-		inline float self_dot() const
+		inline float self_dot( ) const
 		{
 			return ( x * x + y * y + z * z );
 		}
-
-		inline bool valid() const
+	
+		inline bool valid( ) const
 		{
 			return std::isfinite< float >( x ) 
 				&& std::isfinite< float >( y ) 
 				&& std::isfinite< float >( z );
 		}
 
-		inline bool zero() const
+		inline bool zero( ) const
 		{
 			return x == 0.f
 				&& y == 0.f

@@ -5,24 +5,24 @@ struct address_base_t
 {
 	ptr_type m_ptr;
 
-	address_base_t() : m_ptr{} {};
+	address_base_t( ) : m_ptr{} {};
 	address_base_t(ptr_type ptr) : m_ptr(ptr) {};
 	address_base_t(ptr_type* ptr) : m_ptr(ptr_type(ptr)) {};
 	address_base_t(void* ptr) : m_ptr(ptr_type(ptr)) {};
 	address_base_t(const void* ptr) : m_ptr(ptr_type(ptr)) {};
-	~address_base_t() = default;
+	~address_base_t( ) = default;
 
-	inline operator ptr_type() const
+	inline operator ptr_type( ) const
 	{
 		return m_ptr;
 	}
 
-	inline operator void* ()
+	inline operator void* ( )
 	{
 		return reinterpret_cast<void*>(m_ptr);
 	}
 
-	inline ptr_type get_inner() const
+	inline ptr_type get_inner( ) const
 	{
 		return m_ptr;
 	}
@@ -75,7 +75,7 @@ struct address_base_t
 
 	
 	template< typename t = ptr_type >
-	inline t cast()
+	inline t cast( )
 	{
 		return t( m_ptr );
 	}
@@ -115,7 +115,7 @@ struct address_base_t
 	{
 		auto base = m_ptr;
 
-		auto opcode_at_address = byte();
+		auto opcode_at_address = byte( );
 
 		while (opcode_at_address = *reinterpret_cast<byte*>(base))
 		{
@@ -133,13 +133,13 @@ struct address_base_t
 	inline t find_opcode_seq(std::vector<byte> opcodes, ptrdiff_t offset = 0x0)
 	{
 		auto base = m_ptr;
-		auto opcode_at_address = byte();
+		auto opcode_at_address = byte( );
 
 		while (opcode_at_address = *reinterpret_cast<byte*>(base))
 		{
 			if (opcodes.at(0) == opcode_at_address)
 			{
-				for (auto i = 0u; i < opcodes.size(); i++)
+				for (auto i = 0u; i < opcodes.size( ); i++)
 					if (opcodes.at(i) != *reinterpret_cast<byte*>(base + i))
 						goto CONT;
 

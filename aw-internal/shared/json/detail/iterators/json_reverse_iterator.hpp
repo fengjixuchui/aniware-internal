@@ -46,9 +46,9 @@ class json_reverse_iterator : public std::reverse_iterator<Base>
         return static_cast<json_reverse_iterator>(base_iterator::operator++(1));
     }
 
-        json_reverse_iterator& operator++()
+        json_reverse_iterator& operator++( )
     {
-        return static_cast<json_reverse_iterator&>(base_iterator::operator++());
+        return static_cast<json_reverse_iterator&>(base_iterator::operator++( ));
     }
 
         json_reverse_iterator const operator--(int)
@@ -56,9 +56,9 @@ class json_reverse_iterator : public std::reverse_iterator<Base>
         return static_cast<json_reverse_iterator>(base_iterator::operator--(1));
     }
 
-        json_reverse_iterator& operator--()
+        json_reverse_iterator& operator--( )
     {
-        return static_cast<json_reverse_iterator&>(base_iterator::operator--());
+        return static_cast<json_reverse_iterator&>(base_iterator::operator--( ));
     }
 
         json_reverse_iterator& operator+=(difference_type i)
@@ -86,16 +86,16 @@ class json_reverse_iterator : public std::reverse_iterator<Base>
         return *(this->operator+(n));
     }
 
-        auto key() const -> decltype(std::declval<Base>().key())
+        auto key( ) const -> decltype(std::declval<Base>( ).key( ))
     {
-        auto it = --this->base();
-        return it.key();
+        auto it = --this->base( );
+        return it.key( );
     }
 
-        reference value() const
+        reference value( ) const
     {
-        auto it = --this->base();
-        return it.operator * ();
+        auto it = --this->base( );
+        return it.operator * ( );
     }
 };
 }  // namespace detail

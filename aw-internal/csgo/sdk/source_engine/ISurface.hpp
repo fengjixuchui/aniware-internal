@@ -34,7 +34,7 @@ struct ISurface
 	CUSTOM_VFUNC( DrawSetTexture( int id ), void( __thiscall* )( void*, int ), ctx::mem.ISurface.DrawSetTexture )( id );
 	CUSTOM_VFUNC( CreateNewTextureID( bool procedural = false ), int( __thiscall* )( void*, bool ), ctx::mem.ISurface.CreateNewTextureID )( procedural );
 	CUSTOM_VFUNC( IsTextureIDValid( int id ), bool( __thiscall* )( void*, int ), ctx::mem.ISurface.IsTextureIDValid )( id );
-	CUSTOM_VFUNC( CreateFont_(), HFont( __thiscall* )( void* ), ctx::mem.ISurface.CreateFont_ )( );
+	CUSTOM_VFUNC( CreateFont_( ), HFont( __thiscall* )( void* ), ctx::mem.ISurface.CreateFont_ )( );
 	CUSTOM_VFUNC( GetFontTall( HFont font ), int( __thiscall* )( void*, HFont ), ctx::mem.ISurface.GetFontTall )( font );
 	CUSTOM_VFUNC( GetCharacterWidth( HFont font, char ch ), int( __thiscall* )( void*, HFont, char ), ctx::mem.ISurface.GetCharacterWidth )( font, ch );
 	CUSTOM_VFUNC( DrawOutlinedCircle( int x, int y, int radius, int segments ), void( __thiscall* )( void*, int, int, int, int ), ctx::mem.ISurface.DrawOutlinedCircle )( x, y, radius, segments );
@@ -46,11 +46,11 @@ struct ISurface
 	CUSTOM_VFUNC( DrawColoredText( HFont font, int x, int y, int r, int g, int b, int a, const char* txt ),
 				  void( __thiscall* )( void*, HFont, int, int, int, int, int, int, const char*, const char* ), ctx::mem.ISurface.DrawColoredText )( font, x, y, r, g, b, a, txt, nullptr );
 
-	CUSTOM_VFUNC( StartDrawing(), void( __thiscall* )( void* ), ctx::mem.ISurface.StartDrawing )( );
-	CUSTOM_VFUNC( FinishDrawing(), void( __thiscall* )( void* ), ctx::mem.ISurface.FinishDrawing )( );
+	CUSTOM_VFUNC( StartDrawing( ), void( __thiscall* )( void* ), ctx::mem.ISurface.StartDrawing )( );
+	CUSTOM_VFUNC( FinishDrawing( ), void( __thiscall* )( void* ), ctx::mem.ISurface.FinishDrawing )( );
 
-	VFUNC( 66, UnlockCursor(), void( __thiscall* )( void* ) )( );
-	VFUNC( 82, PlaySound( std::string path ), void( __thiscall* )( void*, const char* ) )( path.c_str() );
+	VFUNC( 66, UnlockCursor( ), void( __thiscall* )( void* ) )( );
+	VFUNC( 82, PlaySound( std::string path ), void( __thiscall* )( void*, const char* ) )( path.c_str( ) );
 
 	OFFSET( bool, m_bClippingEnabled, ctx::mem.ISurface.m_bClippingEnabled );
 };

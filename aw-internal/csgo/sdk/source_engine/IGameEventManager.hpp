@@ -10,7 +10,7 @@ public:
 
 		virtual int LoadEventsFromFile( const char* filename ) = 0;
 
-		virtual void Reset() = 0;
+		virtual void Reset( ) = 0;
 
 		virtual bool AddListener( IGameEventListener2* listener, const char* name, bool bServerSide ) = 0;
 

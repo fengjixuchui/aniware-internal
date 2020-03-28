@@ -109,12 +109,12 @@ struct player_t;
 struct ITraceFilter
 {
 	VFUNC( 1, ShouldHitEntity( player_t* ent, unsigned int mask ), bool( __thiscall* )( void*, player_t*, unsigned int ) )( ent, mask );
-	VFUNC( 2, GetTraceType(), TraceType( __thiscall* )( void* ) )( );
+	VFUNC( 2, GetTraceType( ), TraceType( __thiscall* )( void* ) )( );
 };
 
 struct TraceFilter : public ITraceFilter
 {
-	TraceFilter() = default;
+	TraceFilter( ) = default;
 	TraceFilter( void* pl ) : skip( pl ) {};
 
 	void* skip;
@@ -127,7 +127,7 @@ struct TraceFilter : public ITraceFilter
 
 struct Trace
 {
-	bool did_hit() const {
+	bool did_hit( ) const {
 		return fraction < 1.f;
 	}
 
@@ -151,7 +151,7 @@ struct Trace
 
 struct Ray
 {
-	Ray() = default;
+	Ray( ) = default;
 	Ray( const math::vec3_t& src, const math::vec3_t& dst )
 	{
 		initialize( src, dst );
@@ -173,7 +173,7 @@ struct Ray
 		start = src;
 
 		is_ray = true;
-		is_swept = delta.length() != 0;
+		is_swept = delta.length( ) != 0;
 
 		start_offset.x = start_offset.y = start_offset.z = 0.0f;
 		extents.x = extents.y = extents.z = 0.0f;

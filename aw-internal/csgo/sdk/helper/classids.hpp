@@ -2,7 +2,7 @@
 
 struct classids_t
 {
-	void init();
+	void init( );
 	uint32_t get( uint32_t name );
 
 	std::unordered_map<uint32_t, uint32_t> m_classids = {};

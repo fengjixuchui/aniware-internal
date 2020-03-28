@@ -4,7 +4,7 @@ namespace math
 {
 	struct view_matrix_t
 	{
-		view_matrix_t() = default;
+		view_matrix_t( ) = default;
 
 		float m[ 4 ][ 4 ];
 

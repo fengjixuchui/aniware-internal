@@ -468,7 +468,7 @@ inline cached_power get_cached_power_for_binary_exponent(int e)
 
     const int index = (-kCachedPowersMinDecExp + k + (kCachedPowersDecStep - 1)) / kCachedPowersDecStep;
     assert(index >= 0);
-    assert(static_cast<std::size_t>(index) < kCachedPowers.size());
+    assert(static_cast<std::size_t>(index) < kCachedPowers.size( ));
 
     const cached_power cached = kCachedPowers[static_cast<std::size_t>(index)];
     assert(kAlpha <= cached.e + e + 64);
@@ -752,7 +752,7 @@ inline void grisu2_digit_gen(char* buffer, int& length, int& decimal_exponent,
         //         = buffer * 10^-m + 10^-m * (1/10 * (10 * p2)                   ) * 2^e
         //         = buffer * 10^-m + 10^-m * (1/10 * ((10*p2 div 2^-e) * 2^-e + (10*p2 mod 2^-e)) * 2^e
         //
-        assert(p2 <= (std::numeric_limits<std::uint64_t>::max)() / 10);
+        assert(p2 <= (std::numeric_limits<std::uint64_t>::max)( ) / 10);
         p2 *= 10;
         const std::uint64_t d = p2 >> -one.e;     // d = (10 * p2) div 2^-e
         const std::uint64_t r = p2 & (one.f - 1); // r = (10 * p2) mod 2^-e

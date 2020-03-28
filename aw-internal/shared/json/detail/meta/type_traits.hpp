@@ -29,7 +29,7 @@ namespace detail
 //
 // Every trait in this file expects a non CV-qualified type.
 // The only exceptions are in the 'aliases for detected' section
-// (i.e. those of the form: decltype(T::member_function(std::declval<T>())))
+// (i.e. those of the form: decltype(T::member_function(std::declval<T>( ))))
 //
 // In this case, T has to be properly CV-qualified to constraint the function arguments
 // (e.g. to_json(BasicJsonType&, const T&))
@@ -66,13 +66,13 @@ template <typename T>
 using iterator_t = typename T::iterator;
 
 template <typename T, typename... Args>
-using to_json_function = decltype(T::to_json(std::declval<Args>()...));
+using to_json_function = decltype(T::to_json(std::declval<Args>( )...));
 
 template <typename T, typename... Args>
-using from_json_function = decltype(T::from_json(std::declval<Args>()...));
+using from_json_function = decltype(T::from_json(std::declval<Args>( )...));
 
 template <typename T, typename U>
-using get_template_function = decltype(std::declval<T>().template get<U>());
+using get_template_function = decltype(std::declval<T>( ).template get<U>( ));
 
 // trait checking if JSONSerializer<T>::from_json(json const&, udt&) exists
 template <typename BasicJsonType, typename T, typename = void>

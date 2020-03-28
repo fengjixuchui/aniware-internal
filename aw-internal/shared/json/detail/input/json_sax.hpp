@@ -32,7 +32,7 @@ struct json_sax
     @brief a null value was read
     @return whether parsing should proceed
     */
-    virtual bool null() = 0;
+    virtual bool null( ) = 0;
 
     /*!
     @brief a boolean value was read
@@ -91,7 +91,7 @@ struct json_sax
     @brief the end of an object was read
     @return whether parsing should proceed
     */
-    virtual bool end_object() = 0;
+    virtual bool end_object( ) = 0;
 
     /*!
     @brief the beginning of an array was read
@@ -105,7 +105,7 @@ struct json_sax
     @brief the end of an array was read
     @return whether parsing should proceed
     */
-    virtual bool end_array() = 0;
+    virtual bool end_array( ) = 0;
 
     /*!
     @brief a parse error occurred
@@ -118,7 +118,7 @@ struct json_sax
                              const std::string& last_token,
                              const detail::exception& ex) = 0;
 
-    virtual ~json_sax() = default;
+    virtual ~json_sax( ) = default;
 };
 
 
@@ -160,9 +160,9 @@ class json_sax_dom_parser
     json_sax_dom_parser(json_sax_dom_parser&&) = default;
     json_sax_dom_parser& operator=(const json_sax_dom_parser&) = delete;
     json_sax_dom_parser& operator=(json_sax_dom_parser&&) = default;
-    ~json_sax_dom_parser() = default;
+    ~json_sax_dom_parser( ) = default;
 
-    bool null()
+    bool null( )
     {
         handle_value(nullptr);
         return true;
@@ -202,7 +202,7 @@ class json_sax_dom_parser
     {
         ref_stack.push_back(handle_value(BasicJsonType::value_t::object));
 
-        if (JSON_UNLIKELY(len != std::size_t(-1) and len > ref_stack.back()->max_size()))
+        if (JSON_UNLIKELY(len != std::size_t(-1) and len > ref_stack.back( )->max_size( )))
         {
             JSON_THROW(out_of_range::create(408,
                                             "excessive object size: " + std::to_string(len)));
@@ -214,13 +214,13 @@ class json_sax_dom_parser
     bool key(string_t& val)
     {
         // add null at given key and store the reference for later
-        object_element = &(ref_stack.back()->m_value.object->operator[](val));
+        object_element = &(ref_stack.back( )->m_value.object->operator[](val));
         return true;
     }
 
-    bool end_object()
+    bool end_object( )
     {
-        ref_stack.pop_back();
+        ref_stack.pop_back( );
         return true;
     }
 
@@ -228,7 +228,7 @@ class json_sax_dom_parser
     {
         ref_stack.push_back(handle_value(BasicJsonType::value_t::array));
 
-        if (JSON_UNLIKELY(len != std::size_t(-1) and len > ref_stack.back()->max_size()))
+        if (JSON_UNLIKELY(len != std::size_t(-1) and len > ref_stack.back( )->max_size( )))
         {
             JSON_THROW(out_of_range::create(408,
                                             "excessive array size: " + std::to_string(len)));
@@ -237,9 +237,9 @@ class json_sax_dom_parser
         return true;
     }
 
-    bool end_array()
+    bool end_array( )
     {
-        ref_stack.pop_back();
+        ref_stack.pop_back( );
         return true;
     }
 
@@ -271,7 +271,7 @@ class json_sax_dom_parser
         return false;
     }
 
-    constexpr bool is_errored() const
+    constexpr bool is_errored( ) const
     {
         return errored;
     }
@@ -286,21 +286,21 @@ class json_sax_dom_parser
     template<typename Value>
     BasicJsonType* handle_value(Value&& v)
     {
-        if (ref_stack.empty())
+        if (ref_stack.empty( ))
         {
             root = BasicJsonType(std::forward<Value>(v));
             return &root;
         }
 
-        assert(ref_stack.back()->is_array() or ref_stack.back()->is_object());
+        assert(ref_stack.back( )->is_array( ) or ref_stack.back( )->is_object( ));
 
-        if (ref_stack.back()->is_array())
+        if (ref_stack.back( )->is_array( ))
         {
-            ref_stack.back()->m_value.array->emplace_back(std::forward<Value>(v));
-            return &(ref_stack.back()->m_value.array->back());
+            ref_stack.back( )->m_value.array->emplace_back(std::forward<Value>(v));
+            return &(ref_stack.back( )->m_value.array->back( ));
         }
 
-        assert(ref_stack.back()->is_object());
+        assert(ref_stack.back( )->is_object( ));
         assert(object_element);
         *object_element = BasicJsonType(std::forward<Value>(v));
         return object_element;
@@ -337,9 +337,9 @@ class json_sax_dom_callback_parser
     json_sax_dom_callback_parser(json_sax_dom_callback_parser&&) = default;
     json_sax_dom_callback_parser& operator=(const json_sax_dom_callback_parser&) = delete;
     json_sax_dom_callback_parser& operator=(json_sax_dom_callback_parser&&) = default;
-    ~json_sax_dom_callback_parser() = default;
+    ~json_sax_dom_callback_parser( ) = default;
 
-    bool null()
+    bool null( )
     {
         handle_value(nullptr);
         return true;
@@ -378,14 +378,14 @@ class json_sax_dom_callback_parser
     bool start_object(std::size_t len)
     {
         // check callback for object start
-        const bool keep = callback(static_cast<int>(ref_stack.size()), parse_event_t::object_start, discarded);
+        const bool keep = callback(static_cast<int>(ref_stack.size( )), parse_event_t::object_start, discarded);
         keep_stack.push_back(keep);
 
         auto val = handle_value(BasicJsonType::value_t::object, true);
         ref_stack.push_back(val.second);
 
         // check object limit
-        if (ref_stack.back() and JSON_UNLIKELY(len != std::size_t(-1) and len > ref_stack.back()->max_size()))
+        if (ref_stack.back( ) and JSON_UNLIKELY(len != std::size_t(-1) and len > ref_stack.back( )->max_size( )))
         {
             JSON_THROW(out_of_range::create(408, "excessive object size: " + std::to_string(len)));
         }
@@ -398,39 +398,39 @@ class json_sax_dom_callback_parser
         BasicJsonType k = BasicJsonType(val);
 
         // check callback for key
-        const bool keep = callback(static_cast<int>(ref_stack.size()), parse_event_t::key, k);
+        const bool keep = callback(static_cast<int>(ref_stack.size( )), parse_event_t::key, k);
         key_keep_stack.push_back(keep);
 
         // add discarded value at given key and store the reference for later
-        if (keep and ref_stack.back())
+        if (keep and ref_stack.back( ))
         {
-            object_element = &(ref_stack.back()->m_value.object->operator[](val) = discarded);
+            object_element = &(ref_stack.back( )->m_value.object->operator[](val) = discarded);
         }
 
         return true;
     }
 
-    bool end_object()
+    bool end_object( )
     {
-        if (ref_stack.back() and not callback(static_cast<int>(ref_stack.size()) - 1, parse_event_t::object_end, *ref_stack.back()))
+        if (ref_stack.back( ) and not callback(static_cast<int>(ref_stack.size( )) - 1, parse_event_t::object_end, *ref_stack.back( )))
         {
             // discard object
-            *ref_stack.back() = discarded;
+            *ref_stack.back( ) = discarded;
         }
 
-        assert(not ref_stack.empty());
-        assert(not keep_stack.empty());
-        ref_stack.pop_back();
-        keep_stack.pop_back();
+        assert(not ref_stack.empty( ));
+        assert(not keep_stack.empty( ));
+        ref_stack.pop_back( );
+        keep_stack.pop_back( );
 
-        if (not ref_stack.empty() and ref_stack.back() and ref_stack.back()->is_object())
+        if (not ref_stack.empty( ) and ref_stack.back( ) and ref_stack.back( )->is_object( ))
         {
             // remove discarded value
-            for (auto it = ref_stack.back()->begin(); it != ref_stack.back()->end(); ++it)
+            for (auto it = ref_stack.back( )->begin( ); it != ref_stack.back( )->end( ); ++it)
             {
-                if (it->is_discarded())
+                if (it->is_discarded( ))
                 {
-                    ref_stack.back()->erase(it);
+                    ref_stack.back( )->erase(it);
                     break;
                 }
             }
@@ -441,14 +441,14 @@ class json_sax_dom_callback_parser
 
     bool start_array(std::size_t len)
     {
-        const bool keep = callback(static_cast<int>(ref_stack.size()), parse_event_t::array_start, discarded);
+        const bool keep = callback(static_cast<int>(ref_stack.size( )), parse_event_t::array_start, discarded);
         keep_stack.push_back(keep);
 
         auto val = handle_value(BasicJsonType::value_t::array, true);
         ref_stack.push_back(val.second);
 
         // check array limit
-        if (ref_stack.back() and JSON_UNLIKELY(len != std::size_t(-1) and len > ref_stack.back()->max_size()))
+        if (ref_stack.back( ) and JSON_UNLIKELY(len != std::size_t(-1) and len > ref_stack.back( )->max_size( )))
         {
             JSON_THROW(out_of_range::create(408, "excessive array size: " + std::to_string(len)));
         }
@@ -456,29 +456,29 @@ class json_sax_dom_callback_parser
         return true;
     }
 
-    bool end_array()
+    bool end_array( )
     {
         bool keep = true;
 
-        if (ref_stack.back())
+        if (ref_stack.back( ))
         {
-            keep = callback(static_cast<int>(ref_stack.size()) - 1, parse_event_t::array_end, *ref_stack.back());
+            keep = callback(static_cast<int>(ref_stack.size( )) - 1, parse_event_t::array_end, *ref_stack.back( ));
             if (not keep)
             {
                 // discard array
-                *ref_stack.back() = discarded;
+                *ref_stack.back( ) = discarded;
             }
         }
 
-        assert(not ref_stack.empty());
-        assert(not keep_stack.empty());
-        ref_stack.pop_back();
-        keep_stack.pop_back();
+        assert(not ref_stack.empty( ));
+        assert(not keep_stack.empty( ));
+        ref_stack.pop_back( );
+        keep_stack.pop_back( );
 
         // remove discarded value
-        if (not keep and not ref_stack.empty() and ref_stack.back()->is_array())
+        if (not keep and not ref_stack.empty( ) and ref_stack.back( )->is_array( ))
         {
-            ref_stack.back()->m_value.array->pop_back();
+            ref_stack.back( )->m_value.array->pop_back( );
         }
 
         return true;
@@ -512,7 +512,7 @@ class json_sax_dom_callback_parser
         return false;
     }
 
-    constexpr bool is_errored() const
+    constexpr bool is_errored( ) const
     {
         return errored;
     }
@@ -521,8 +521,8 @@ class json_sax_dom_callback_parser
     /*!
     @param[in] v  value to add to the JSON value we build during parsing
     @param[in] skip_callback  whether we should skip calling the callback
-               function; this is required after start_array() and
-               start_object() SAX events, because otherwise we would call the
+               function; this is required after start_array( ) and
+               start_object( ) SAX events, because otherwise we would call the
                callback function with an empty array or object, respectively.
 
     @invariant If the ref stack is empty, then the passed value will be the new
@@ -536,11 +536,11 @@ class json_sax_dom_callback_parser
     template<typename Value>
     std::pair<bool, BasicJsonType*> handle_value(Value&& v, const bool skip_callback = false)
     {
-        assert(not keep_stack.empty());
+        assert(not keep_stack.empty( ));
 
         // do not handle this value if we know it would be added to a discarded
         // container
-        if (not keep_stack.back())
+        if (not keep_stack.back( ))
         {
             return {false, nullptr};
         }
@@ -549,7 +549,7 @@ class json_sax_dom_callback_parser
         auto value = BasicJsonType(std::forward<Value>(v));
 
         // check callback
-        const bool keep = skip_callback or callback(static_cast<int>(ref_stack.size()), parse_event_t::value, value);
+        const bool keep = skip_callback or callback(static_cast<int>(ref_stack.size( )), parse_event_t::value, value);
 
         // do not handle this value if we just learnt it shall be discarded
         if (not keep)
@@ -557,7 +557,7 @@ class json_sax_dom_callback_parser
             return {false, nullptr};
         }
 
-        if (ref_stack.empty())
+        if (ref_stack.empty( ))
         {
             root = std::move(value);
             return {true, &root};
@@ -565,27 +565,27 @@ class json_sax_dom_callback_parser
 
         // skip this value if we already decided to skip the parent
         // (https://github.com/nlohmann/json/issues/971#issuecomment-413678360)
-        if (not ref_stack.back())
+        if (not ref_stack.back( ))
         {
             return {false, nullptr};
         }
 
         // we now only expect arrays and objects
-        assert(ref_stack.back()->is_array() or ref_stack.back()->is_object());
+        assert(ref_stack.back( )->is_array( ) or ref_stack.back( )->is_object( ));
 
         // array
-        if (ref_stack.back()->is_array())
+        if (ref_stack.back( )->is_array( ))
         {
-            ref_stack.back()->m_value.array->push_back(std::move(value));
-            return {true, &(ref_stack.back()->m_value.array->back())};
+            ref_stack.back( )->m_value.array->push_back(std::move(value));
+            return {true, &(ref_stack.back( )->m_value.array->back( ))};
         }
 
         // object
-        assert(ref_stack.back()->is_object());
+        assert(ref_stack.back( )->is_object( ));
         // check if we should store an element for the current key
-        assert(not key_keep_stack.empty());
-        const bool store_element = key_keep_stack.back();
-        key_keep_stack.pop_back();
+        assert(not key_keep_stack.empty( ));
+        const bool store_element = key_keep_stack.back( );
+        key_keep_stack.pop_back( );
 
         if (not store_element)
         {
@@ -617,7 +617,7 @@ class json_sax_acceptor
     using number_float_t = typename BasicJsonType::number_float_t;
     using string_t = typename BasicJsonType::string_t;
 
-    bool null()
+    bool null( )
     {
         return true;
     }
@@ -657,7 +657,7 @@ class json_sax_acceptor
         return true;
     }
 
-    bool end_object()
+    bool end_object( )
     {
         return true;
     }
@@ -667,7 +667,7 @@ class json_sax_acceptor
         return true;
     }
 
-    bool end_array()
+    bool end_array( )
     {
         return true;
     }

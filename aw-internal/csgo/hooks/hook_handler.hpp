@@ -2,7 +2,7 @@
 
 struct hook_info_t
 {
-	hook_info_t() = default;
+	hook_info_t( ) = default;
 	hook_info_t( int index, void* replace ) : m_index( index ), m_replace( replace ) {}
 
 	int m_index;
@@ -11,10 +11,10 @@ struct hook_info_t
 
 struct hook_t
 {
-	hook_t() = default;
+	hook_t( ) = default;
 	hook_t( void* table ) : m_table( table ), m_hook( hook::hook_t( uintptr_t( table ) ) )
 	{
-		m_hook.init();
+		m_hook.init( );
 	}
 
 	void* m_table;
@@ -26,11 +26,11 @@ struct hook_handler_t;
 
 namespace hooks
 {
-	std::unordered_map<uint32_t, hook_t>& get_map();
-	hook_handler_t& get();
+	std::unordered_map<uint32_t, hook_t>& get_map( );
+	hook_handler_t& get( );
 
-	void init();
-	void undo();
+	void init( );
+	void undo( );
 
 	enum idx : int
 	{
@@ -73,9 +73,9 @@ namespace hooks
 template< typename func_sig >
 inline func_sig create_hook_impl( const uint32_t token, void* table, const uint32_t index, void* func )
 {
-	auto& map = hooks::get_map();
+	auto& map = hooks::get_map( );
 
-	if ( map.find( token ) == map.end() )
+	if ( map.find( token ) == map.end( ) )
 		map.insert( std::make_pair( token, hook_t( table ) ) );
 
 	auto & map_entry = map[ token ];
@@ -114,14 +114,14 @@ using namespace hooks;
 
 struct hook_handler_t
 {
-	hook_handler_t() = default;
-	~hook_handler_t() = default;
+	hook_handler_t( ) = default;
+	~hook_handler_t( ) = default;
 
 	static void __fastcall paint( REGISTERS, int mode );
 	static bool __fastcall create_move( REGISTERS, float flInputSampleTime, CUserCmd* cmd );
 	static void __fastcall frame_stage_notify( REGISTERS, client_frame_stage_t stage );
 	static bool __fastcall draw_fog( REGISTERS );
-	static float __stdcall viewmodel_fov();
+	static float __stdcall viewmodel_fov( );
 	static void __fastcall override_view( REGISTERS, CViewSetup* setup );
 	static bool __fastcall do_screen_effects( REGISTERS, const CViewSetup* setup);
 	static bool __fastcall is_hltv( REGISTERS );

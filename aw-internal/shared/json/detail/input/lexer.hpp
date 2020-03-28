@@ -82,21 +82,21 @@ class lexer
     }
 
     explicit lexer(detail::input_adapter_t&& adapter)
-        : ia(std::move(adapter)), decimal_point_char(get_decimal_point()) {}
+        : ia(std::move(adapter)), decimal_point_char(get_decimal_point( )) {}
 
     // delete because of pointer members
     lexer(const lexer&) = delete;
     lexer(lexer&&) = delete;
     lexer& operator=(lexer&) = delete;
     lexer& operator=(lexer&&) = delete;
-    ~lexer() = default;
+    ~lexer( ) = default;
 
   private:
         // locales
     
-        static char get_decimal_point() noexcept
+        static char get_decimal_point( ) noexcept
     {
-        const auto loc = localeconv();
+        const auto loc = localeconv( );
         assert(loc != nullptr);
         return (loc->decimal_point == nullptr) ? '.' : *(loc->decimal_point);
     }
@@ -118,7 +118,7 @@ class lexer
     @return codepoint (0x0000..0xFFFF) or -1 in case of an error (e.g. EOF or
             non-hex character)
     */
-    int get_codepoint()
+    int get_codepoint( )
     {
         // this function only makes sense after reading `\u`
         assert(current == 'u');
@@ -127,7 +127,7 @@ class lexer
         const auto factors = { 12u, 8u, 4u, 0u };
         for (const auto factor : factors)
         {
-            get();
+            get( );
 
             if (current >= '0' and current <= '9')
             {
@@ -168,12 +168,12 @@ class lexer
     */
     bool next_byte_in_range(std::initializer_list<int> ranges)
     {
-        assert(ranges.size() == 2 or ranges.size() == 4 or ranges.size() == 6);
+        assert(ranges.size( ) == 2 or ranges.size( ) == 4 or ranges.size( ) == 6);
         add(current);
 
-        for (auto range = ranges.begin(); range != ranges.end(); ++range)
+        for (auto range = ranges.begin( ); range != ranges.end( ); ++range)
         {
-            get();
+            get( );
             if (JSON_LIKELY(*range <= current and current <= *(++range)))
             {
                 add(current);
@@ -194,7 +194,7 @@ class lexer
     This function scans a string according to Sect. 7 of RFC 7159. While
     scanning, bytes are escaped and copied into buffer token_buffer. Then the
     function returns successfully, token_buffer is *not* null-terminated (as it
-    may contain \0 bytes), and token_buffer.size() is the number of bytes in the
+    may contain \0 bytes), and token_buffer.size( ) is the number of bytes in the
     string.
 
     @return token_type::value_string if string could be successfully scanned,
@@ -203,10 +203,10 @@ class lexer
     @note In case of errors, variable error_message contains a textual
           description.
     */
-    token_type scan_string()
+    token_type scan_string( )
     {
         // reset token_buffer (ignore opening quote)
-        reset();
+        reset( );
 
         // we entered the function by reading an open quote
         assert(current == '\"');
@@ -214,10 +214,10 @@ class lexer
         while (true)
         {
             // get next character
-            switch (get())
+            switch (get( ))
             {
                 // end of file while parsing string
-                case std::char_traits<char>::eof():
+                case std::char_traits<char>::eof( ):
                 {
                     error_message = "invalid string: missing closing quote";
                     return token_type::parse_error;
@@ -232,7 +232,7 @@ class lexer
                 // escapes
                 case '\\':
                 {
-                    switch (get())
+                    switch (get( ))
                     {
                         // quotation mark
                         case '\"':
@@ -270,7 +270,7 @@ class lexer
                         // unicode escapes
                         case 'u':
                         {
-                            const int codepoint1 = get_codepoint();
+                            const int codepoint1 = get_codepoint( );
                             int codepoint = codepoint1; // start with codepoint1
 
                             if (JSON_UNLIKELY(codepoint1 == -1))
@@ -283,9 +283,9 @@ class lexer
                             if (0xD800 <= codepoint1 and codepoint1 <= 0xDBFF)
                             {
                                 // expect next \uxxxx entry
-                                if (JSON_LIKELY(get() == '\\' and get() == 'u'))
+                                if (JSON_LIKELY(get( ) == '\\' and get( ) == 'u'))
                                 {
-                                    const int codepoint2 = get_codepoint();
+                                    const int codepoint2 = get_codepoint( );
 
                                     if (JSON_UNLIKELY(codepoint2 == -1))
                                     {
@@ -844,10 +844,10 @@ class lexer
           locale's decimal point is used instead of `.` to work with the
           locale-dependent converters.
     */
-    token_type scan_number()  // lgtm [cpp/use-of-goto]
+    token_type scan_number( )  // lgtm [cpp/use-of-goto]
     {
         // reset token_buffer to store the number's bytes
-        reset();
+        reset( );
 
         // the type of the parsed number; initially set to unsigned; will be
         // changed if minus sign, decimal point or exponent is read
@@ -882,7 +882,7 @@ class lexer
                 goto scan_number_any1;
             }
 
-            // all other characters are rejected outside scan_number()
+            // all other characters are rejected outside scan_number( )
             default:            // LCOV_EXCL_LINE
                 assert(false);  // LCOV_EXCL_LINE
         }
@@ -890,7 +890,7 @@ class lexer
 scan_number_minus:
         // state: we just parsed a leading minus sign
         number_type = token_type::value_integer;
-        switch (get())
+        switch (get( ))
         {
             case '0':
             {
@@ -921,7 +921,7 @@ scan_number_minus:
 
 scan_number_zero:
         // state: we just parse a zero (maybe with a leading minus sign)
-        switch (get())
+        switch (get( ))
         {
             case '.':
             {
@@ -942,7 +942,7 @@ scan_number_zero:
 
 scan_number_any1:
         // state: we just parsed a number 0-9 (maybe with a leading minus sign)
-        switch (get())
+        switch (get( ))
         {
             case '0':
             case '1':
@@ -979,7 +979,7 @@ scan_number_any1:
 scan_number_decimal1:
         // state: we just parsed a decimal point
         number_type = token_type::value_float;
-        switch (get())
+        switch (get( ))
         {
             case '0':
             case '1':
@@ -1005,7 +1005,7 @@ scan_number_decimal1:
 
 scan_number_decimal2:
         // we just parsed at least one number after a decimal point
-        switch (get())
+        switch (get( ))
         {
             case '0':
             case '1':
@@ -1036,7 +1036,7 @@ scan_number_decimal2:
 scan_number_exponent:
         // we just parsed an exponent
         number_type = token_type::value_float;
-        switch (get())
+        switch (get( ))
         {
             case '+':
             case '-':
@@ -1070,7 +1070,7 @@ scan_number_exponent:
 
 scan_number_sign:
         // we just parsed an exponent sign
-        switch (get())
+        switch (get( ))
         {
             case '0':
             case '1':
@@ -1096,7 +1096,7 @@ scan_number_sign:
 
 scan_number_any2:
         // we just parsed a number after the exponent or exponent sign
-        switch (get())
+        switch (get( ))
         {
             case '0':
             case '1':
@@ -1120,7 +1120,7 @@ scan_number_any2:
 scan_number_done:
         // unget the character after the number (we only read it to know that
         // we are done scanning a number)
-        unget();
+        unget( );
 
         char* endptr = nullptr;
         errno = 0;
@@ -1128,10 +1128,10 @@ scan_number_done:
         // try to parse integers first and fall back to floats
         if (number_type == token_type::value_unsigned)
         {
-            const auto x = std::strtoull(token_buffer.data(), &endptr, 10);
+            const auto x = std::strtoull(token_buffer.data( ), &endptr, 10);
 
             // we checked the number format before
-            assert(endptr == token_buffer.data() + token_buffer.size());
+            assert(endptr == token_buffer.data( ) + token_buffer.size( ));
 
             if (errno == 0)
             {
@@ -1144,10 +1144,10 @@ scan_number_done:
         }
         else if (number_type == token_type::value_integer)
         {
-            const auto x = std::strtoll(token_buffer.data(), &endptr, 10);
+            const auto x = std::strtoll(token_buffer.data( ), &endptr, 10);
 
             // we checked the number format before
-            assert(endptr == token_buffer.data() + token_buffer.size());
+            assert(endptr == token_buffer.data( ) + token_buffer.size( ));
 
             if (errno == 0)
             {
@@ -1161,10 +1161,10 @@ scan_number_done:
 
         // this code is reached if we parse a floating-point number or if an
         // integer conversion above failed
-        strtof(value_float, token_buffer.data(), &endptr);
+        strtof(value_float, token_buffer.data( ), &endptr);
 
         // we checked the number format before
-        assert(endptr == token_buffer.data() + token_buffer.size());
+        assert(endptr == token_buffer.data( ) + token_buffer.size( ));
 
         return token_type::value_float;
     }
@@ -1180,7 +1180,7 @@ scan_number_done:
         assert(current == literal_text[0]);
         for (std::size_t i = 1; i < length; ++i)
         {
-            if (JSON_UNLIKELY(get() != literal_text[i]))
+            if (JSON_UNLIKELY(get( ) != literal_text[i]))
             {
                 error_message = "invalid literal";
                 return token_type::parse_error;
@@ -1191,10 +1191,10 @@ scan_number_done:
 
         // input management
     
-        void reset() noexcept
+        void reset( ) noexcept
     {
-        token_buffer.clear();
-        token_string.clear();
+        token_buffer.clear( );
+        token_string.clear( );
         token_string.push_back(std::char_traits<char>::to_char_type(current));
     }
 
@@ -1203,12 +1203,12 @@ scan_number_done:
 
     This function provides the interface to the used input adapter. It does
     not throw in case the input reached EOF, but returns a
-    `std::char_traits<char>::eof()` in that case.  Stores the scanned characters
+    `std::char_traits<char>::eof( )` in that case.  Stores the scanned characters
     for use in error messages.
 
     @return character read from the input
     */
-    std::char_traits<char>::int_type get()
+    std::char_traits<char>::int_type get( )
     {
         ++position.chars_read_total;
         ++position.chars_read_current_line;
@@ -1220,10 +1220,10 @@ scan_number_done:
         }
         else
         {
-            current = ia->get_character();
+            current = ia->get_character( );
         }
 
-        if (JSON_LIKELY(current != std::char_traits<char>::eof()))
+        if (JSON_LIKELY(current != std::char_traits<char>::eof( )))
         {
             token_string.push_back(std::char_traits<char>::to_char_type(current));
         }
@@ -1242,10 +1242,10 @@ scan_number_done:
 
     We implement unget by setting variable next_unget to true. The input is not
     changed - we just simulate ungetting by modifying chars_read_total,
-    chars_read_current_line, and token_string. The next call to get() will
+    chars_read_current_line, and token_string. The next call to get( ) will
     behave as if the unget character is read again.
     */
-    void unget()
+    void unget( )
     {
         next_unget = true;
 
@@ -1264,10 +1264,10 @@ scan_number_done:
             --position.chars_read_current_line;
         }
 
-        if (JSON_LIKELY(current != std::char_traits<char>::eof()))
+        if (JSON_LIKELY(current != std::char_traits<char>::eof( )))
         {
-            assert(not token_string.empty());
-            token_string.pop_back();
+            assert(not token_string.empty( ));
+            token_string.pop_back( );
         }
     }
 
@@ -1279,34 +1279,34 @@ scan_number_done:
   public:
         // value getters
     
-        constexpr number_integer_t get_number_integer() const noexcept
+        constexpr number_integer_t get_number_integer( ) const noexcept
     {
         return value_integer;
     }
 
-        constexpr number_unsigned_t get_number_unsigned() const noexcept
+        constexpr number_unsigned_t get_number_unsigned( ) const noexcept
     {
         return value_unsigned;
     }
 
-        constexpr number_float_t get_number_float() const noexcept
+        constexpr number_float_t get_number_float( ) const noexcept
     {
         return value_float;
     }
 
-        string_t& get_string()
+        string_t& get_string( )
     {
         return token_buffer;
     }
 
         // diagnostics
     
-        constexpr position_t get_position() const noexcept
+        constexpr position_t get_position( ) const noexcept
     {
         return position;
     }
 
-                std::string get_token_string() const
+                std::string get_token_string( ) const
     {
         // escape control characters
         std::string result;
@@ -1316,8 +1316,8 @@ scan_number_done:
             {
                 // escape control characters
                 std::array<char, 9> cs{{}};
-                (std::snprintf)(cs.data(), cs.size(), "<U+%.4X>", static_cast<unsigned char>(c));
-                result += cs.data();
+                (std::snprintf)(cs.data( ), cs.size( ), "<U+%.4X>", static_cast<unsigned char>(c));
+                result += cs.data( );
             }
             else
             {
@@ -1329,7 +1329,7 @@ scan_number_done:
         return result;
     }
 
-        constexpr const char* get_error_message() const noexcept
+        constexpr const char* get_error_message( ) const noexcept
     {
         return error_message;
     }
@@ -1340,24 +1340,24 @@ scan_number_done:
     @brief skip the UTF-8 byte order mark
     @return true iff there is no BOM or the correct BOM has been skipped
     */
-    bool skip_bom()
+    bool skip_bom( )
     {
-        if (get() == 0xEF)
+        if (get( ) == 0xEF)
         {
             // check if we completely parse the BOM
-            return get() == 0xBB and get() == 0xBF;
+            return get( ) == 0xBB and get( ) == 0xBF;
         }
 
         // the first character is not the beginning of the BOM; unget it to
         // process is later
-        unget();
+        unget( );
         return true;
     }
 
-    token_type scan()
+    token_type scan( )
     {
         // initially, skip the BOM
-        if (position.chars_read_total == 0 and not skip_bom())
+        if (position.chars_read_total == 0 and not skip_bom( ))
         {
             error_message = "invalid BOM; must be 0xEF 0xBB 0xBF if given";
             return token_type::parse_error;
@@ -1366,7 +1366,7 @@ scan_number_done:
         // read next character and ignore whitespace
         do
         {
-            get();
+            get( );
         }
         while (current == ' ' or current == '\t' or current == '\n' or current == '\r');
 
@@ -1396,7 +1396,7 @@ scan_number_done:
 
             // string
             case '\"':
-                return scan_string();
+                return scan_string( );
 
             // number
             case '-':
@@ -1410,12 +1410,12 @@ scan_number_done:
             case '7':
             case '8':
             case '9':
-                return scan_number();
+                return scan_number( );
 
             // end of input (the null byte is needed when parsing from
             // string literals)
             case '\0':
-            case std::char_traits<char>::eof():
+            case std::char_traits<char>::eof( ):
                 return token_type::end_of_input;
 
             // error
@@ -1428,7 +1428,7 @@ scan_number_done:
   private:
         detail::input_adapter_t ia = nullptr;
 
-        std::char_traits<char>::int_type current = std::char_traits<char>::eof();
+        std::char_traits<char>::int_type current = std::char_traits<char>::eof( );
 
         bool next_unget = false;
 

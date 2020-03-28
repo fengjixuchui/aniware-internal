@@ -2,5 +2,5 @@
 
 struct IServer
 {
-	VFUNC( 10, GetAllClasses(), ServerClass* ( __thiscall* )( void* ) )( );
+	VFUNC( 10, GetAllClasses( ), ServerClass* ( __thiscall* )( void* ) )( );
 };

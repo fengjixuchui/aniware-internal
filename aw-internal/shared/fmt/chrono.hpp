@@ -19,14 +19,14 @@
 FMT_BEGIN_NAMESPACE
 
 // Prevents expansion of a preceding token as a function-style macro.
-// Usage: f FMT_NOMACRO()
+// Usage: f FMT_NOMACRO( )
 #define FMT_NOMACRO
 
 namespace internal {
-inline null<> localtime_r FMT_NOMACRO(...) { return null<>(); }
-inline null<> localtime_s(...) { return null<>(); }
-inline null<> gmtime_r(...) { return null<>(); }
-inline null<> gmtime_s(...) { return null<>(); }
+inline null<> localtime_r FMT_NOMACRO(...) { return null<>( ); }
+inline null<> localtime_s(...) { return null<>( ); }
+inline null<> gmtime_r(...) { return null<>( ); }
+inline null<> gmtime_s(...) { return null<>( ); }
 }  // namespace internal
 
 // Thread-safe replacement for std::localtime
@@ -37,7 +37,7 @@ inline std::tm localtime(std::time_t time) {
 
     dispatcher(std::time_t t) : time_(t) {}
 
-    bool run() {
+    bool run( ) {
       using namespace fmt::internal;
       return handle(localtime_r(&time_, &tm_));
     }
@@ -62,7 +62,7 @@ inline std::tm localtime(std::time_t time) {
   };
   dispatcher lt(time);
   // Too big time values may be unsupported.
-  if (!lt.run()) FMT_THROW(format_error("time_t value out of range"));
+  if (!lt.run( )) FMT_THROW(format_error("time_t value out of range"));
   return lt.tm_;
 }
 
@@ -74,7 +74,7 @@ inline std::tm gmtime(std::time_t time) {
 
     dispatcher(std::time_t t) : time_(t) {}
 
-    bool run() {
+    bool run( ) {
       using namespace fmt::internal;
       return handle(gmtime_r(&time_, &tm_));
     }
@@ -98,7 +98,7 @@ inline std::tm gmtime(std::time_t time) {
   };
   dispatcher gt(time);
   // Too big time values may be unsupported.
-  if (!gt.run()) FMT_THROW(format_error("time_t value out of range"));
+  if (!gt.run( )) FMT_THROW(format_error("time_t value out of range"));
   return gt.tm_;
 }
 
@@ -116,11 +116,11 @@ inline std::size_t strftime(wchar_t* str, std::size_t count,
 
 template <typename Char> struct formatter<std::tm, Char> {
   template <typename ParseContext>
-  auto parse(ParseContext& ctx) -> decltype(ctx.begin()) {
-    auto it = ctx.begin();
-    if (it != ctx.end() && *it == ':') ++it;
+  auto parse(ParseContext& ctx) -> decltype(ctx.begin( )) {
+    auto it = ctx.begin( );
+    if (it != ctx.end( ) && *it == ':') ++it;
     auto end = it;
-    while (end != ctx.end() && *end != '}') ++end;
+    while (end != ctx.end( ) && *end != '}') ++end;
     tm_format.reserve(internal::to_unsigned(end - it + 1));
     tm_format.append(it, end);
     tm_format.push_back('\0');
@@ -128,18 +128,18 @@ template <typename Char> struct formatter<std::tm, Char> {
   }
 
   template <typename FormatContext>
-  auto format(const std::tm& tm, FormatContext& ctx) -> decltype(ctx.out()) {
+  auto format(const std::tm& tm, FormatContext& ctx) -> decltype(ctx.out( )) {
     basic_memory_buffer<Char> buf;
-    std::size_t start = buf.size();
+    std::size_t start = buf.size( );
     for (;;) {
-      std::size_t size = buf.capacity() - start;
+      std::size_t size = buf.capacity( ) - start;
       std::size_t count =
           internal::strftime(&buf[start], size, &tm_format[0], &tm);
       if (count != 0) {
         buf.resize(start + count);
         break;
       }
-      if (size >= tm_format.size() * 256) {
+      if (size >= tm_format.size( ) * 256) {
         // If the buffer is 256 times larger than the format string, assume
         // that `strftime` gives an empty result. There doesn't seem to be a
         // better way to distinguish the two cases:
@@ -147,39 +147,39 @@ template <typename Char> struct formatter<std::tm, Char> {
         break;
       }
       const std::size_t MIN_GROWTH = 10;
-      buf.reserve(buf.capacity() + (size > MIN_GROWTH ? size : MIN_GROWTH));
+      buf.reserve(buf.capacity( ) + (size > MIN_GROWTH ? size : MIN_GROWTH));
     }
-    return std::copy(buf.begin(), buf.end(), ctx.out());
+    return std::copy(buf.begin( ), buf.end( ), ctx.out( ));
   }
 
   basic_memory_buffer<Char> tm_format;
 };
 
 namespace internal {
-template <typename Period> FMT_CONSTEXPR const char* get_units() {
+template <typename Period> FMT_CONSTEXPR const char* get_units( ) {
   return FMT_NULL;
 }
-template <> FMT_CONSTEXPR const char* get_units<std::atto>() { return "as"; }
-template <> FMT_CONSTEXPR const char* get_units<std::femto>() { return "fs"; }
-template <> FMT_CONSTEXPR const char* get_units<std::pico>() { return "ps"; }
-template <> FMT_CONSTEXPR const char* get_units<std::nano>() { return "ns"; }
-template <> FMT_CONSTEXPR const char* get_units<std::micro>() { return "µs"; }
-template <> FMT_CONSTEXPR const char* get_units<std::milli>() { return "ms"; }
-template <> FMT_CONSTEXPR const char* get_units<std::centi>() { return "cs"; }
-template <> FMT_CONSTEXPR const char* get_units<std::deci>() { return "ds"; }
-template <> FMT_CONSTEXPR const char* get_units<std::ratio<1>>() { return "s"; }
-template <> FMT_CONSTEXPR const char* get_units<std::deca>() { return "das"; }
-template <> FMT_CONSTEXPR const char* get_units<std::hecto>() { return "hs"; }
-template <> FMT_CONSTEXPR const char* get_units<std::kilo>() { return "ks"; }
-template <> FMT_CONSTEXPR const char* get_units<std::mega>() { return "Ms"; }
-template <> FMT_CONSTEXPR const char* get_units<std::giga>() { return "Gs"; }
-template <> FMT_CONSTEXPR const char* get_units<std::tera>() { return "Ts"; }
-template <> FMT_CONSTEXPR const char* get_units<std::peta>() { return "Ps"; }
-template <> FMT_CONSTEXPR const char* get_units<std::exa>() { return "Es"; }
-template <> FMT_CONSTEXPR const char* get_units<std::ratio<60>>() {
+template <> FMT_CONSTEXPR const char* get_units<std::atto>( ) { return "as"; }
+template <> FMT_CONSTEXPR const char* get_units<std::femto>( ) { return "fs"; }
+template <> FMT_CONSTEXPR const char* get_units<std::pico>( ) { return "ps"; }
+template <> FMT_CONSTEXPR const char* get_units<std::nano>( ) { return "ns"; }
+template <> FMT_CONSTEXPR const char* get_units<std::micro>( ) { return "µs"; }
+template <> FMT_CONSTEXPR const char* get_units<std::milli>( ) { return "ms"; }
+template <> FMT_CONSTEXPR const char* get_units<std::centi>( ) { return "cs"; }
+template <> FMT_CONSTEXPR const char* get_units<std::deci>( ) { return "ds"; }
+template <> FMT_CONSTEXPR const char* get_units<std::ratio<1>>( ) { return "s"; }
+template <> FMT_CONSTEXPR const char* get_units<std::deca>( ) { return "das"; }
+template <> FMT_CONSTEXPR const char* get_units<std::hecto>( ) { return "hs"; }
+template <> FMT_CONSTEXPR const char* get_units<std::kilo>( ) { return "ks"; }
+template <> FMT_CONSTEXPR const char* get_units<std::mega>( ) { return "Ms"; }
+template <> FMT_CONSTEXPR const char* get_units<std::giga>( ) { return "Gs"; }
+template <> FMT_CONSTEXPR const char* get_units<std::tera>( ) { return "Ts"; }
+template <> FMT_CONSTEXPR const char* get_units<std::peta>( ) { return "Ps"; }
+template <> FMT_CONSTEXPR const char* get_units<std::exa>( ) { return "Es"; }
+template <> FMT_CONSTEXPR const char* get_units<std::ratio<60>>( ) {
   return "m";
 }
-template <> FMT_CONSTEXPR const char* get_units<std::ratio<3600>>() {
+template <> FMT_CONSTEXPR const char* get_units<std::ratio<3600>>( ) {
   return "h";
 }
 
@@ -222,10 +222,10 @@ FMT_CONSTEXPR const Char* parse_chrono_format(const Char* begin,
     }
     // Day of the week:
     case 'a':
-      handler.on_abbr_weekday();
+      handler.on_abbr_weekday( );
       break;
     case 'A':
-      handler.on_full_weekday();
+      handler.on_full_weekday( );
       break;
     case 'w':
       handler.on_dec0_weekday(numeric_system::standard);
@@ -235,10 +235,10 @@ FMT_CONSTEXPR const Char* parse_chrono_format(const Char* begin,
       break;
     // Month:
     case 'b':
-      handler.on_abbr_month();
+      handler.on_abbr_month( );
       break;
     case 'B':
-      handler.on_full_month();
+      handler.on_full_month( );
       break;
     // Hour, minute, second:
     case 'H':
@@ -264,34 +264,34 @@ FMT_CONSTEXPR const Char* parse_chrono_format(const Char* begin,
       handler.on_loc_time(numeric_system::standard);
       break;
     case 'D':
-      handler.on_us_date();
+      handler.on_us_date( );
       break;
     case 'F':
-      handler.on_iso_date();
+      handler.on_iso_date( );
       break;
     case 'r':
-      handler.on_12_hour_time();
+      handler.on_12_hour_time( );
       break;
     case 'R':
-      handler.on_24_hour_time();
+      handler.on_24_hour_time( );
       break;
     case 'T':
-      handler.on_iso_time();
+      handler.on_iso_time( );
       break;
     case 'p':
-      handler.on_am_pm();
+      handler.on_am_pm( );
       break;
     case 'Q':
-      handler.on_duration_value();
+      handler.on_duration_value( );
       break;
     case 'q':
-      handler.on_duration_unit();
+      handler.on_duration_unit( );
       break;
     case 'z':
-      handler.on_utc_offset();
+      handler.on_utc_offset( );
       break;
     case 'Z':
-      handler.on_tz_name();
+      handler.on_tz_name( );
       break;
     // Alternative representation:
     case 'E': {
@@ -348,32 +348,32 @@ FMT_CONSTEXPR const Char* parse_chrono_format(const Char* begin,
 }
 
 struct chrono_format_checker {
-  FMT_NORETURN void report_no_date() { FMT_THROW(format_error("no date")); }
+  FMT_NORETURN void report_no_date( ) { FMT_THROW(format_error("no date")); }
 
   template <typename Char> void on_text(const Char*, const Char*) {}
-  FMT_NORETURN void on_abbr_weekday() { report_no_date(); }
-  FMT_NORETURN void on_full_weekday() { report_no_date(); }
-  FMT_NORETURN void on_dec0_weekday(numeric_system) { report_no_date(); }
-  FMT_NORETURN void on_dec1_weekday(numeric_system) { report_no_date(); }
-  FMT_NORETURN void on_abbr_month() { report_no_date(); }
-  FMT_NORETURN void on_full_month() { report_no_date(); }
+  FMT_NORETURN void on_abbr_weekday( ) { report_no_date( ); }
+  FMT_NORETURN void on_full_weekday( ) { report_no_date( ); }
+  FMT_NORETURN void on_dec0_weekday(numeric_system) { report_no_date( ); }
+  FMT_NORETURN void on_dec1_weekday(numeric_system) { report_no_date( ); }
+  FMT_NORETURN void on_abbr_month( ) { report_no_date( ); }
+  FMT_NORETURN void on_full_month( ) { report_no_date( ); }
   void on_24_hour(numeric_system) {}
   void on_12_hour(numeric_system) {}
   void on_minute(numeric_system) {}
   void on_second(numeric_system) {}
-  FMT_NORETURN void on_datetime(numeric_system) { report_no_date(); }
-  FMT_NORETURN void on_loc_date(numeric_system) { report_no_date(); }
-  FMT_NORETURN void on_loc_time(numeric_system) { report_no_date(); }
-  FMT_NORETURN void on_us_date() { report_no_date(); }
-  FMT_NORETURN void on_iso_date() { report_no_date(); }
-  void on_12_hour_time() {}
-  void on_24_hour_time() {}
-  void on_iso_time() {}
-  void on_am_pm() {}
-  void on_duration_value() {}
-  void on_duration_unit() {}
-  FMT_NORETURN void on_utc_offset() { report_no_date(); }
-  FMT_NORETURN void on_tz_name() { report_no_date(); }
+  FMT_NORETURN void on_datetime(numeric_system) { report_no_date( ); }
+  FMT_NORETURN void on_loc_date(numeric_system) { report_no_date( ); }
+  FMT_NORETURN void on_loc_time(numeric_system) { report_no_date( ); }
+  FMT_NORETURN void on_us_date( ) { report_no_date( ); }
+  FMT_NORETURN void on_iso_date( ) { report_no_date( ); }
+  void on_12_hour_time( ) {}
+  void on_24_hour_time( ) {}
+  void on_iso_time( ) {}
+  void on_am_pm( ) {}
+  void on_duration_value( ) {}
+  void on_duration_unit( ) {}
+  FMT_NORETURN void on_utc_offset( ) { report_no_date( ); }
+  FMT_NORETURN void on_tz_name( ) { report_no_date( ); }
 };
 
 template <typename T, FMT_ENABLE_IF(std::is_integral<T>::value)>
@@ -386,8 +386,8 @@ inline bool isnan(T value) {
 }
 
 template <typename T> inline int to_int(T value) {
-  FMT_ASSERT(isnan(value) || (value >= (std::numeric_limits<int>::min)() &&
-                              value <= (std::numeric_limits<int>::max)()),
+  FMT_ASSERT(isnan(value) || (value >= (std::numeric_limits<int>::min)( ) &&
+                              value <= (std::numeric_limits<int>::max)( )),
              "invalid value");
   return static_cast<int>(value);
 }
@@ -415,7 +415,7 @@ template <
 inline std::chrono::duration<Rep, std::milli> get_milliseconds(
     std::chrono::duration<Rep, Period> d) {
   return std::chrono::duration<Rep, std::milli>(
-      mod(d.count() * Period::num / Period::den * 1000, 1000));
+      mod(d.count( ) * Period::num / Period::den * 1000, 1000));
 }
 
 template <typename Rep, typename OutputIt>
@@ -430,7 +430,7 @@ OutputIt static format_chrono_duration_value(OutputIt out, Rep val,
 
 template <typename Period, typename OutputIt>
 static OutputIt format_chrono_duration_unit(OutputIt out) {
-  if (const char* unit = get_units<Period>()) return format_to(out, "{}", unit);
+  if (const char* unit = get_units<Period>( )) return format_to(out, "{}", unit);
   if (Period::den == 1) return format_to(out, "[{}]s", Period::num);
   return format_to(out, "[{}/{}]s", Period::num, Period::den);
 }
@@ -450,34 +450,34 @@ struct chrono_formatter {
 
   explicit chrono_formatter(FormatContext& ctx, OutputIt o,
                             std::chrono::duration<Rep, Period> d)
-      : context(ctx), out(o), val(d.count()) {
-    if (d.count() < 0) {
+      : context(ctx), out(o), val(d.count( )) {
+    if (d.count( ) < 0) {
       d = -d;
       *out++ = '-';
     }
     s = std::chrono::duration_cast<seconds>(d);
   }
 
-  Rep hour() const { return mod((s.count() / 3600), 24); }
+  Rep hour( ) const { return mod((s.count( ) / 3600), 24); }
 
-  Rep hour12() const {
-    Rep hour = mod((s.count() / 3600), 12);
+  Rep hour12( ) const {
+    Rep hour = mod((s.count( ) / 3600), 12);
     return hour <= 0 ? 12 : hour;
   }
 
-  Rep minute() const { return mod((s.count() / 60), 60); }
-  Rep second() const { return mod(s.count(), 60); }
+  Rep minute( ) const { return mod((s.count( ) / 60), 60); }
+  Rep second( ) const { return mod(s.count( ), 60); }
 
-  std::tm time() const {
-    auto time = std::tm();
-    time.tm_hour = to_int(hour());
-    time.tm_min = to_int(minute());
-    time.tm_sec = to_int(second());
+  std::tm time( ) const {
+    auto time = std::tm( );
+    time.tm_hour = to_int(hour( ));
+    time.tm_min = to_int(minute( ));
+    time.tm_sec = to_int(second( ));
     return time;
   }
 
   void write(Rep value, int width) {
-    if (isnan(value)) return write_nan();
+    if (isnan(value)) return write_nan( );
     typedef typename int_traits<int>::main_type main_type;
     main_type n = to_unsigned(to_int(value));
     int num_digits = internal::count_digits(n);
@@ -485,17 +485,17 @@ struct chrono_formatter {
     out = format_decimal<char_type>(out, n, num_digits);
   }
 
-  void write_nan() { std::copy_n("nan", 3, out); }
+  void write_nan( ) { std::copy_n("nan", 3, out); }
 
   void format_localized(const tm& time, const char* format) {
-    if (isnan(val)) return write_nan();
-    auto locale = context.locale().template get<std::locale>();
+    if (isnan(val)) return write_nan( );
+    auto locale = context.locale( ).template get<std::locale>( );
     auto& facet = std::use_facet<std::time_put<char_type>>(locale);
     std::basic_ostringstream<char_type> os;
     os.imbue(locale);
     facet.put(os, os, ' ', &time, format, format + std::strlen(format));
-    auto str = os.str();
-    std::copy(str.begin(), str.end(), out);
+    auto str = os.str( );
+    std::copy(str.begin( ), str.end( ), out);
   }
 
   void on_text(const char_type* begin, const char_type* end) {
@@ -503,77 +503,77 @@ struct chrono_formatter {
   }
 
   // These are not implemented because durations don't have date information.
-  void on_abbr_weekday() {}
-  void on_full_weekday() {}
+  void on_abbr_weekday( ) {}
+  void on_full_weekday( ) {}
   void on_dec0_weekday(numeric_system) {}
   void on_dec1_weekday(numeric_system) {}
-  void on_abbr_month() {}
-  void on_full_month() {}
+  void on_abbr_month( ) {}
+  void on_full_month( ) {}
   void on_datetime(numeric_system) {}
   void on_loc_date(numeric_system) {}
   void on_loc_time(numeric_system) {}
-  void on_us_date() {}
-  void on_iso_date() {}
-  void on_utc_offset() {}
-  void on_tz_name() {}
+  void on_us_date( ) {}
+  void on_iso_date( ) {}
+  void on_utc_offset( ) {}
+  void on_tz_name( ) {}
 
   void on_24_hour(numeric_system ns) {
-    if (ns == numeric_system::standard) return write(hour(), 2);
-    auto time = tm();
-    time.tm_hour = to_int(hour());
+    if (ns == numeric_system::standard) return write(hour( ), 2);
+    auto time = tm( );
+    time.tm_hour = to_int(hour( ));
     format_localized(time, "%OH");
   }
 
   void on_12_hour(numeric_system ns) {
-    if (ns == numeric_system::standard) return write(hour12(), 2);
-    auto time = tm();
-    time.tm_hour = hour12();
+    if (ns == numeric_system::standard) return write(hour12( ), 2);
+    auto time = tm( );
+    time.tm_hour = hour12( );
     format_localized(time, "%OI");
   }
 
   void on_minute(numeric_system ns) {
-    if (ns == numeric_system::standard) return write(minute(), 2);
-    auto time = tm();
-    time.tm_min = minute();
+    if (ns == numeric_system::standard) return write(minute( ), 2);
+    auto time = tm( );
+    time.tm_min = minute( );
     format_localized(time, "%OM");
   }
 
   void on_second(numeric_system ns) {
     if (ns == numeric_system::standard) {
-      write(second(), 2);
+      write(second( ), 2);
       auto ms = get_milliseconds(std::chrono::duration<Rep, Period>(val));
       if (ms != std::chrono::milliseconds(0)) {
         *out++ = '.';
-        write(ms.count(), 3);
+        write(ms.count( ), 3);
       }
       return;
     }
-    auto time = tm();
-    time.tm_sec = second();
+    auto time = tm( );
+    time.tm_sec = second( );
     format_localized(time, "%OS");
   }
 
-  void on_12_hour_time() { format_localized(time(), "%r"); }
+  void on_12_hour_time( ) { format_localized(time( ), "%r"); }
 
-  void on_24_hour_time() {
-    write(hour(), 2);
+  void on_24_hour_time( ) {
+    write(hour( ), 2);
     *out++ = ':';
-    write(minute(), 2);
+    write(minute( ), 2);
   }
 
-  void on_iso_time() {
-    on_24_hour_time();
+  void on_iso_time( ) {
+    on_24_hour_time( );
     *out++ = ':';
-    write(second(), 2);
+    write(second( ), 2);
   }
 
-  void on_am_pm() { format_localized(time(), "%p"); }
+  void on_am_pm( ) { format_localized(time( ), "%p"); }
 
-  void on_duration_value() {
+  void on_duration_value( ) {
     out = format_chrono_duration_value(out, val, precision);
   }
 
-  void on_duration_unit() { out = format_chrono_duration_unit<Period>(out); }
+  void on_duration_unit( ) { out = format_chrono_duration_unit<Period>(out); }
 };
 }  // namespace internal
 
@@ -605,7 +605,7 @@ struct formatter<std::chrono::duration<Rep, Period>, Char> {
     }
 
     FMT_CONSTEXPR arg_ref_type make_arg_ref(internal::auto_id) {
-      return arg_ref_type(context.next_arg_id());
+      return arg_ref_type(context.next_arg_id( ));
     }
 
     void on_error(const char* msg) { FMT_THROW(format_error(msg)); }
@@ -613,7 +613,7 @@ struct formatter<std::chrono::duration<Rep, Period>, Char> {
     void on_align(alignment align) { f.spec.align_ = align; }
     void on_width(unsigned width) { f.spec.width_ = width; }
     void on_precision(unsigned precision) { f.precision = precision; }
-    void end_precision() {}
+    void end_precision( ) {}
 
     template <typename Id> void on_dynamic_width(Id arg_id) {
       f.width_ref = make_arg_ref(arg_id);
@@ -631,7 +631,7 @@ struct formatter<std::chrono::duration<Rep, Period>, Char> {
   };
 
   FMT_CONSTEXPR parse_range do_parse(basic_parse_context<Char>& ctx) {
-    auto begin = ctx.begin(), end = ctx.end();
+    auto begin = ctx.begin( ), end = ctx.end( );
     if (begin == end || *begin == '}') return {begin, begin};
     spec_handler handler{*this, ctx, format_str};
     begin = internal::parse_align(begin, end, handler);
@@ -644,15 +644,15 @@ struct formatter<std::chrono::duration<Rep, Period>, Char> {
       else
         handler.on_error("precision not allowed for this argument type");
     }
-    end = parse_chrono_format(begin, end, internal::chrono_format_checker());
+    end = parse_chrono_format(begin, end, internal::chrono_format_checker( ));
     return {begin, end};
   }
 
  public:
-  formatter() : spec(), precision(-1) {}
+  formatter( ) : spec( ), precision(-1) {}
 
   FMT_CONSTEXPR auto parse(basic_parse_context<Char>& ctx)
-      -> decltype(ctx.begin()) {
+      -> decltype(ctx.begin( )) {
     auto range = do_parse(ctx);
     format_str = basic_string_view<Char>(
         &*range.begin, internal::to_unsigned(range.end - range.begin));
@@ -660,20 +660,20 @@ struct formatter<std::chrono::duration<Rep, Period>, Char> {
   }
 
   template <typename FormatContext>
-  auto format(const duration& d, FormatContext& ctx) -> decltype(ctx.out()) {
-    auto begin = format_str.begin(), end = format_str.end();
+  auto format(const duration& d, FormatContext& ctx) -> decltype(ctx.out( )) {
+    auto begin = format_str.begin( ), end = format_str.end( );
     // As a possible future optimization, we could avoid extra copying if width
     // is not specified.
     basic_memory_buffer<Char> buf;
     auto out = std::back_inserter(buf);
-    typedef output_range<decltype(ctx.out()), Char> range;
-    basic_writer<range> w(range(ctx.out()));
+    typedef output_range<decltype(ctx.out( )), Char> range;
+    basic_writer<range> w(range(ctx.out( )));
     internal::handle_dynamic_spec<internal::width_checker>(
-        spec.width_, width_ref, ctx, format_str.begin());
+        spec.width_, width_ref, ctx, format_str.begin( ));
     internal::handle_dynamic_spec<internal::precision_checker>(
-        precision, precision_ref, ctx, format_str.begin());
+        precision, precision_ref, ctx, format_str.begin( ));
     if (begin == end || *begin == '}') {
-      out = internal::format_chrono_duration_value(out, d.count(), precision);
+      out = internal::format_chrono_duration_value(out, d.count( ), precision);
       internal::format_chrono_duration_unit<Period>(out);
     } else {
       internal::chrono_formatter<FormatContext, decltype(out), Rep, Period> f(
@@ -681,8 +681,8 @@ struct formatter<std::chrono::duration<Rep, Period>, Char> {
       f.precision = precision;
       parse_chrono_format(begin, end, f);
     }
-    w.write(buf.data(), buf.size(), spec);
-    return w.out();
+    w.write(buf.data( ), buf.size( ), spec);
+    return w.out( );
   }
 };
 

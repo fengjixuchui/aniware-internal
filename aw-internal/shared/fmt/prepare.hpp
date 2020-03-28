@@ -28,7 +28,7 @@ template <typename Char> struct format_part {
   };
 
   struct argument_id {
-    FMT_CONSTEXPR argument_id() : argument_id(0u) {}
+    FMT_CONSTEXPR argument_id( ) : argument_id(0u) {}
 
     FMT_CONSTEXPR argument_id(unsigned id)
         : which(which_arg_id::index), val(id) {}
@@ -41,7 +41,7 @@ template <typename Char> struct format_part {
     which_arg_id which;
 
     FMT_UNRESTRICTED_UNION value {
-      FMT_CONSTEXPR value() : index(0u) {}
+      FMT_CONSTEXPR value( ) : index(0u) {}
       FMT_CONSTEXPR value(unsigned id) : index(id) {}
       FMT_CONSTEXPR value(internal::string_view_metadata id)
           : named_index(id) {}
@@ -53,7 +53,7 @@ template <typename Char> struct format_part {
   };
 
   struct specification {
-    FMT_CONSTEXPR specification() : arg_id(0u) {}
+    FMT_CONSTEXPR specification( ) : arg_id(0u) {}
     FMT_CONSTEXPR specification(unsigned id) : arg_id(id) {}
 
     FMT_CONSTEXPR specification(internal::string_view_metadata id)
@@ -63,7 +63,7 @@ template <typename Char> struct format_part {
     internal::dynamic_format_specs<Char> parsed_specs;
   };
 
-  FMT_CONSTEXPR format_part()
+  FMT_CONSTEXPR format_part( )
       : which(which_value::argument_id), end_of_argument_id(0u), val(0u) {}
 
   FMT_CONSTEXPR format_part(internal::string_view_metadata text)
@@ -90,7 +90,7 @@ template <typename Char> struct format_part {
   which_value which;
   std::size_t end_of_argument_id;
   FMT_UNRESTRICTED_UNION value {
-    FMT_CONSTEXPR value() : arg_id(0u) {}
+    FMT_CONSTEXPR value( ) : arg_id(0u) {}
     FMT_CONSTEXPR value(unsigned id) : arg_id(id) {}
     FMT_CONSTEXPR value(named_argument_id named_id)
         : named_arg_id(named_id.id) {}
@@ -121,13 +121,13 @@ class format_preparation_handler : public internal::error_handler {
     if (begin == end) {
       return;
     }
-    const auto offset = begin - format_.data();
+    const auto offset = begin - format_.data( );
     const auto size = end - begin;
     parts_.add(part(string_view_metadata(offset, size)));
   }
 
-  FMT_CONSTEXPR void on_arg_id() {
-    parts_.add(part(parse_context_.next_arg_id()));
+  FMT_CONSTEXPR void on_arg_id( ) {
+    parts_.add(part(parse_context_.next_arg_id( )));
   }
 
   FMT_CONSTEXPR void on_arg_id(unsigned id) {
@@ -142,14 +142,14 @@ class format_preparation_handler : public internal::error_handler {
   }
 
   FMT_CONSTEXPR void on_replacement_field(const Char* ptr) {
-    auto last_part = parts_.last();
-    last_part.end_of_argument_id = ptr - format_.begin();
+    auto last_part = parts_.last( );
+    last_part.end_of_argument_id = ptr - format_.begin( );
     parts_.substitute_last(last_part);
   }
 
   FMT_CONSTEXPR const Char* on_format_specs(const Char* begin,
                                             const Char* end) {
-    const auto specs_offset = to_unsigned(begin - format_.begin());
+    const auto specs_offset = to_unsigned(begin - format_.begin( ));
 
     typedef basic_parse_context<Char> parse_context;
     internal::dynamic_format_specs<Char> parsed_specs;
@@ -160,7 +160,7 @@ class format_preparation_handler : public internal::error_handler {
       on_error("missing '}' in format string");
     }
 
-    const auto last_part = parts_.last();
+    const auto last_part = parts_.last( );
 
     auto specs = last_part.which == part::which_value::argument_id
                      ? typename part::specification(last_part.val.arg_id)
@@ -191,11 +191,11 @@ class prepared_format {
   prepared_format(Format f)
       : format_(std::move(f)), parts_provider_(to_string_view(format_)) {}
 
-  prepared_format() = delete;
+  prepared_format( ) = delete;
 
   std::size_t formatted_size(const Args&... args) const {
-    const auto it = this->format_to(counting_iterator<char_type>(), args...);
-    return it.count();
+    const auto it = this->format_to(counting_iterator<char_type>( ), args...);
+    return it.count( );
   }
 
   template <typename OutputIt,
@@ -211,7 +211,7 @@ class prepared_format {
     range r(trunc_it(out, n));
     auto it = this->vformat_to(
         r, typename format_to_n_args<OutputIt, char_type>::type(as));
-    return {it.base(), it.count()};
+    return {it.base( ), it.count( )};
   }
 
   std::basic_string<char_type> format(const Args&... args) const {
@@ -253,19 +253,19 @@ class prepared_format {
                                         basic_format_args<context> args) const {
     const auto format_view = internal::to_string_view(format_);
     basic_parse_context<char_type> parse_ctx(format_view);
-    context ctx(out.begin(), args);
+    context ctx(out.begin( ), args);
 
-    const auto& parts = parts_provider_.parts();
-    for (auto part_it = parts.begin(); part_it != parts.end(); ++part_it) {
+    const auto& parts = parts_provider_.parts( );
+    for (auto part_it = parts.begin( ); part_it != parts.end( ); ++part_it) {
       const auto& part = *part_it;
       const auto& value = part.val;
 
       switch (part.which) {
       case format_part_t::which_value::text: {
         const auto text = value.text.to_view(format_view);
-        auto output = ctx.out();
-        auto&& it = internal::reserve(output, text.size());
-        it = std::copy_n(text.begin(), text.size(), it);
+        auto output = ctx.out( );
+        auto&& it = internal::reserve(output, text.size( ));
+        it = std::copy_n(text.begin( ), text.size( ), it);
         ctx.advance_to(output);
       } break;
 
@@ -290,11 +290,11 @@ class prepared_format {
         auto specs = value.spec.parsed_specs;
 
         handle_dynamic_spec<internal::width_checker>(
-            specs.width_, specs.width_ref, ctx, format_view.begin());
+            specs.width_, specs.width_ref, ctx, format_view.begin( ));
         handle_dynamic_spec<internal::precision_checker>(
-            specs.precision, specs.precision_ref, ctx, format_view.begin());
+            specs.precision, specs.precision_ref, ctx, format_view.begin( ));
 
-        check_prepared_specs(specs, arg.type());
+        check_prepared_specs(specs, arg.type( ));
         advance_parse_context_to_specification(parse_ctx, part);
         ctx.advance_to(
             visit_format_arg(arg_formatter<Range>(ctx, FMT_NULL, &specs), arg));
@@ -302,14 +302,14 @@ class prepared_format {
       }
     }
 
-    return ctx.out();
+    return ctx.out( );
   }
 
   void advance_parse_context_to_specification(
       basic_parse_context<char_type>& parse_ctx,
       const format_part_t& part) const {
     const auto view = to_string_view(format_);
-    const auto specification_begin = view.data() + part.end_of_argument_id;
+    const auto specification_begin = view.data( ) + part.end_of_argument_id;
     advance_to(parse_ctx, specification_begin);
   }
 
@@ -328,19 +328,19 @@ class prepared_format {
     internal::error_handler h;
     numeric_specs_checker<internal::error_handler> checker(h, arg_type);
     if (specs.align_ == ALIGN_NUMERIC) {
-      checker.require_numeric_argument();
+      checker.require_numeric_argument( );
     }
 
     if (specs.has(PLUS_FLAG | MINUS_FLAG | SIGN_FLAG)) {
-      checker.check_sign();
+      checker.check_sign( );
     }
 
     if (specs.has(HASH_FLAG)) {
-      checker.require_numeric_argument();
+      checker.require_numeric_argument( );
     }
 
-    if (specs.has_precision()) {
-      checker.check_precision();
+    if (specs.has_precision( )) {
+      checker.check_precision( );
     }
   }
 
@@ -358,7 +358,7 @@ template <typename Format> class compiletime_prepared_parts_type_provider {
     typedef internal::null_terminating_iterator<char_type> iterator;
 
    public:
-    FMT_CONSTEXPR count_handler() : counter_(0u) {}
+    FMT_CONSTEXPR count_handler( ) : counter_(0u) {}
 
     FMT_CONSTEXPR void on_text(const char_type* begin, const char_type* end) {
       if (begin != end) {
@@ -366,7 +366,7 @@ template <typename Format> class compiletime_prepared_parts_type_provider {
       }
     }
 
-    FMT_CONSTEXPR void on_arg_id() { ++counter_; }
+    FMT_CONSTEXPR void on_arg_id( ) { ++counter_; }
     FMT_CONSTEXPR void on_arg_id(unsigned) { ++counter_; }
     FMT_CONSTEXPR void on_arg_id(basic_string_view<char_type>) { ++counter_; }
 
@@ -379,7 +379,7 @@ template <typename Format> class compiletime_prepared_parts_type_provider {
 
     FMT_CONSTEXPR void on_error(const char*) {}
 
-    FMT_CONSTEXPR unsigned result() const { return counter_; }
+    FMT_CONSTEXPR unsigned result( ) const { return counter_; }
 
    private:
     FMT_CONSTEXPR const char_type* find_matching_brace(const char_type* begin,
@@ -403,18 +403,18 @@ template <typename Format> class compiletime_prepared_parts_type_provider {
     unsigned counter_;
   };
 
-  static FMT_CONSTEXPR unsigned count_parts() {
+  static FMT_CONSTEXPR unsigned count_parts( ) {
     FMT_CONSTEXPR_DECL const auto text = to_string_view(Format{});
     count_handler handler;
     internal::parse_format_string</*IS_CONSTEXPR=*/true>(text, handler);
-    return handler.result();
+    return handler.result( );
   }
 
 // Workaround for old compilers. Compiletime parts preparation will not be
 // performed with them anyway.
 #if FMT_USE_CONSTEXPR
   static FMT_CONSTEXPR_DECL const unsigned number_of_format_parts =
-      compiletime_prepared_parts_type_provider::count_parts();
+      compiletime_prepared_parts_type_provider::count_parts( );
 #else
   static const unsigned number_of_format_parts = 0u;
 #endif
@@ -423,13 +423,13 @@ template <typename Format> class compiletime_prepared_parts_type_provider {
   template <unsigned N> struct format_parts_array {
     typedef format_part<char_type> value_type;
 
-    FMT_CONSTEXPR format_parts_array() : arr{} {}
+    FMT_CONSTEXPR format_parts_array( ) : arr{} {}
 
     FMT_CONSTEXPR value_type& operator[](unsigned ind) { return arr[ind]; }
 
-    FMT_CONSTEXPR const value_type* begin() const { return arr; }
+    FMT_CONSTEXPR const value_type* begin( ) const { return arr; }
 
-    FMT_CONSTEXPR const value_type* end() const { return begin() + N; }
+    FMT_CONSTEXPR const value_type* end( ) const { return begin( ) + N; }
 
    private:
     value_type arr[N];
@@ -459,7 +459,7 @@ template <typename Parts> class compiletime_prepared_parts_collector {
     parts_[counter_ - 1] = part;
   }
 
-  FMT_CONSTEXPR format_part last() { return parts_[counter_ - 1]; }
+  FMT_CONSTEXPR format_part last( ) { return parts_[counter_ - 1]; }
 
  private:
   Parts& parts_;
@@ -488,12 +488,12 @@ prepare_compiletime_parts(basic_string_view<Char> format) {
 
 template <typename PartsContainer> class runtime_parts_provider {
  public:
-  runtime_parts_provider() = delete;
+  runtime_parts_provider( ) = delete;
   template <typename Char>
   runtime_parts_provider(basic_string_view<Char> format)
       : parts_(prepare_parts<PartsContainer>(format)) {}
 
-  const PartsContainer& parts() const { return parts_; }
+  const PartsContainer& parts( ) const { return parts_; }
 
  private:
   PartsContainer parts_;
@@ -501,11 +501,11 @@ template <typename PartsContainer> class runtime_parts_provider {
 
 template <typename Format, typename PartsContainer>
 struct compiletime_parts_provider {
-  compiletime_parts_provider() = delete;
+  compiletime_parts_provider( ) = delete;
   template <typename Char>
   FMT_CONSTEXPR compiletime_parts_provider(basic_string_view<Char>) {}
 
-  const PartsContainer& parts() const {
+  const PartsContainer& parts( ) const {
     static FMT_CONSTEXPR_DECL const PartsContainer prepared_parts =
         prepare_compiletime_parts<PartsContainer>(
             internal::to_string_view(Format{}));
@@ -539,44 +539,44 @@ struct parts_container_concept_check : std::true_type {
   template <typename T> static std::false_type has_add_check(check_second);
   template <typename T>
   static decltype(
-      (void)declval<T>().add(declval<typename T::format_part_type>()),
-      std::true_type()) has_add_check(check_first);
-  typedef decltype(has_add_check<PartsContainer>(check_first())) has_add;
-  static_assert(has_add::value, "PartsContainer doesn't provide add() method");
+      (void)declval<T>( ).add(declval<typename T::format_part_type>( )),
+      std::true_type( )) has_add_check(check_first);
+  typedef decltype(has_add_check<PartsContainer>(check_first( ))) has_add;
+  static_assert(has_add::value, "PartsContainer doesn't provide add( ) method");
 
   template <typename T> static std::false_type has_last_check(check_second);
   template <typename T>
-  static decltype((void)declval<T>().last(),
-                  std::true_type()) has_last_check(check_first);
-  typedef decltype(has_last_check<PartsContainer>(check_first())) has_last;
+  static decltype((void)declval<T>( ).last( ),
+                  std::true_type( )) has_last_check(check_first);
+  typedef decltype(has_last_check<PartsContainer>(check_first( ))) has_last;
   static_assert(has_last::value,
-                "PartsContainer doesn't provide last() method");
+                "PartsContainer doesn't provide last( ) method");
 
   template <typename T>
   static std::false_type has_substitute_last_check(check_second);
   template <typename T>
-  static decltype((void)declval<T>().substitute_last(
-                      declval<typename T::format_part_type>()),
-                  std::true_type()) has_substitute_last_check(check_first);
+  static decltype((void)declval<T>( ).substitute_last(
+                      declval<typename T::format_part_type>( )),
+                  std::true_type( )) has_substitute_last_check(check_first);
   typedef decltype(has_substitute_last_check<PartsContainer>(
-      check_first())) has_substitute_last;
+      check_first( ))) has_substitute_last;
   static_assert(has_substitute_last::value,
-                "PartsContainer doesn't provide substitute_last() method");
+                "PartsContainer doesn't provide substitute_last( ) method");
 
   template <typename T> static std::false_type has_begin_check(check_second);
   template <typename T>
-  static decltype((void)declval<T>().begin(),
-                  std::true_type()) has_begin_check(check_first);
-  typedef decltype(has_begin_check<PartsContainer>(check_first())) has_begin;
+  static decltype((void)declval<T>( ).begin( ),
+                  std::true_type( )) has_begin_check(check_first);
+  typedef decltype(has_begin_check<PartsContainer>(check_first( ))) has_begin;
   static_assert(has_begin::value,
-                "PartsContainer doesn't provide begin() method");
+                "PartsContainer doesn't provide begin( ) method");
 
   template <typename T> static std::false_type has_end_check(check_second);
   template <typename T>
-  static decltype((void)declval<T>().end(),
-                  std::true_type()) has_end_check(check_first);
-  typedef decltype(has_end_check<PartsContainer>(check_first())) has_end;
-  static_assert(has_end::value, "PartsContainer doesn't provide end() method");
+  static decltype((void)declval<T>( ).end( ),
+                  std::true_type( )) has_end_check(check_first);
+  typedef decltype(has_end_check<PartsContainer>(check_first( ))) has_end;
+  static_assert(has_end::value, "PartsContainer doesn't provide end( ) method");
 };
 
 template <bool IS_CONSTEXPR, typename Format, typename /*PartsContainer*/>
@@ -605,7 +605,7 @@ struct basic_prepared_format {
 
 template <typename Char>
 std::basic_string<Char> to_runtime_format(basic_string_view<Char> format) {
-  return std::basic_string<Char>(format.begin(), format.size());
+  return std::basic_string<Char>(format.begin( ), format.size( ));
 }
 
 template <typename Char>
@@ -621,25 +621,25 @@ class parts_container {
   void add(format_part_type part) { parts_.push_back(std::move(part)); }
 
   void substitute_last(format_part_type part) {
-    parts_.back() = std::move(part);
+    parts_.back( ) = std::move(part);
   }
 
-  format_part_type last() { return parts_.back(); }
+  format_part_type last( ) { return parts_.back( ); }
 
-  auto begin() -> decltype(internal::declval<Container>().begin()) {
-    return parts_.begin();
+  auto begin( ) -> decltype(internal::declval<Container>( ).begin( )) {
+    return parts_.begin( );
   }
 
-  auto begin() const -> decltype(internal::declval<const Container>().begin()) {
-    return parts_.begin();
+  auto begin( ) const -> decltype(internal::declval<const Container>( ).begin( )) {
+    return parts_.begin( );
   }
 
-  auto end() -> decltype(internal::declval<Container>().end()) {
-    return parts_.end();
+  auto end( ) -> decltype(internal::declval<Container>( ).end( )) {
+    return parts_.end( );
   }
 
-  auto end() const -> decltype(internal::declval<const Container>().end()) {
-    return parts_.end();
+  auto end( ) const -> decltype(internal::declval<const Container>( ).end( )) {
+    return parts_.end( );
   }
 
  private:

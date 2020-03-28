@@ -2,9 +2,9 @@
 
 struct bitflag_t
 {
-	bitflag_t() = default;
+	bitflag_t( ) = default;
 	bitflag_t(uintptr_t flags) : m_flags(flags) {}
-	~bitflag_t() = default;
+	~bitflag_t( ) = default;
 
 	uintptr_t m_flags{};
 
@@ -23,7 +23,7 @@ struct bitflag_t
 		m_flags &= ~flag;
 	}
 
-	inline bool is_empty()
+	inline bool is_empty( )
 	{
 		return !m_flags;
 	}

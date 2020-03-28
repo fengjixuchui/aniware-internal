@@ -131,7 +131,7 @@
 #  define FMT_DETECTED_NOEXCEPT noexcept
 #  define FMT_HAS_CXX11_NOEXCEPT 1
 #else
-#  define FMT_DETECTED_NOEXCEPT throw()
+#  define FMT_DETECTED_NOEXCEPT throw( )
 #  define FMT_HAS_CXX11_NOEXCEPT 0
 #endif
 
@@ -235,7 +235,7 @@ namespace internal {
 
 // An implementation of declval for pre-C++11 compilers such as gcc 4.
 template <typename T>
-typename std::add_rvalue_reference<T>::type declval() FMT_NOEXCEPT;
+typename std::add_rvalue_reference<T>::type declval( ) FMT_NOEXCEPT;
 
 template <typename> struct result_of;
 
@@ -290,22 +290,22 @@ template <typename T> class buffer {
   typedef T value_type;
   typedef const T& const_reference;
 
-  virtual ~buffer() {}
+  virtual ~buffer( ) {}
 
-  T* begin() FMT_NOEXCEPT { return ptr_; }
-  T* end() FMT_NOEXCEPT { return ptr_ + size_; }
+  T* begin( ) FMT_NOEXCEPT { return ptr_; }
+  T* end( ) FMT_NOEXCEPT { return ptr_ + size_; }
 
   /** Returns the size of this buffer. */
-  std::size_t size() const FMT_NOEXCEPT { return size_; }
+  std::size_t size( ) const FMT_NOEXCEPT { return size_; }
 
   /** Returns the capacity of this buffer. */
-  std::size_t capacity() const FMT_NOEXCEPT { return capacity_; }
+  std::size_t capacity( ) const FMT_NOEXCEPT { return capacity_; }
 
   /** Returns a pointer to the buffer data. */
-  T* data() FMT_NOEXCEPT { return ptr_; }
+  T* data( ) FMT_NOEXCEPT { return ptr_; }
 
   /** Returns a pointer to the buffer data. */
-  const T* data() const FMT_NOEXCEPT { return ptr_; }
+  const T* data( ) const FMT_NOEXCEPT { return ptr_; }
 
   /**
     Resizes the buffer. If T is a POD type new elements may not be initialized.
@@ -316,7 +316,7 @@ template <typename T> class buffer {
   }
 
   /** Clears this buffer. */
-  void clear() { size_ = 0; }
+  void clear( ) { size_ = 0; }
 
   /** Reserves space to store at least *capacity* elements. */
   void reserve(std::size_t new_capacity) {
@@ -349,7 +349,7 @@ class container_buffer : public buffer<typename Container::value_type> {
 
  public:
   explicit container_buffer(Container& c)
-      : buffer<typename Container::value_type>(c.size()), container_(c) {}
+      : buffer<typename Container::value_type>(c.size( )), container_(c) {}
 };
 
 // Extracts a reference to the container from back_insert_iterator.
@@ -364,7 +364,7 @@ inline Container& get_container(std::back_insert_iterator<Container> it) {
 }
 
 struct error_handler {
-  FMT_CONSTEXPR error_handler() {}
+  FMT_CONSTEXPR error_handler( ) {}
   FMT_CONSTEXPR error_handler(const error_handler&) {}
 
   // This function is intentionally not constexpr to give a compile-time error.
@@ -377,7 +377,7 @@ typedef char yes[1];
 typedef char no[2];
 
 template <typename T, typename V> struct is_constructible {
-  template <typename U> static yes& test(int (*)[sizeof(new U(declval<V>()))]);
+  template <typename U> static yes& test(int (*)[sizeof(new U(declval<V>( )))]);
   template <typename U> static no& test(...);
   enum { value = sizeof(test<T>(FMT_NULL)) == sizeof(yes) };
 };
@@ -404,7 +404,7 @@ template <typename Char> class basic_string_view {
   typedef Char char_type;
   typedef const Char* iterator;
 
-  FMT_CONSTEXPR basic_string_view() FMT_NOEXCEPT : data_(FMT_NULL), size_(0) {}
+  FMT_CONSTEXPR basic_string_view( ) FMT_NOEXCEPT : data_(FMT_NULL), size_(0) {}
 
   /** Constructs a string reference object from a C string and a size. */
   FMT_CONSTEXPR basic_string_view(const Char* s, size_t count) FMT_NOEXCEPT
@@ -423,23 +423,23 @@ template <typename Char> class basic_string_view {
   /** Constructs a string reference from a ``std::basic_string`` object. */
   template <typename Alloc>
   FMT_CONSTEXPR basic_string_view(const std::basic_string<Char, Alloc>& s)
-      FMT_NOEXCEPT : data_(s.data()),
-                     size_(s.size()) {}
+      FMT_NOEXCEPT : data_(s.data( )),
+                     size_(s.size( )) {}
 
 #ifdef FMT_STRING_VIEW
   FMT_CONSTEXPR basic_string_view(FMT_STRING_VIEW<Char> s) FMT_NOEXCEPT
-      : data_(s.data()),
-        size_(s.size()) {}
+      : data_(s.data( )),
+        size_(s.size( )) {}
 #endif
 
   /** Returns a pointer to the string data. */
-  FMT_CONSTEXPR const Char* data() const { return data_; }
+  FMT_CONSTEXPR const Char* data( ) const { return data_; }
 
   /** Returns the string size. */
-  FMT_CONSTEXPR size_t size() const { return size_; }
+  FMT_CONSTEXPR size_t size( ) const { return size_; }
 
-  FMT_CONSTEXPR iterator begin() const { return data_; }
-  FMT_CONSTEXPR iterator end() const { return data_ + size_; }
+  FMT_CONSTEXPR iterator begin( ) const { return data_; }
+  FMT_CONSTEXPR iterator end( ) const { return data_ + size_; }
 
   FMT_CONSTEXPR void remove_prefix(size_t n) {
     data_ += n;
@@ -493,7 +493,7 @@ typedef basic_string_view<wchar_t> wstring_view;
 
     namespace my_ns {
     inline string_view to_string_view(const my_string &s) {
-      return {s.data(), s.length()};
+      return {s.data( ), s.length( )};
     }
     }
 
@@ -508,7 +508,7 @@ inline basic_string_view<Char> to_string_view(basic_string_view<Char> s) {
 template <typename Char, typename Traits, typename Allocator>
 inline basic_string_view<Char> to_string_view(
     const std::basic_string<Char, Traits, Allocator>& s) {
-  return {s.data(), s.size()};
+  return {s.data( ), s.size( )};
 }
 
 template <typename Char>
@@ -549,25 +549,25 @@ class basic_parse_context : private ErrorHandler {
   typedef typename basic_string_view<Char>::iterator iterator;
 
   explicit FMT_CONSTEXPR basic_parse_context(basic_string_view<Char> format_str,
-                                             ErrorHandler eh = ErrorHandler())
+                                             ErrorHandler eh = ErrorHandler( ))
       : ErrorHandler(eh), format_str_(format_str), next_arg_id_(0) {}
 
   // Returns an iterator to the beginning of the format string range being
   // parsed.
-  FMT_CONSTEXPR iterator begin() const FMT_NOEXCEPT {
-    return format_str_.begin();
+  FMT_CONSTEXPR iterator begin( ) const FMT_NOEXCEPT {
+    return format_str_.begin( );
   }
 
   // Returns an iterator past the end of the format string range being parsed.
-  FMT_CONSTEXPR iterator end() const FMT_NOEXCEPT { return format_str_.end(); }
+  FMT_CONSTEXPR iterator end( ) const FMT_NOEXCEPT { return format_str_.end( ); }
 
   // Advances the begin iterator to ``it``.
   FMT_CONSTEXPR void advance_to(iterator it) {
-    format_str_.remove_prefix(internal::to_unsigned(it - begin()));
+    format_str_.remove_prefix(internal::to_unsigned(it - begin( )));
   }
 
   // Returns the next argument index.
-  FMT_CONSTEXPR unsigned next_arg_id();
+  FMT_CONSTEXPR unsigned next_arg_id( );
 
   FMT_CONSTEXPR bool check_arg_id(unsigned) {
     if (next_arg_id_ > 0) {
@@ -584,7 +584,7 @@ class basic_parse_context : private ErrorHandler {
     ErrorHandler::on_error(message);
   }
 
-  FMT_CONSTEXPR ErrorHandler error_handler() const { return *this; }
+  FMT_CONSTEXPR ErrorHandler error_handler( ) const { return *this; }
 };
 
 typedef basic_parse_context<char> format_parse_context;
@@ -630,7 +630,7 @@ template <typename S>
 struct is_string
     : std::integral_constant<
           bool, !std::is_same<dummy_string_view,
-                              decltype(to_string_view(declval<S>()))>::value> {
+                              decltype(to_string_view(declval<S>( )))>::value> {
 };
 
 // Forward declare FILE* specialization defined in color.h
@@ -638,7 +638,7 @@ template <> struct is_string<std::FILE*>;
 template <> struct is_string<const std::FILE*>;
 
 template <typename S> struct char_t {
-  typedef decltype(to_string_view(declval<S>())) result;
+  typedef decltype(to_string_view(declval<S>( ))) result;
   typedef typename result::char_type type;
 };
 
@@ -734,8 +734,8 @@ template <typename Context> class value {
     ustring.value = val;
   }
   value(basic_string_view<char_type> val) {
-    string.value = val.data();
-    string.size = val.size();
+    string.value = val.data( );
+    string.size = val.size( );
   }
   value(const void* val) { pointer = val; }
 
@@ -751,7 +751,7 @@ template <typename Context> class value {
                internal::fallback_formatter<T, char_type>>::type>;
   }
 
-  const named_arg_base<char_type>& as_named_arg() {
+  const named_arg_base<char_type>& as_named_arg( ) {
     return *static_cast<const named_arg_base<char_type>*>(pointer);
   }
 
@@ -773,7 +773,7 @@ template <typename Context, typename T, type TYPE> struct init {
   static const type type_tag = TYPE;
 
   FMT_CONSTEXPR init(const T& v) : val(v) {}
-  FMT_CONSTEXPR operator value<Context>() const { return value<Context>(val); }
+  FMT_CONSTEXPR operator value<Context>( ) const { return value<Context>(val); }
 };
 
 template <typename Context, typename T>
@@ -951,16 +951,16 @@ template <typename Context> class basic_format_arg {
     internal::custom_value<Context> custom_;
   };
 
-  FMT_CONSTEXPR basic_format_arg() : type_(internal::none_type) {}
+  FMT_CONSTEXPR basic_format_arg( ) : type_(internal::none_type) {}
 
-  FMT_CONSTEXPR FMT_EXPLICIT operator bool() const FMT_NOEXCEPT {
+  FMT_CONSTEXPR FMT_EXPLICIT operator bool( ) const FMT_NOEXCEPT {
     return type_ != internal::none_type;
   }
 
-  internal::type type() const { return type_; }
+  internal::type type( ) const { return type_; }
 
-  bool is_integral() const { return internal::is_integral(type_); }
-  bool is_arithmetic() const { return internal::is_arithmetic(type_); }
+  bool is_integral( ) const { return internal::is_integral(type_); }
+  bool is_arithmetic( ) const { return internal::is_arithmetic(type_); }
 };
 
 struct monostate {};
@@ -1008,7 +1008,7 @@ FMT_CONSTEXPR typename internal::result_of<Visitor(int)>::type visit_format_arg(
   case internal::custom_type:
     return vis(typename basic_format_arg<Context>::handle(arg.value_.custom));
   }
-  return vis(monostate());
+  return vis(monostate( ));
 }
 
 template <typename Visitor, typename Context>
@@ -1035,15 +1035,15 @@ template <typename Context> class arg_map {
   unsigned size_;
 
   void push_back(value<Context> val) {
-    const internal::named_arg_base<char_type>& named = val.as_named_arg();
-    map_[size_] = entry{named.name, named.template deserialize<Context>()};
+    const internal::named_arg_base<char_type>& named = val.as_named_arg( );
+    map_[size_] = entry{named.name, named.template deserialize<Context>( )};
     ++size_;
   }
 
  public:
-  arg_map() : map_(FMT_NULL), size_(0) {}
+  arg_map( ) : map_(FMT_NULL), size_(0) {}
   void init(const basic_format_args<Context>& args);
-  ~arg_map() { delete[] map_; }
+  ~arg_map( ) { delete[] map_; }
 
   basic_format_arg<Context> find(basic_string_view<char_type> name) const {
     // The list is unsorted, so just return the first matching name.
@@ -1061,25 +1061,25 @@ class locale_ref {
   friend class locale;
 
  public:
-  locale_ref() : locale_(FMT_NULL) {}
+  locale_ref( ) : locale_(FMT_NULL) {}
   template <typename Locale> explicit locale_ref(const Locale& loc);
 
-  template <typename Locale> Locale get() const;
+  template <typename Locale> Locale get( ) const;
 };
 
 template <typename Context, typename T> struct get_type {
   typedef decltype(
-      make_value<Context>(declval<typename std::decay<T>::type&>())) value_type;
+      make_value<Context>(declval<typename std::decay<T>::type&>( ))) value_type;
   static const type value = value_type::type_tag;
 };
 
-template <typename Context> FMT_CONSTEXPR11 unsigned long long get_types() {
+template <typename Context> FMT_CONSTEXPR11 unsigned long long get_types( ) {
   return 0;
 }
 
 template <typename Context, typename Arg, typename... Args>
-FMT_CONSTEXPR11 unsigned long long get_types() {
-  return get_type<Context, Arg>::value | (get_types<Context, Args...>() << 4);
+FMT_CONSTEXPR11 unsigned long long get_types( ) {
+  return get_type<Context, Arg>::value | (get_types<Context, Args...>( ) << 4);
 }
 
 template <typename Context, typename T>
@@ -1133,7 +1133,7 @@ template <typename OutputIt, typename Char> class basic_format_context {
    */
   basic_format_context(OutputIt out,
                        basic_format_args<basic_format_context> ctx_args,
-                       internal::locale_ref loc = internal::locale_ref())
+                       internal::locale_ref loc = internal::locale_ref( ))
       : out_(out), args_(ctx_args), loc_(loc) {}
 
   format_arg arg(unsigned id) const { return args_.get(id); }
@@ -1142,17 +1142,17 @@ template <typename OutputIt, typename Char> class basic_format_context {
   // specified name.
   format_arg arg(basic_string_view<char_type> name);
 
-  internal::error_handler error_handler() { return {}; }
-  void on_error(const char* message) { error_handler().on_error(message); }
+  internal::error_handler error_handler( ) { return {}; }
+  void on_error(const char* message) { error_handler( ).on_error(message); }
 
   // Returns an iterator to the beginning of the output range.
-  iterator out() { return out_; }
-  FMT_DEPRECATED iterator begin() { return out_; }
+  iterator out( ) { return out_; }
+  FMT_DEPRECATED iterator begin( ) { return out_; }
 
   // Advances the begin iterator to ``it``.
   void advance_to(iterator it) { out_ = it; }
 
-  internal::locale_ref locale() { return loc_; }
+  internal::locale_ref locale( ) { return loc_; }
 };
 
 template <typename Char> struct buffer_context {
@@ -1187,14 +1187,14 @@ template <typename Context, typename... Args> class format_arg_store {
 
   friend class basic_format_args<Context>;
 
-  static FMT_CONSTEXPR11 unsigned long long get_types() {
-    return IS_PACKED ? internal::get_types<Context, Args...>()
+  static FMT_CONSTEXPR11 unsigned long long get_types( ) {
+    return IS_PACKED ? internal::get_types<Context, Args...>( )
                      : internal::is_unpacked_bit | NUM_ARGS;
   }
 
  public:
 #if FMT_USE_CONSTEXPR11
-  static FMT_CONSTEXPR11 unsigned long long TYPES = get_types();
+  static FMT_CONSTEXPR11 unsigned long long TYPES = get_types( );
 #else
   static const unsigned long long TYPES;
 #endif
@@ -1216,7 +1216,7 @@ template <typename Context, typename... Args> class format_arg_store {
 #if !FMT_USE_CONSTEXPR11
 template <typename Context, typename... Args>
 const unsigned long long format_arg_store<Context, Args...>::TYPES =
-    get_types();
+    get_types( );
 #endif
 
 /**
@@ -1253,7 +1253,7 @@ template <typename Context> class basic_format_args {
     const format_arg* args_;
   };
 
-  bool is_packed() const { return (types_ & internal::is_unpacked_bit) == 0; }
+  bool is_packed( ) const { return (types_ & internal::is_unpacked_bit) == 0; }
 
   typename internal::type type(unsigned index) const {
     unsigned shift = index * 4;
@@ -1268,8 +1268,8 @@ template <typename Context> class basic_format_args {
 
   format_arg do_get(size_type index) const {
     format_arg arg;
-    if (!is_packed()) {
-      auto num_args = max_size();
+    if (!is_packed( )) {
+      auto num_args = max_size( );
       if (index < num_args) arg = args_[index];
       return arg;
     }
@@ -1282,7 +1282,7 @@ template <typename Context> class basic_format_args {
   }
 
  public:
-  basic_format_args() : types_(0) {}
+  basic_format_args( ) : types_(0) {}
 
   /**
    \rst
@@ -1309,14 +1309,14 @@ template <typename Context> class basic_format_args {
   format_arg get(size_type index) const {
     format_arg arg = do_get(index);
     if (arg.type_ == internal::named_arg_type)
-      arg = arg.value_.as_named_arg().template deserialize<Context>();
+      arg = arg.value_.as_named_arg( ).template deserialize<Context>( );
     return arg;
   }
 
-  size_type max_size() const {
+  size_type max_size( ) const {
     unsigned long long max_packed = internal::max_packed_args;
     return static_cast<size_type>(
-        is_packed() ? max_packed : types_ & ~internal::is_unpacked_bit);
+        is_packed( ) ? max_packed : types_ & ~internal::is_unpacked_bit);
   }
 };
 
@@ -1361,7 +1361,7 @@ template <typename Char> struct named_arg_base {
 
   named_arg_base(basic_string_view<Char> nm) : name(nm) {}
 
-  template <typename Context> basic_format_arg<Context> deserialize() const {
+  template <typename Context> basic_format_arg<Context> deserialize( ) const {
     basic_format_arg<Context> arg;
     std::memcpy(&arg, data, sizeof(basic_format_arg<Context>));
     return arg;

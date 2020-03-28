@@ -15,7 +15,7 @@ namespace input
 		if ( m_window )
 			return;
 
-		m_window = FindWindowW( window.data(), NULL );
+		m_window = FindWindowW( window.data( ), NULL );
 		if ( !m_window )
 			throw std::runtime_error( "input::init - Failed to find input window" );
 
@@ -24,7 +24,7 @@ namespace input
 			throw std::runtime_error( "input::init - Failed to set new WndProc" );
 	}
 
-	void undo()
+	void undo( )
 	{
 		if ( m_original_wndproc )
 			SetWindowLongW( m_window, GWLP_WNDPROC, reinterpret_cast< LONG_PTR >( m_original_wndproc ) );
@@ -153,7 +153,7 @@ namespace input
 		return changed_state;
 	}
 
-	void update_mouse()
+	void update_mouse( )
 	{
 		POINT p;
 		if ( !GetCursorPos( &p ) )
@@ -166,12 +166,12 @@ namespace input
 			static_cast< float >( p.y ) };
 	}
 
-	mouse_info_t& get_mouse()
+	mouse_info_t& get_mouse( )
 	{
 		return m_mouse_info;
 	}
 
-	void reset_mouse()
+	void reset_mouse( )
 	{
 		m_mouse_info.m_state = e_state::IDLE;
 		m_mouse_info.m_state_right = e_state::IDLE;
@@ -188,7 +188,7 @@ namespace input
 
 	bool mouse_in_bounds( const math::vec4_t& bounds )
 	{
-		return mouse_in_bounds( bounds.get_pos(), bounds.get_size() );
+		return mouse_in_bounds( bounds.get_pos( ), bounds.get_size( ) );
 	}
 
 	key_info_t& get_key_info( const int key )
@@ -201,12 +201,12 @@ namespace input
 		return "TODO";
 	}
 
-	char get_last_char()
+	char get_last_char( )
 	{
 		return m_last_char;
 	}
 
-	void clear_char()
+	void clear_char( )
 	{
 		m_last_char = '\0';
 	}
@@ -216,13 +216,13 @@ namespace input
 		const auto handled_mouse = handle_mouse( msg );
 		const auto handled_keyboard = handle_keyboard( msg, wparam );
 
-		gui::toggle();
+		gui::toggle( );
 
-		if ( gui::is_open() && ( handled_mouse || handled_keyboard ) )
+		if ( gui::is_open( ) && ( handled_mouse || handled_keyboard ) )
 		{
-			gui::handle_input();
+			gui::handle_input( );
 
-			get_mouse().reset_scroll();
+			get_mouse( ).reset_scroll( );
 
 			return false;
 		}

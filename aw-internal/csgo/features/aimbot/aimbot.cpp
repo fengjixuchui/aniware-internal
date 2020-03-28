@@ -4,16 +4,16 @@ namespace aimbot
 {
 	bool is_valid( player_t* pl )
 	{
-		if ( pl->IsDormant() )
+		if ( pl->IsDormant( ) )
 			return false;
 
 		if( pl == ctx::client.local )
 			return false;
 
-		if ( !pl->is_alive() || pl->get_flags().has_flag( FL_FROZEN ) )
+		if ( !pl->is_alive( ) || pl->get_flags( ).has_flag( FL_FROZEN ) )
 			return false;
 
-		if ( pl->is_immune() )
+		if ( pl->is_immune( ) )
 			return false;
 
 		return true;
@@ -21,13 +21,10 @@ namespace aimbot
 
 	bool can_shoot( weapon_t* weapon )
 	{
-		if ( !weapon || weapon->get_ammo() <= 0 )
+		if ( !weapon || weapon->get_ammo( ) <= 0 )
 			return false;
 		
-		if ( weapon->get_next_primary_attack() > ctx::csgo.globals->curtime )
-			return false;
-
-		if ( weapon->get_definition_index() == WEAPON_REVOLVER && weapon->ready_time() > ctx::csgo.globals->curtime )
+		if ( weapon->get_definition_index( ) == WEAPON_REVOLVER && weapon->ready_time( ) > ctx::csgo.globals->curtime )
 			return false;
 
 		return true;
@@ -35,13 +32,13 @@ namespace aimbot
 
 	void select_points( AimbotData& data )
 	{
-		auto aim_body = config::get< bool >( ctx::cfg.aim_body ) ? 2 : 0;
+		int aim_body = config::get< bool >( ctx::cfg.aim_body ) ? 2 : 0;
 
 		for ( auto i = aim_body; i < HITBOX_MAX; i++ )
 		{
-			auto point = data.pl->get_hitbox_pos( i );
+			const auto point = data.pl->get_hitbox_pos( i );
 
-			if ( !point.zero() )
+			if ( !point.zero( ) )
 			{
 				data.points.push_back( point );
 			}
@@ -50,12 +47,12 @@ namespace aimbot
 
 	void filter_angles( AimbotData& data )
 	{
-		if ( data.points.empty() )
+		if ( data.points.empty( ) )
 			return;
 
-		for ( auto i = 0; i < data.points.size(); i++ )
+		for ( auto i = 0; i < data.points.size( ); i++ )
 		{
-			if ( !data.points.at( i ).valid() )
+			if ( !data.points.at( i ).valid( ) )
 			{
 				data.points.erase( std::begin( data.points ) + i );
 			}
@@ -64,20 +61,25 @@ namespace aimbot
 
 	void select_angles( AimbotData& data )
 	{
-		ctx::client.cmd->viewangles = math::calc_angle( ctx::client.local->get_eye_pos(), data.points.front() );
+		ctx::client.cmd->viewangles = math::calc_angle( ctx::client.local->get_eye_pos( ), data.points.front( ) );
+
+		if ( config::get< bool >( ctx::cfg.aim_recoilcompensation ) )
+		{
+			ctx::client.cmd->viewangles -= ctx::client.local->get_punch_angle() * 2;
+		}
 
 		if ( !config::get< bool >( ctx::cfg.aim_silent ) )
 		{
 			ctx::csgo.engine->SetViewAngles( ctx::client.cmd->viewangles );
 		}
 
-		if ( config::get< bool >( ctx::cfg.aim_shoot) )
+		if ( config::get< bool >( ctx::cfg.aim_shoot ) )
 		{
 			ctx::client.cmd->buttons.add_flag( IN_ATTACK );
 		}
 	}
 
-	void work()
+	void work( )
 	{
 		if ( !config::get< bool >( ctx::cfg.aim_enable ) )
 			return;
@@ -85,10 +87,10 @@ namespace aimbot
 		if ( !ctx::client.cmd )
 			return;
 
-		if ( !ctx::client.local || !ctx::client.local->is_alive() )
+		if ( !ctx::client.local || !ctx::client.local->is_alive( ) )
 			return;
 
-		auto weapon = entity_t::get< weapon_t >( ctx::client.local->get_weapon_handle() );
+		auto weapon = entity_t::get< weapon_t >( ctx::client.local->get_weapon_handle( ) );
 
 		if ( !can_shoot( weapon ) )
 			return;
@@ -103,8 +105,8 @@ namespace aimbot
 			filter_angles( data );
 			select_angles( data );
 
-			if ( !data.points.empty() )
-				data.points.clear();
+			if ( !data.points.empty( ) )
+				data.points.clear( );
 
 			return false;
 		}, ( config::get< bool >( ctx::cfg.aim_friendly ) ? game::NO_FLAG : game::ENEMY_ONLY ) );

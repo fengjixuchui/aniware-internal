@@ -8,13 +8,13 @@ ConVars cvars;
 
 namespace lagcompensation
 {
-	float lerp_time()
+	float lerp_time( )
 	{
-		const float ratio = std::clamp( cvars.interp_ratio->GetFloat(), cvars.min_interp_ratio->GetFloat(), cvars.max_interp_ratio->GetFloat() );
+		const float ratio = std::clamp( cvars.interp_ratio->GetFloat( ), cvars.min_interp_ratio->GetFloat( ), cvars.max_interp_ratio->GetFloat( ) );
 
 		if ( ratio )
 		{
-			return std::max( cvars.interp->GetFloat(), ( ratio / ( ( cvars.max_update_rate ) ? cvars.max_update_rate->GetFloat() : cvars.update_rate->GetFloat() ) ) );
+			return std::max( cvars.interp->GetFloat( ), ( ratio / ( ( cvars.max_update_rate ) ? cvars.max_update_rate->GetFloat( ) : cvars.update_rate->GetFloat( ) ) ) );
 		}
 	}
 
@@ -25,13 +25,13 @@ namespace lagcompensation
 
 	bool valid_tick ( float time )
 	{
-		const auto net_channel = ctx::csgo.engine->GetNetChannelInfo();
+		const auto net_channel = ctx::csgo.engine->GetNetChannelInfo( );
 		
 		if ( !net_channel )
 			return false;
 
-		const float delta_time = std::clamp( net_channel->GetLatency( FLOW_OUTGOING ) + lerp_time(),
-			0.f, cvars.max_unlag->GetFloat() ) - ( ctx::csgo.globals->curtime - time );
+		const float delta_time = std::clamp( net_channel->GetLatency( FLOW_OUTGOING ) + lerp_time( ),
+			0.f, cvars.max_unlag->GetFloat( ) ) - ( ctx::csgo.globals->curtime - time );
 
 		if ( delta_time )
 		{
@@ -41,16 +41,16 @@ namespace lagcompensation
 
 	bool is_valid( player_t* pl )
 	{
-		if ( pl->IsDormant() )
+		if ( pl->IsDormant( ) )
 			return false;
 
 		if( pl == ctx::client.local )
 			return false;
 
-		if ( !pl->is_alive() || pl->get_flags().has_flag( FL_FROZEN ) )
+		if ( !pl->is_alive( ) || pl->get_flags( ).has_flag( FL_FROZEN ) )
 			return false;
 
-		if ( pl->is_immune() )
+		if ( pl->is_immune( ) )
 			return false;
 
 		return true;
@@ -62,17 +62,17 @@ namespace lagcompensation
 			return false;
 
 		record.head = pl->get_hitbox_pos( HITBOX_HEAD );
-		record.view = pl->get_eye_angles();
-		record.simulation_time = pl->get_simtime();
+		record.view = pl->get_eye_angles( );
+		record.simulation_time = pl->get_simtime( );
 		
 		if ( valid_tick( record.simulation_time ) && record.matrix->m_matrix )
 			return true;
 	}
 
-	void initialize()
+	void initialize( )
 	{
-		if ( !records->empty() )
-			records->clear();
+		if ( !records->empty( ) )
+			records->clear( );
 		
 		if ( cvars.initialize )
 		{
@@ -99,27 +99,27 @@ namespace lagcompensation
 		}
 	}
 
-	void update()
+	void update( )
 	{
-		if ( !config::get< bool >( ctx::cfg.lagcompensation ) || !ctx::csgo.engine->IsInGame() || !ctx::client.local )
+		if ( !config::get< bool >( ctx::cfg.lagcompensation ) || !ctx::csgo.engine->IsInGame( ) || !ctx::client.local )
 		{
-			if ( !records->empty() )
+			if ( !records->empty( ) )
 			{
-				records->clear();
+				records->clear( );
 			}
 
 			return;
 		}
 
-		initialize();
+		initialize( );
 
 		game::for_every_player( []( player_t * pl ) -> bool {
-			const int index = pl->Index();
+			const int index = pl->Index( );
 
 			if ( !is_valid( pl ) )
-				records[ index ].clear();
+				records[ index ].clear( );
 
-			if ( records[ index ].size() && ( records[ index ].front().simulation_time == pl->get_simtime() ) )
+			if ( records[ index ].size( ) && ( records[ index ].front( ).simulation_time == pl->get_simtime( ) ) )
 				return false;
 
 			clear_variables( pl );
@@ -129,8 +129,8 @@ namespace lagcompensation
 			if ( get_player_record( pl, record ) )
 				records[ index ].push_front( record );
 
-			while ( records[ index ].size() <= 3 && ( records[ index ].size() > static_cast< size_t >( time_to_ticks ( config::get< float >( ctx::cfg.lagcompensation_ms ) / 1000.f ) ) ) )
-				records[ index ].pop_back();
+			while ( records[ index ].size( ) <= 3 && ( records[ index ].size( ) > static_cast< size_t >( time_to_ticks ( config::get< float >( ctx::cfg.lagcompensation_ms ) / 1000.f ) ) ) )
+				records[ index ].pop_back( );
 
 			return false;
 		}, { game::ENEMY_ONLY } );

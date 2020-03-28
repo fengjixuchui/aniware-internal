@@ -6,19 +6,19 @@ namespace math
 {
 	struct vec2_t
 	{
-		vec2_t() = default;
+		vec2_t( ) = default;
 
 		vec2_t( float xy ) : x( xy ), y( xy ) {};
 		vec2_t( float x, float y ) : x( x ), y( y ) {};
 		vec2_t( float x, float y, float z ) : x( x ), y( y ) {};
 		vec2_t( float* arr ) : x( arr[ PITCH ] ), y( arr[ YAW ] ) {};
 
-		inline float length() const
+		inline float length( ) const
 		{
 			return sqrt( x * x + y * y );
 		}
 
-		inline bool is_zero() const
+		inline bool is_zero( ) const
 		{
 			return x == 0 && y == 0;
 		}

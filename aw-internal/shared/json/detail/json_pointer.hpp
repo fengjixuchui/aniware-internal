@@ -51,7 +51,7 @@ class json_pointer
 
     @invariant For each JSON pointer `ptr`, it holds:
     @code {.cpp}
-    ptr == json_pointer(ptr.to_string());
+    ptr == json_pointer(ptr.to_string( ));
     @endcode
 
     @return a string representation of the JSON pointer
@@ -60,9 +60,9 @@ class json_pointer
 
     @since version 2.0.0
     */
-    std::string to_string() const
+    std::string to_string( ) const
     {
-        return std::accumulate(reference_tokens.begin(), reference_tokens.end(),
+        return std::accumulate(reference_tokens.begin( ), reference_tokens.end( ),
                                std::string{},
                                [](const std::string & a, const std::string & b)
         {
@@ -70,9 +70,9 @@ class json_pointer
         });
     }
 
-        operator std::string() const
+        operator std::string( ) const
     {
-        return to_string();
+        return to_string( );
     }
 
     /*!
@@ -93,9 +93,9 @@ class json_pointer
     */
     json_pointer& operator/=(const json_pointer& ptr)
     {
-        reference_tokens.insert(reference_tokens.end(),
-                                ptr.reference_tokens.begin(),
-                                ptr.reference_tokens.end());
+        reference_tokens.insert(reference_tokens.end( ),
+                                ptr.reference_tokens.begin( ),
+                                ptr.reference_tokens.end( ));
         return *this;
     }
 
@@ -216,22 +216,22 @@ class json_pointer
 
     @since version 3.6.0
     */
-    json_pointer parent_pointer() const
+    json_pointer parent_pointer( ) const
     {
-        if (empty())
+        if (empty( ))
         {
             return *this;
         }
 
         json_pointer res = *this;
-        res.pop_back();
+        res.pop_back( );
         return res;
     }
 
     /*!
     @brief remove last reference token
 
-    @pre not `empty()`
+    @pre not `empty( )`
 
     @liveexample{The example shows the usage of `pop_back`.,json_pointer__pop_back}
 
@@ -241,20 +241,20 @@ class json_pointer
 
     @since version 3.6.0
     */
-    void pop_back()
+    void pop_back( )
     {
-        if (JSON_UNLIKELY(empty()))
+        if (JSON_UNLIKELY(empty( )))
         {
             JSON_THROW(detail::out_of_range::create(405, "JSON pointer has no parent"));
         }
 
-        reference_tokens.pop_back();
+        reference_tokens.pop_back( );
     }
 
     /*!
     @brief return last reference token
 
-    @pre not `empty()`
+    @pre not `empty( )`
     @return last reference token
 
     @liveexample{The example shows the usage of `back`.,json_pointer__back}
@@ -265,14 +265,14 @@ class json_pointer
 
     @since version 3.6.0
     */
-    const std::string& back()
+    const std::string& back( )
     {
-        if (JSON_UNLIKELY(empty()))
+        if (JSON_UNLIKELY(empty( )))
         {
             JSON_THROW(detail::out_of_range::create(405, "JSON pointer has no parent"));
         }
 
-        return reference_tokens.back();
+        return reference_tokens.back( );
     }
 
     /*!
@@ -311,9 +311,9 @@ class json_pointer
 
     @since version 3.6.0
     */
-    bool empty() const noexcept
+    bool empty( ) const noexcept
     {
-        return reference_tokens.empty();
+        return reference_tokens.empty( );
     }
 
   private:
@@ -330,7 +330,7 @@ class json_pointer
         const int res = std::stoi(s, &processed_chars);
 
         // check if the string was completely read
-        if (JSON_UNLIKELY(processed_chars != s.size()))
+        if (JSON_UNLIKELY(processed_chars != s.size( )))
         {
             JSON_THROW(detail::out_of_range::create(404, "unresolved reference token '" + s + "'"));
         }
@@ -338,9 +338,9 @@ class json_pointer
         return res;
     }
 
-    json_pointer top() const
+    json_pointer top( ) const
     {
-        if (JSON_UNLIKELY(empty()))
+        if (JSON_UNLIKELY(empty( )))
         {
             JSON_THROW(detail::out_of_range::create(405, "JSON pointer has no parent"));
         }
@@ -448,7 +448,7 @@ class json_pointer
             {
                 // check if reference token is a number
                 const bool nums =
-                    std::all_of(reference_token.begin(), reference_token.end(),
+                    std::all_of(reference_token.begin( ), reference_token.end( ),
                                 [](const char x)
                 {
                     return x >= '0' and x <= '9';
@@ -472,7 +472,7 @@ class json_pointer
                 case detail::value_t::array:
                 {
                     // error condition (cf. RFC 6901, Sect. 4)
-                    if (JSON_UNLIKELY(reference_token.size() > 1 and reference_token[0] == '0'))
+                    if (JSON_UNLIKELY(reference_token.size( ) > 1 and reference_token[0] == '0'))
                     {
                         JSON_THROW(detail::parse_error::create(106, 0,
                                                                "array index '" + reference_token +
@@ -482,7 +482,7 @@ class json_pointer
                     if (reference_token == "-")
                     {
                         // explicitly treat "-" as index beyond the end
-                        ptr = &ptr->operator[](ptr->m_value.array->size());
+                        ptr = &ptr->operator[](ptr->m_value.array->size( ));
                     }
                     else
                     {
@@ -534,12 +534,12 @@ class json_pointer
                     {
                         // "-" always fails the range check
                         JSON_THROW(detail::out_of_range::create(402,
-                                                                "array index '-' (" + std::to_string(ptr->m_value.array->size()) +
+                                                                "array index '-' (" + std::to_string(ptr->m_value.array->size( )) +
                                                                 ") is out of range"));
                     }
 
                     // error condition (cf. RFC 6901, Sect. 4)
-                    if (JSON_UNLIKELY(reference_token.size() > 1 and reference_token[0] == '0'))
+                    if (JSON_UNLIKELY(reference_token.size( ) > 1 and reference_token[0] == '0'))
                     {
                         JSON_THROW(detail::parse_error::create(106, 0,
                                                                "array index '" + reference_token +
@@ -599,12 +599,12 @@ class json_pointer
                     {
                         // "-" cannot be used for const access
                         JSON_THROW(detail::out_of_range::create(402,
-                                                                "array index '-' (" + std::to_string(ptr->m_value.array->size()) +
+                                                                "array index '-' (" + std::to_string(ptr->m_value.array->size( )) +
                                                                 ") is out of range"));
                     }
 
                     // error condition (cf. RFC 6901, Sect. 4)
-                    if (JSON_UNLIKELY(reference_token.size() > 1 and reference_token[0] == '0'))
+                    if (JSON_UNLIKELY(reference_token.size( ) > 1 and reference_token[0] == '0'))
                     {
                         JSON_THROW(detail::parse_error::create(106, 0,
                                                                "array index '" + reference_token +
@@ -658,12 +658,12 @@ class json_pointer
                     {
                         // "-" always fails the range check
                         JSON_THROW(detail::out_of_range::create(402,
-                                                                "array index '-' (" + std::to_string(ptr->m_value.array->size()) +
+                                                                "array index '-' (" + std::to_string(ptr->m_value.array->size( )) +
                                                                 ") is out of range"));
                     }
 
                     // error condition (cf. RFC 6901, Sect. 4)
-                    if (JSON_UNLIKELY(reference_token.size() > 1 and reference_token[0] == '0'))
+                    if (JSON_UNLIKELY(reference_token.size( ) > 1 and reference_token[0] == '0'))
                     {
                         JSON_THROW(detail::parse_error::create(106, 0,
                                                                "array index '" + reference_token +
@@ -704,7 +704,7 @@ class json_pointer
         std::vector<std::string> result;
 
         // special case: empty reference string -> no reference tokens
-        if (reference_string.empty())
+        if (reference_string.empty( ))
         {
             return result;
         }
@@ -745,7 +745,7 @@ class json_pointer
                 assert(reference_token[pos] == '~');
 
                 // ~ must be followed by 0 or 1
-                if (JSON_UNLIKELY(pos == reference_token.size() - 1 or
+                if (JSON_UNLIKELY(pos == reference_token.size( ) - 1 or
                                   (reference_token[pos + 1] != '0' and
                                    reference_token[pos + 1] != '1')))
                 {
@@ -777,11 +777,11 @@ class json_pointer
     static void replace_substring(std::string& s, const std::string& f,
                                   const std::string& t)
     {
-        assert(not f.empty());
+        assert(not f.empty( ));
         for (auto pos = s.find(f);                // find first occurrence of f
                 pos != std::string::npos;         // make sure f was found
-                s.replace(pos, f.size(), t),      // replace with t, and
-                pos = s.find(f, pos + t.size()))  // find next occurrence of f
+                s.replace(pos, f.size( ), t),      // replace with t, and
+                pos = s.find(f, pos + t.size( )))  // find next occurrence of f
         {}
     }
 
@@ -813,7 +813,7 @@ class json_pointer
         {
             case detail::value_t::array:
             {
-                if (value.m_value.array->empty())
+                if (value.m_value.array->empty( ))
                 {
                     // flatten empty array as null
                     result[reference_string] = nullptr;
@@ -821,7 +821,7 @@ class json_pointer
                 else
                 {
                     // iterate array and use index as reference string
-                    for (std::size_t i = 0; i < value.m_value.array->size(); ++i)
+                    for (std::size_t i = 0; i < value.m_value.array->size( ); ++i)
                     {
                         flatten(reference_string + "/" + std::to_string(i),
                                 value.m_value.array->operator[](i), result);
@@ -832,7 +832,7 @@ class json_pointer
 
             case detail::value_t::object:
             {
-                if (value.m_value.object->empty())
+                if (value.m_value.object->empty( ))
                 {
                     // flatten empty object as null
                     result[reference_string] = nullptr;
@@ -870,7 +870,7 @@ class json_pointer
     static BasicJsonType
     unflatten(const BasicJsonType& value)
     {
-        if (JSON_UNLIKELY(not value.is_object()))
+        if (JSON_UNLIKELY(not value.is_object( )))
         {
             JSON_THROW(detail::type_error::create(314, "only objects can be unflattened"));
         }
@@ -880,7 +880,7 @@ class json_pointer
         // iterate the JSON object values
         for (const auto& element : *value.m_value.object)
         {
-            if (JSON_UNLIKELY(not element.second.is_primitive()))
+            if (JSON_UNLIKELY(not element.second.is_primitive( )))
             {
                 JSON_THROW(detail::type_error::create(315, "values in object must be primitive"));
             }

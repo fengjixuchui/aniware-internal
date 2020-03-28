@@ -29,9 +29,9 @@ namespace gui
 		int m_header_height;
 	} m_style;
 
-	void render()
+	void render( )
 	{
-		if ( !is_open() )
+		if ( !is_open( ) )
 			return;
 
 		auto window_pos = m_pos - m_size * 0.5f;
@@ -51,31 +51,31 @@ namespace gui
 		rect( window_pos, m_size, m_style.m_col_frame_border_outline );
 
 		auto scaled_size = m_size.x - 2;
-		auto tab_size = scaled_size / m_tabs.size();
+		auto tab_size = scaled_size / m_tabs.size( );
 		auto pos = window_pos + math::vec2_t( 1, 0 );
 
 		for ( auto& tab : m_tabs )
 		{
-			auto vec = math::vec2_t( tab_size, static_cast< float >( get_item_size() ) );
+			auto vec = math::vec2_t( tab_size, static_cast< float >( get_item_size( ) ) );
 			tab->set_size( vec );
 			tab->render( pos );
 		}
 	}
 
-	void handle_input()
+	void handle_input( )
 	{
 		for ( const auto& tab : m_tabs )
-			tab->handle_input();
+			tab->handle_input( );
 	}
 
-	void setup_style()
+	void setup_style( )
 	{
 		m_style.m_col_title_text = col_t( 230, 230, 230 );
 
-		m_style.m_col_frame_border = col_t::palette_t::light_grey();
+		m_style.m_col_frame_border = col_t::palette_t::light_grey( );
 		m_style.m_col_frame_border_outline = col_t( 5, 5, 5, 150 );
 
-		m_style.m_col_frame_inner = col_t::palette_t::dark_grey();
+		m_style.m_col_frame_inner = col_t::palette_t::dark_grey( );
 
 		m_style.m_border_size = 3;
 		m_style.m_header_height = 18;
@@ -85,23 +85,23 @@ namespace gui
 	{
 		auto tab = std::make_shared<controls::c_tab>( name );
 
-		tab->set_id( m_tabs.size() );
+		tab->set_id( m_tabs.size( ) );
 		m_tabs.push_back( tab );
 
-		return tab.get();
+		return tab.get( );
 	}
 
 	void set_active_tab( int id )
 	{
 		if ( id < 0 )
-			id = static_cast< int >( m_tabs.size() ) - 1;
-		else if ( id >= static_cast< int >( m_tabs.size() ) )
+			id = static_cast< int >( m_tabs.size( ) ) - 1;
+		else if ( id >= static_cast< int >( m_tabs.size( ) ) )
 			id = 0;
 
 		m_active_tab = id;
 	}
 
-	int get_active_tab()
+	int get_active_tab( )
 	{
 		return m_active_tab;
 	}
@@ -116,13 +116,13 @@ namespace gui
 		m_hold_key = vk;
 	}
 
-	void toggle()
+	void toggle( )
 	{
 		if ( input::get_key_info( m_toggle_key ).m_state == input::PRESSED )
 			m_open = !m_open;
 	}
 
-	bool is_open()
+	bool is_open( )
 	{
 		return m_open || input::get_key_info( m_hold_key ).m_state != input::IDLE;
 	}
@@ -132,17 +132,17 @@ namespace gui
 		m_pos = pos;
 	}
 
-	math::vec2_t get_pos()
+	math::vec2_t get_pos( )
 	{
 		return m_pos;
 	}
 
 	void set_size( const math::vec2_t & size )
 	{
-		m_size = { size.x, size.y * get_item_size() };
+		m_size = { size.x, size.y * get_item_size( ) };
 	}
 
-	math::vec2_t get_size()
+	math::vec2_t get_size( )
 	{
 		return m_size;
 	}
@@ -152,33 +152,33 @@ namespace gui
 		m_name = name;
 	}
 
-	std::string_view get_name()
+	std::string_view get_name( )
 	{
 		return m_name;
 	}
 
-	int get_item_size()
+	int get_item_size( )
 	{
 		return 18;
 	}
 
-	std::function<float()> m_curtime_fn;
-	std::function<float()> m_frametime_fn;
+	std::function<float( )> m_curtime_fn;
+	std::function<float( )> m_frametime_fn;
 	std::function<void( const math::vec2_t&, const math::vec2_t&, const col_t& )> m_rect_filled_fn;
 	std::function<void( const math::vec2_t&, const math::vec2_t&, const col_t& )> m_rect_fn;
 	std::function<void( const math::vec2_t&, const col_t & col, std::string_view )> m_text_fn;
 	std::function<math::vec2_t( std::string_view )> m_text_size_fn;
-	std::function<void()> m_reset_clip_fn;
+	std::function<void( )> m_reset_clip_fn;
 	std::function<void( const math::vec2_t&, const math::vec2_t&, bool )> m_clip_fn;
 
 	void setup_helper( 
-		const std::function<float()> & curtime,
-		const std::function<float()> & frametime,
+		const std::function<float( )> & curtime,
+		const std::function<float( )> & frametime,
 		const std::function<void( const math::vec2_t&, const math::vec2_t&, const col_t& )> & rect_filled,
 		const std::function<void( const math::vec2_t&, const math::vec2_t&, const col_t& )> & rect,
 		const std::function<void( const math::vec2_t&, const col_t & col, std::string_view )> & text,
 		const std::function<math::vec2_t( std::string_view )> & text_size,
-		const std::function<void()> & reset_clip,
+		const std::function<void( )> & reset_clip,
 		const std::function<void( const math::vec2_t&, const math::vec2_t&, bool )> & clip )
 	{
 		m_curtime_fn = curtime;
@@ -191,14 +191,14 @@ namespace gui
 		m_clip_fn = clip;
 	}
 
-	float get_curtime()
+	float get_curtime( )
 	{
-		return m_curtime_fn();
+		return m_curtime_fn( );
 	}
 
-	float get_frametime()
+	float get_frametime( )
 	{
-		return m_frametime_fn();
+		return m_frametime_fn( );
 	}
 
 	void rect_filled( const math::vec2_t & pos, const math::vec2_t & size, const col_t & col )
@@ -221,9 +221,9 @@ namespace gui
 		return m_text_size_fn( text );
 	}
 
-	void reset_clip()
+	void reset_clip( )
 	{
-		return m_reset_clip_fn();
+		return m_reset_clip_fn( );
 	}
 
 	void clip( const math::vec2_t & pos, const math::vec2_t & size, bool override_clip )

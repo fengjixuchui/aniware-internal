@@ -2,6 +2,6 @@
 
 namespace movement
 {
-	void bunnyhop();
-	void strafe();
+	void bunnyhop( );
+	void strafe( );
 }
