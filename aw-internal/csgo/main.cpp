@@ -25,7 +25,6 @@ unsigned long __stdcall entry( void* instance )
 		input::init( L"Valve001" );
 
 		netvars::init();
-		weaponids.init();
 		classids.init();
 		render::init();
 		menu::init();

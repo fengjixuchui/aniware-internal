@@ -39,13 +39,11 @@
     <ClInclude Include="csgo\sdk\helper\interfaces.hpp" />
     <ClInclude Include="csgo\sdk\helper\netvars.hpp" />
     <ClInclude Include="csgo\sdk\helper\render.hpp" />
-    <ClInclude Include="csgo\sdk\helper\weaponids.hpp" />
     <ClInclude Include="csgo\sdk\sdk.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\CFontManager.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\CGlobalVarsBase.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\CHLClient.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\CInputSystem.hpp" />
-    <ClInclude Include="csgo\sdk\source_engine\CItemSystem.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\CCSWeaponData.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\ClientClass.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\datatypes\client_frame_stage_t.hpp" />
@@ -170,7 +168,6 @@
     <ClCompile Include="csgo\sdk\helper\interfaces.cpp" />
     <ClCompile Include="csgo\sdk\helper\netvars.cpp" />
     <ClCompile Include="csgo\sdk\helper\render.cpp" />
-    <ClCompile Include="csgo\sdk\helper\weaponids.cpp" />
     <ClCompile Include="shared\config\config.cpp" />
     <ClCompile Include="shared\gui\controls\checkbox.cpp" />
     <ClCompile Include="shared\gui\controls\combo.cpp" />

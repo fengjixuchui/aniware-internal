@@ -5,9 +5,6 @@ struct entity_t;
 
 namespace game
 {
-	CCStrike15ItemSystem* get_item_system();
-	CCStrike15ItemSchema* get_item_schema();
-
 	bool world_to_screen( const math::vec3_t& origin, math::vec3_t& screen );
 
 	enum e_player_iteration_flags
