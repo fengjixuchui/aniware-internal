@@ -6,7 +6,7 @@ namespace game
 	{
 		const auto screen_transform = [ & ]( const math::vec3_t & in, math::vec3_t & out ) -> bool
 		{
-			const auto& w2_s_matrix = ctx::csgo.engine->WorldToScreenMatrix();
+			const auto& w2_s_matrix = ctx::csgo.engine->WorldToScreenMatrix( );
 			out.x = w2_s_matrix[ 0 ][ 0 ] * in.x + w2_s_matrix[ 0 ][ 1 ] * in.y + w2_s_matrix[ 0 ][ 2 ] * in.z + w2_s_matrix[ 0 ][ 3 ];
 			out.y = w2_s_matrix[ 1 ][ 0 ] * in.x + w2_s_matrix[ 1 ][ 1 ] * in.y + w2_s_matrix[ 1 ][ 2 ] * in.z + w2_s_matrix[ 1 ][ 3 ];
 			out.z = 0.0f;
@@ -29,7 +29,7 @@ namespace game
 
 		if ( screen_transform( origin, screen ) )
 		{
-			math::vec2_t screen_size = render::get_screen_size();
+			math::vec2_t screen_size = render::get_screen_size( );
 
 			screen.x = ( screen_size.x / 2.0f ) + ( screen.x * screen_size.x ) / 2.0f;
 			screen.y = ( screen_size.y / 2.0f ) - ( screen.y * screen_size.y ) / 2.0f;
@@ -48,15 +48,15 @@ namespace game
 				continue;
 
 			if ( !flags.has_flag( ALLOW_DEAD ) &&
-				 !player->is_alive() )
+				 !player->is_alive( ) )
 				continue;
 
 			if ( flags.has_flag( ENEMY_ONLY ) &&
-				 !player->is_enemy() )
+				 !player->is_enemy( ) )
 				continue;
 
 			if ( !flags.has_flag( ALLOW_DORMANT ) &&
-				 player->IsDormant() )
+				 player->IsDormant( ) )
 				continue;
 
 			if ( func( player ) )
@@ -66,14 +66,14 @@ namespace game
 
 	void for_every_entity( const std::function<void( entity_t * ent )> & func, bitflag_t flags, int classid )
 	{
-		for ( auto i = ctx::csgo.globals->maxClients + 1; i < ctx::csgo.entlist->GetHighestEntityIndex(); i++ )
+		for ( auto i = ctx::csgo.globals->maxClients + 1; i < ctx::csgo.entlist->GetHighestEntityIndex( ); i++ )
 		{
 			auto entity = entity_t::get( i );
 			if ( !entity )
 				continue;
 
 			if ( flags.has_flag( FILTER_CLASSID ) &&
-				 classid != entity->GetClientClass()->m_ClassID )
+				 classid != entity->GetClientClass( )->m_ClassID )
 				continue;
 
 			func( entity );

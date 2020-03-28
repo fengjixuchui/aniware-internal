@@ -2,5 +2,5 @@
 
 struct CHLClient
 {
-	VFUNC( 8, GetAllClasses(), ClientClass* ( __thiscall* )( void* ) )( );
+	VFUNC( 8, GetAllClasses( ), ClientClass* ( __thiscall* )( void* ) )( );
 };

@@ -14,9 +14,9 @@ namespace input
 
 	struct mouse_info_t
 	{
-		mouse_info_t() : m_state( e_state::IDLE ), m_state_right( e_state::IDLE ), m_scroll( 0 ), m_pos( math::vec2_t{} ) {};
+		mouse_info_t( ) : m_state( e_state::IDLE ), m_state_right( e_state::IDLE ), m_scroll( 0 ), m_pos( math::vec2_t{} ) {};
 
-		void reset_scroll()
+		void reset_scroll( )
 		{
 			m_scroll = 0;
 		}
@@ -33,7 +33,7 @@ namespace input
 	{
 		e_state m_state;
 
-		bool is_pressed()
+		bool is_pressed( )
 		{
 			bool pressed = m_state == PRESSED;
 
@@ -43,7 +43,7 @@ namespace input
 			return pressed;
 		}
 
-		bool is_held()
+		bool is_held( )
 		{
 			return m_state == HELD;
 		}
@@ -51,7 +51,7 @@ namespace input
 
 	void init( std::wstring_view window );
 
-	void undo();
+	void undo( );
 
 
 	bool handle_mouse( const UINT msg );
@@ -61,11 +61,11 @@ namespace input
 	unsigned long WINAPI hook( HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam );
 
 
-	void update_mouse();
+	void update_mouse( );
 
-	mouse_info_t& get_mouse();
+	mouse_info_t& get_mouse( );
 
-	void reset_mouse();
+	void reset_mouse( );
 
 	bool mouse_in_bounds( const math::vec2_t& pos, const math::vec2_t& size );
 
@@ -76,7 +76,7 @@ namespace input
 
 	std::string_view get_key_name( const int key );
 
-	char get_last_char();
+	char get_last_char( );
 
-	void clear_char();
+	void clear_char( );
 }

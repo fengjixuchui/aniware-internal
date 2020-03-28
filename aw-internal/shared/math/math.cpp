@@ -12,16 +12,16 @@ namespace math
 		ang.y = static_cast< float >( std::atan( delta.y / delta.x ) * ( 180.0 / M_PI ) );
 		ang.z = 0.f;
 
-		if (delta.x >= 0.f)
+		if ( delta.x >= 0.f )
 			ang.y += 180.f;
 
-		normalize_angle(ang);
+		normalize_angle( ang );
 		return ang;
 	}
 
 	float random( const float min, const float max )
 	{
-		return min + ( ( static_cast<float>( std::rand() ) / static_cast<float>( RAND_MAX ) ) * ( max - min ) );
+		return min + ( ( static_cast<float>( std::rand( ) ) / static_cast<float>( RAND_MAX ) ) * ( max - min ) );
 	}
 
 	void normalize_angle( vec3_t& ang )
@@ -42,8 +42,8 @@ namespace math
 
 	void angle_vectors( const vec3_t& ang, vec3_t& out_forward )
 	{
-		auto sine = vec2_t(),
-			cosine = vec2_t();
+		auto sine = vec2_t( ),
+			cosine = vec2_t( );
 
 		sincos( deg2rad( ang.x ), sine.x, cosine.x );
 		sincos( deg2rad( ang.y ), sine.y, cosine.y );
@@ -55,8 +55,8 @@ namespace math
 
 	void angle_vectors( const vec3_t& ang, vec3_t* out_forward, vec3_t* out_right, vec3_t* out_up )
 	{
-		auto sine = vec3_t(),
-			cosine = vec3_t();
+		auto sine = vec3_t( ),
+			cosine = vec3_t( );
 
 		sincos( deg2rad( ang.x ), sine.x, cosine.x );
 		sincos( deg2rad( ang.y ), sine.y, cosine.y );
@@ -84,7 +84,7 @@ namespace math
 		}
 		else
 		{
-			out.x = rad2deg( std::atan2( -vec.z, vec.length_2d() ) );
+			out.x = rad2deg( std::atan2( -vec.z, vec.length_2d( ) ) );
 			out.y = rad2deg( std::atan2( vec.y, vec.x ) );
 		}
 

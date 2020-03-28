@@ -2,15 +2,15 @@
 
 bool __fastcall hook_handler_t::is_hltv( REGISTERS )
 {
-	static const auto accumulate_layers_call = mem::find_ida_sig( "client_panorama.dll", "84 C0 75 0D F6 87" ).cast< void* >();
-	static const auto setupvelocity_call = mem::find_ida_sig( "client_panorama.dll", "84 C0 75 38 8B 0D ? ? ? ? 8B 01 8B 80 ? ? ? ? FF D0" ).cast< void* >();
+	static const auto accumulate_layers_call = mem::find_ida_sig( "client_panorama.dll", "84 C0 75 0D F6 87" ).cast< void* >( );
+	static const auto setupvelocity_call = mem::find_ida_sig( "client_panorama.dll", "84 C0 75 38 8B 0D ? ? ? ? 8B 01 8B 80 ? ? ? ? FF D0" ).cast< void* >( );
 
-	auto original = hooks::get().orig_is_hltv( ecx, edx );
+	auto original = hooks::get( ).orig_is_hltv( ecx, edx );
 
-	if ( !ctx::csgo.engine->IsInGame() || !ctx::client.local )
+	if ( !ctx::csgo.engine->IsInGame( ) || !ctx::client.local )
 		return original;
 
-	if ( _ReturnAddress() == accumulate_layers_call || _ReturnAddress() == setupvelocity_call )
+	if ( _ReturnAddress( ) == accumulate_layers_call || _ReturnAddress( ) == setupvelocity_call )
 		return true;
 
 	return original;

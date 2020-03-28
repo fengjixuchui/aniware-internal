@@ -56,10 +56,10 @@
 // Dummy implementations of strerror_r and strerror_s called if corresponding
 // system functions are not available.
 inline fmt::internal::null<> strerror_r(int, char*, ...) {
-  return fmt::internal::null<>();
+  return fmt::internal::null<>( );
 }
 inline fmt::internal::null<> strerror_s(char*, std::size_t, ...) {
-  return fmt::internal::null<>();
+  return fmt::internal::null<>( );
 }
 
 FMT_BEGIN_NAMESPACE
@@ -149,9 +149,9 @@ int safe_strerror(int error_code, char*& buffer,
     dispatcher(int err_code, char*& buf, std::size_t buf_size)
         : error_code_(err_code), buffer_(buf), buffer_size_(buf_size) {}
 
-    int run() { return handle(strerror_r(error_code_, buffer_, buffer_size_)); }
+    int run( ) { return handle(strerror_r(error_code_, buffer_, buffer_size_)); }
   };
-  return dispatcher(error_code, buffer, buffer_size).run();
+  return dispatcher(error_code, buffer, buffer_size).run( );
 }
 
 void format_error_code(internal::buffer<char>& out, int error_code,
@@ -172,13 +172,13 @@ void format_error_code(internal::buffer<char>& out, int error_code,
   }
   error_code_size += internal::to_unsigned(internal::count_digits(abs_value));
   writer w(out);
-  if (message.size() <= inline_buffer_size - error_code_size) {
+  if (message.size( ) <= inline_buffer_size - error_code_size) {
     w.write(message);
     w.write(SEP);
   }
   w.write(ERROR_STR);
   w.write(error_code);
-  assert(out.size() <= inline_buffer_size);
+  assert(out.size( ) <= inline_buffer_size);
 }
 
 // try an fwrite, FMT_THROW on failure
@@ -195,15 +195,15 @@ void report_error(FormatFunc func, int error_code,
   func(full_message, error_code, message);
   // Use Writer::data instead of Writer::c_str to avoid potential memory
   // allocation.
-  fwrite_fully(full_message.data(), 1, full_message.size(), stderr);
+  fwrite_fully(full_message.data( ), 1, full_message.size( ), stderr);
   std::fputc('\n', stderr);
 }
 }  // namespace
 
 FMT_FUNC size_t internal::count_code_points(basic_string_view<char8_t> s) {
-  const char8_t* data = s.data();
+  const char8_t* data = s.data( );
   size_t num_code_points = 0;
-  for (size_t i = 0, size = s.size(); i != size; ++i) {
+  for (size_t i = 0, size = s.size( ); i != size; ++i) {
     if ((data[i] & 0xc0) != 0x80) ++num_code_points;
   }
   return num_code_points;
@@ -217,14 +217,14 @@ locale_ref::locale_ref(const Locale& loc) : locale_(&loc) {
   static_assert(std::is_same<Locale, std::locale>::value, "");
 }
 
-template <typename Locale> Locale locale_ref::get() const {
+template <typename Locale> Locale locale_ref::get( ) const {
   static_assert(std::is_same<Locale, std::locale>::value, "");
-  return locale_ ? *static_cast<const std::locale*>(locale_) : std::locale();
+  return locale_ ? *static_cast<const std::locale*>(locale_) : std::locale( );
 }
 
 template <typename Char> FMT_FUNC Char thousands_sep_impl(locale_ref loc) {
-  return std::use_facet<std::numpunct<Char> >(loc.get<std::locale>())
-      .thousands_sep();
+  return std::use_facet<std::numpunct<Char> >(loc.get<std::locale>( ))
+      .thousands_sep( );
 }
 }  // namespace internal
 #else
@@ -370,7 +370,7 @@ class fp {
   static FMT_CONSTEXPR_DECL const int significand_size =
       bits<significand_type>::value;
 
-  fp() : f(0), e(0) {}
+  fp( ) : f(0), e(0) {}
   fp(uint64_t f_val, int e_val) : f(f_val), e(e_val) {}
 
   // Constructs fp from an IEEE754 double. It is a template to prevent compile
@@ -394,7 +394,7 @@ class fp {
   }
 
   // Normalizes the value converted from double and multiplied by (1 << SHIFT).
-  template <int SHIFT = 0> void normalize() {
+  template <int SHIFT = 0> void normalize( ) {
     // Handle subnormals.
     auto shifted_implicit_bit = implicit_bit << SHIFT;
     while ((f & shifted_implicit_bit) == 0) {
@@ -415,7 +415,7 @@ class fp {
     lower =
         f == implicit_bit ? fp((f << 2) - 1, e - 2) : fp((f << 1) - 1, e - 1);
     upper = fp((f << 1) + 1, e - 1);
-    upper.normalize<1>();  // 1 is to account for the exponent shift above.
+    upper.normalize<1>( );  // 1 is to account for the exponent shift above.
     lower.f <<= lower.e - upper.e;
     lower.e = upper.e;
   }
@@ -695,7 +695,7 @@ FMT_API bool grisu_format(Double value, buffer<char>& buf, int precision,
     } else {
       exp = -precision;
       buf.resize(precision);
-      std::uninitialized_fill_n(buf.data(), precision, '0');
+      std::uninitialized_fill_n(buf.data( ), precision, '0');
     }
     return true;
   }
@@ -705,11 +705,11 @@ FMT_API bool grisu_format(Double value, buffer<char>& buf, int precision,
   int cached_exp10 = 0;     // K in Grisu.
   if (precision != -1) {
     if (precision > 17) return false;
-    fp_value.normalize();
+    fp_value.normalize( );
     auto cached_pow = get_cached_power(
         min_exp - (fp_value.e + fp::significand_size), cached_exp10);
     fp_value = fp_value * cached_pow;
-    fixed_handler handler{buf.data(), 0, precision, -cached_exp10, fixed};
+    fixed_handler handler{buf.data( ), 0, precision, -cached_exp10, fixed};
     if (grisu_gen_digits(fp_value, 1, exp, handler) == digits::error)
       return false;
     buf.resize(to_unsigned(handler.size));
@@ -720,24 +720,24 @@ FMT_API bool grisu_format(Double value, buffer<char>& buf, int precision,
     // the exponent in the range [min_exp, -32].
     auto cached_pow = get_cached_power(  // \tilde{c}_{-k} in Grisu.
         min_exp - (upper.e + fp::significand_size), cached_exp10);
-    fp_value.normalize();
+    fp_value.normalize( );
     fp_value = fp_value * cached_pow;
     lower = lower * cached_pow;  // \tilde{M}^- in Grisu.
     upper = upper * cached_pow;  // \tilde{M}^+ in Grisu.
     assert(min_exp <= upper.e && upper.e <= -32);
-    auto result = digits::result();
+    auto result = digits::result( );
     int size = 0;
     if ((options & grisu_options::grisu3) != 0) {
       --lower.f;  // \tilde{M}^- - 1 ulp -> M^-_{\downarrow}.
       ++upper.f;  // \tilde{M}^+ + 1 ulp -> M^+_{\uparrow}.
       // Numbers outside of (lower, upper) definitely do not round to value.
-      grisu_shortest_handler<3> handler{buf.data(), 0, (upper - fp_value).f};
+      grisu_shortest_handler<3> handler{buf.data( ), 0, (upper - fp_value).f};
       result = grisu_gen_digits(upper, upper.f - lower.f, exp, handler);
       size = handler.size;
     } else {
       ++lower.f;  // \tilde{M}^- + 1 ulp -> M^-_{\uparrow}.
       --upper.f;  // \tilde{M}^+ - 1 ulp -> M^+_{\downarrow}.
-      grisu_shortest_handler<2> handler{buf.data(), 0, (upper - fp_value).f};
+      grisu_shortest_handler<2> handler{buf.data( ), 0, (upper - fp_value).f};
       result = grisu_gen_digits(upper, upper.f - lower.f, exp, handler);
       size = handler.size;
     }
@@ -752,7 +752,7 @@ template <typename Double>
 void sprintf_format(Double value, internal::buffer<char>& buf,
                     core_format_specs spec) {
   // Buffer capacity must be non-zero, otherwise MSVC's vsnprintf_s will fail.
-  FMT_ASSERT(buf.capacity() != 0, "empty buffer");
+  FMT_ASSERT(buf.capacity( ) != 0, "empty buffer");
 
   // Build format string.
   enum { max_format_size = 10 };  // longest format: %#-*.*Lg
@@ -784,15 +784,15 @@ void sprintf_format(Double value, internal::buffer<char>& buf,
   // Format using snprintf.
   char* start = FMT_NULL;
   for (;;) {
-    std::size_t buffer_size = buf.capacity();
+    std::size_t buffer_size = buf.capacity( );
     start = &buf[0];
     int result =
         format_float(start, buffer_size, format, spec.precision, value);
     if (result >= 0) {
       unsigned n = internal::to_unsigned(result);
-      if (n < buf.capacity()) {
+      if (n < buf.capacity( )) {
         // Find the decimal point.
-        auto p = buf.data(), end = p + n;
+        auto p = buf.data( ), end = p + n;
         if (*p == '+' || *p == '-') ++p;
         if (spec.type == 'a' || spec.type == 'A') p += 2;  // Skip "0x".
         while (p < end && *p >= '0' && *p <= '9') ++p;
@@ -818,7 +818,7 @@ void sprintf_format(Double value, internal::buffer<char>& buf,
     } else {
       // If result is negative we ask to increase the capacity by at least 1,
       // but as std::vector, the buffer grows exponentially.
-      buf.reserve(buf.capacity() + 1);
+      buf.reserve(buf.capacity( ) + 1);
     }
   }
 }
@@ -828,9 +828,9 @@ void sprintf_format(Double value, internal::buffer<char>& buf,
 
 FMT_FUNC internal::utf8_to_utf16::utf8_to_utf16(string_view s) {
   static const char ERROR_MSG[] = "cannot convert string from UTF-8 to UTF-16";
-  if (s.size() > INT_MAX)
+  if (s.size( ) > INT_MAX)
     FMT_THROW(windows_error(ERROR_INVALID_PARAMETER, ERROR_MSG));
-  int s_size = static_cast<int>(s.size());
+  int s_size = static_cast<int>(s.size( ));
   if (s_size == 0) {
     // MultiByteToWideChar does not support zero length, handle separately.
     buffer_.resize(1);
@@ -838,13 +838,13 @@ FMT_FUNC internal::utf8_to_utf16::utf8_to_utf16(string_view s) {
     return;
   }
 
-  int length = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, s.data(),
+  int length = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, s.data( ),
                                    s_size, FMT_NULL, 0);
-  if (length == 0) FMT_THROW(windows_error(GetLastError(), ERROR_MSG));
+  if (length == 0) FMT_THROW(windows_error(GetLastError( ), ERROR_MSG));
   buffer_.resize(length + 1);
-  length = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, s.data(), s_size,
+  length = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, s.data( ), s_size,
                                &buffer_[0], length);
-  if (length == 0) FMT_THROW(windows_error(GetLastError(), ERROR_MSG));
+  if (length == 0) FMT_THROW(windows_error(GetLastError( ), ERROR_MSG));
   buffer_[length] = 0;
 }
 
@@ -856,8 +856,8 @@ FMT_FUNC internal::utf16_to_utf8::utf16_to_utf8(wstring_view s) {
 }
 
 FMT_FUNC int internal::utf16_to_utf8::convert(wstring_view s) {
-  if (s.size() > INT_MAX) return ERROR_INVALID_PARAMETER;
-  int s_size = static_cast<int>(s.size());
+  if (s.size( ) > INT_MAX) return ERROR_INVALID_PARAMETER;
+  int s_size = static_cast<int>(s.size( ));
   if (s_size == 0) {
     // WideCharToMultiByte does not support zero length, handle separately.
     buffer_.resize(1);
@@ -865,13 +865,13 @@ FMT_FUNC int internal::utf16_to_utf8::convert(wstring_view s) {
     return 0;
   }
 
-  int length = WideCharToMultiByte(CP_UTF8, 0, s.data(), s_size, FMT_NULL, 0,
+  int length = WideCharToMultiByte(CP_UTF8, 0, s.data( ), s_size, FMT_NULL, 0,
                                    FMT_NULL, FMT_NULL);
-  if (length == 0) return GetLastError();
+  if (length == 0) return GetLastError( );
   buffer_.resize(length + 1);
-  length = WideCharToMultiByte(CP_UTF8, 0, s.data(), s_size, &buffer_[0],
+  length = WideCharToMultiByte(CP_UTF8, 0, s.data( ), s_size, &buffer_[0],
                                length, FMT_NULL, FMT_NULL);
-  if (length == 0) return GetLastError();
+  if (length == 0) return GetLastError( );
   buffer_[length] = 0;
   return 0;
 }
@@ -896,7 +896,7 @@ FMT_FUNC void internal::format_windows_error(internal::buffer<char>& out,
       int result = FormatMessageW(
           FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, FMT_NULL,
           error_code, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), system_message,
-          static_cast<uint32_t>(buf.size()), FMT_NULL);
+          static_cast<uint32_t>(buf.size( )), FMT_NULL);
       if (result != 0) {
         utf16_to_utf8 utf8_message;
         if (utf8_message.convert(system_message) == ERROR_SUCCESS) {
@@ -908,9 +908,9 @@ FMT_FUNC void internal::format_windows_error(internal::buffer<char>& out,
         }
         break;
       }
-      if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
+      if (GetLastError( ) != ERROR_INSUFFICIENT_BUFFER)
         break;  // Can't get error message, report error code instead.
-      buf.resize(buf.size() * 2);
+      buf.resize(buf.size( ) * 2);
     }
   }
   FMT_CATCH(...) {}
@@ -926,7 +926,7 @@ FMT_FUNC void format_system_error(internal::buffer<char>& out, int error_code,
     buf.resize(inline_buffer_size);
     for (;;) {
       char* system_message = &buf[0];
-      int result = safe_strerror(error_code, system_message, buf.size());
+      int result = safe_strerror(error_code, system_message, buf.size( ));
       if (result == 0) {
         writer w(out);
         w.write(message);
@@ -936,7 +936,7 @@ FMT_FUNC void format_system_error(internal::buffer<char>& out, int error_code,
       }
       if (result != ERANGE)
         break;  // Can't get error message, report error code instead.
-      buf.resize(buf.size() * 2);
+      buf.resize(buf.size( ) * 2);
     }
   }
   FMT_CATCH(...) {}
@@ -963,13 +963,13 @@ FMT_FUNC void vprint(std::FILE* f, string_view format_str, format_args args) {
   memory_buffer buffer;
   internal::vformat_to(buffer, format_str,
                        basic_format_args<buffer_context<char>::type>(args));
-  fwrite_fully(buffer.data(), 1, buffer.size(), f);
+  fwrite_fully(buffer.data( ), 1, buffer.size( ), f);
 }
 
 FMT_FUNC void vprint(std::FILE* f, wstring_view format_str, wformat_args args) {
   wmemory_buffer buffer;
   internal::vformat_to(buffer, format_str, args);
-  fwrite_fully(buffer.data(), sizeof(wchar_t), buffer.size(), f);
+  fwrite_fully(buffer.data( ), sizeof(wchar_t), buffer.size( ), f);
 }
 
 FMT_FUNC void vprint(string_view format_str, format_args args) {

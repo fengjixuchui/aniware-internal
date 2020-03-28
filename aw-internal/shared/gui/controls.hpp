@@ -6,11 +6,11 @@ namespace gui::controls
 	{
 	public:
 		virtual void render( math::vec2_t& pos ) = 0;
-		virtual void handle_input() = 0;
+		virtual void handle_input( ) = 0;
 
-		virtual void setup_style() = 0;
+		virtual void setup_style( ) = 0;
 
-		virtual bool should_skip()
+		virtual bool should_skip( )
 		{
 			return false;
 		};
@@ -20,7 +20,7 @@ namespace gui::controls
 			m_id = id;
 		}
 
-		inline int get_id()
+		inline int get_id( )
 		{
 			return m_id;
 		}
@@ -30,7 +30,7 @@ namespace gui::controls
 			m_size = size;
 		}
 
-		inline math::vec2_t get_size()
+		inline math::vec2_t get_size( )
 		{
 			return m_size;
 		}
@@ -40,7 +40,7 @@ namespace gui::controls
 			m_pos = pos;
 		}
 
-		inline math::vec2_t get_pos()
+		inline math::vec2_t get_pos( )
 		{
 			return m_pos;
 		}
@@ -50,7 +50,7 @@ namespace gui::controls
 			m_is_active = in;
 		}
 
-		inline bool get_active()
+		inline bool get_active( )
 		{
 			return m_is_active;
 		}
@@ -60,9 +60,9 @@ namespace gui::controls
 			m_last_action = cur_time;
 		}
 
-		inline void reset_action()
+		inline void reset_action( )
 		{
-			m_last_action = std::numeric_limits<float>::max();
+			m_last_action = std::numeric_limits<float>::max( );
 		}
 	protected:
 		math::vec2_t m_size = {};
@@ -84,9 +84,9 @@ namespace gui::controls
 		c_tab( std::string_view name );
 
 		void render( math::vec2_t& pos );
-		void handle_input();
+		void handle_input( );
 
-		void setup_style();
+		void setup_style( );
 
 		c_control* add( std::shared_ptr<c_control> control );
 	private:
@@ -118,11 +118,11 @@ namespace gui::controls
 		c_checkbox( std::string_view name, config::item_t* var );
 
 		void render( math::vec2_t& pos );
-		void handle_input();
+		void handle_input( );
 
-		void setup_style();
+		void setup_style( );
 	private:
-		void render_checkbox();
+		void render_checkbox( );
 
 		struct style_t
 		{
@@ -148,11 +148,11 @@ namespace gui::controls
 		c_separator( std::string_view name );
 
 		void render( math::vec2_t& pos );
-		void handle_input();
+		void handle_input( );
 
-		void setup_style();
+		void setup_style( );
 
-		bool should_skip()
+		bool should_skip( )
 		{
 			return true;
 		}
@@ -173,12 +173,12 @@ namespace gui::controls
 		c_combo( std::string_view name, config::item_t* var, std::vector<std::string_view> items );
 
 		void render( math::vec2_t& pos );
-		void handle_input();
+		void handle_input( );
 
-		void setup_style();
+		void setup_style( );
 	private:
-		void render_combobox();
-		void render_preview();
+		void render_combobox( );
+		void render_preview( );
 
 		struct style_t
 		{
@@ -207,12 +207,12 @@ namespace gui::controls
 		c_slider( std::string_view name, config::item_t* var, float min, float max, float step = 1.f );
 
 		void render( math::vec2_t& pos );
-		void handle_input();
+		void handle_input( );
 
-		void setup_style();
+		void setup_style( );
 	private:
-		void handle_slide();
-		void render_slider();
+		void handle_slide( );
+		void render_slider( );
 
 		struct style_t
 		{

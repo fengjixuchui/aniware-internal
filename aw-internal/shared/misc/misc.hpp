@@ -14,7 +14,7 @@ namespace misc
 	std::vector<t> create_filled_vector( const t& fill )
 	{
 		auto vec = std::vector<t>( s );
-		std::fill( vec.begin(), vec.begin() + s, fill );
+		std::fill( vec.begin( ), vec.begin( ) + s, fill );
 		return vec;
 	}
 

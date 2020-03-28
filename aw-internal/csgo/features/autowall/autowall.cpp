@@ -6,7 +6,7 @@ namespace autowall
 {
 	void handle_bullet_penetration( AutowallData& data, math::vec3_t& dst )
 	{
-		const auto trace_to_exit = mem::find_ida_sig( "client_panorama.dll", "55 8B EC 83 EC 30 F3 0F 10 75" ).cast< bool( __thiscall* )( float, float, float, float, float, float, Trace& ) >();
+		const auto trace_to_exit = mem::find_ida_sig( "client_panorama.dll", "55 8B EC 83 EC 30 F3 0F 10 75" ).cast< bool( __thiscall* )( float, float, float, float, float, float, Trace& ) >( );
 
 		if ( !trace_to_exit )
 			return;
@@ -51,7 +51,7 @@ namespace autowall
 		}
 
 		autowall_data.damage -= ( 11.25f / autowall_data.penetration / mod_penetration + autowall_data.damage 
-			* mod_damage + (autowall_data.exit.end - autowall_data.enter.end).length() / 24.0f / mod_penetration );
+			* mod_damage + (autowall_data.exit.end - autowall_data.enter.end).length( ) / 24.0f / mod_penetration );
 
 		dst = autowall_data.exit.end;
 	}

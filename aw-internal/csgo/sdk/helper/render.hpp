@@ -11,16 +11,16 @@ namespace render
 			FONT_CENTER_Y = 1 << 2,
 		};
 
-		void init();
+		void init( );
 
 		extern HFont m_main;
 		extern HFont m_menu;
 	}
 
-	void init();
-	void undo();
+	void init( );
+	void undo( );
 
-	math::vec2_t get_screen_size();
+	math::vec2_t get_screen_size( );
 	void get_screen_size( math::vec2_t& size );
 
 	void text( const HFont& font, const math::vec2_t& pos, const col_t& col, bitflag_t flags, const char* txt );
@@ -47,6 +47,6 @@ namespace render
 
 	void clip( const math::vec2_t& pos, const math::vec2_t& size, bool override = false );
 	void clip( RECT rec, bool override = false );
-	void reset_clip();
-	RECT get_current_clip();
+	void reset_clip( );
+	RECT get_current_clip( );
 }

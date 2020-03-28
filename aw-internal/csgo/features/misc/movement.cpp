@@ -7,7 +7,7 @@ enum StrafeType {
 
 namespace movement
 {
-	void bunnyhop()
+	void bunnyhop( )
 	{
 		if ( !config::get< bool >( ctx::cfg.movement_bhop ) )
 			return;
@@ -15,22 +15,22 @@ namespace movement
 		if ( !ctx::client.cmd )
 			return;
 
-		if ( !ctx::client.local || !ctx::client.local->is_alive() )
+		if ( !ctx::client.local || !ctx::client.local->is_alive( ) )
 			return;
 
-		const auto move_type = ctx::client.local->get_move_type();
+		const auto move_type = ctx::client.local->get_move_type( );
 
 		if ( move_type == MOVETYPE_LADDER || move_type == MOVETYPE_NOCLIP || move_type == MOVETYPE_OBSERVER )
 			return;
 
-		if ( ctx::client.local->get_water_level() >= 2 )
+		if ( ctx::client.local->get_water_level( ) >= 2 )
 			return;
 
-		if ( !ctx::client.local->get_flags().has_flag( FL_ONGROUND ) )
+		if ( !ctx::client.local->get_flags( ).has_flag( FL_ONGROUND ) )
 			ctx::client.cmd->buttons.remove_flag( IN_JUMP );
 	}
 
-	void strafe()
+	void strafe( )
 	{
 		if ( !config::get< bool >( ctx::cfg.movement_strafe_enable ) )
 			return;
@@ -38,18 +38,18 @@ namespace movement
 		if ( !ctx::client.cmd )
 			return;
 
-		if ( !ctx::client.local || !ctx::client.local->is_alive() )
+		if ( !ctx::client.local || !ctx::client.local->is_alive( ) )
 			return;
 
-		const auto move_type = ctx::client.local->get_move_type();
+		const auto move_type = ctx::client.local->get_move_type( );
 
 		if ( move_type == MOVETYPE_LADDER || move_type == MOVETYPE_NOCLIP || move_type == MOVETYPE_OBSERVER )
 			return;
 
-		if ( ctx::client.local->get_water_level() >= 2 )
+		if ( ctx::client.local->get_water_level( ) >= 2 )
 			return;
 
-		if ( ctx::client.local->get_flags().has_flag( FL_ONGROUND ) && !ctx::client.cmd->buttons.has_flag( IN_JUMP ) )
+		if ( ctx::client.local->get_flags( ).has_flag( FL_ONGROUND ) && !ctx::client.cmd->buttons.has_flag( IN_JUMP ) )
 			return;
 			
 		math::vec3_t viewangles;
@@ -61,8 +61,8 @@ namespace movement
 		ctx::client.cmd->forwardmove = 0.f;
 		ctx::client.cmd->sidemove = side_switch ? 450.f : -450.f;
 
-		float velocity_yaw = ctx::client.local->get_velocity().y;
-		float rotation = std::clamp< float >( math::rad2deg( std::atan2( 15.f, ctx::client.local->get_velocity().length_2d() ) ), 0.f, 90.f );
+		float velocity_yaw = ctx::client.local->get_velocity( ).y;
+		float rotation = std::clamp< float >( math::rad2deg( std::atan2( 15.f, ctx::client.local->get_velocity( ).length_2d( ) ) ), 0.f, 90.f );
 
 		float delta { velocity_yaw - viewangles.y };
 		math::normalize_angle( delta );

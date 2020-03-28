@@ -34,7 +34,7 @@ namespace mem
 			return {};
 
 		MODULEINFO module_info;
-		GetModuleInformation( GetCurrentProcess(), reinterpret_cast< HMODULE >( module_handle ), &module_info, sizeof( MODULEINFO ) );
+		GetModuleInformation( GetCurrentProcess( ), reinterpret_cast< HMODULE >( module_handle ), &module_info, sizeof( MODULEINFO ) );
 
 		const auto image_size = module_info.SizeOfImage;
 
@@ -44,8 +44,8 @@ namespace mem
 		auto pattern_bytes = pattern_to_byte( sig );
 		const auto image_bytes = reinterpret_cast< byte* >( module_handle );
 
-		const auto signature_size = pattern_bytes.size();
-		const auto signature_bytes = pattern_bytes.data();
+		const auto signature_size = pattern_bytes.size( );
+		const auto signature_bytes = pattern_bytes.data( );
 
 		for ( auto i = 0ul; i < image_size - signature_size; ++i )
 		{
@@ -69,7 +69,7 @@ namespace mem
 	address_t find_ida_sig( const char* mod, const std::vector<const char*>& sigs )
 	{
 		address_t dummy{};
-		auto sigs_tried = uint32_t();
+		auto sigs_tried = uint32_t( );
 
 		for ( auto sig : sigs )
 			if ( dummy = find_ida_sig( mod, sig ) )
@@ -110,7 +110,7 @@ namespace mem
 			return {};
 
 		MODULEINFO module_info;
-		GetModuleInformation( GetCurrentProcess(), reinterpret_cast< HMODULE >( module_handle ), &module_info, sizeof( MODULEINFO ) );
+		GetModuleInformation( GetCurrentProcess( ), reinterpret_cast< HMODULE >( module_handle ), &module_info, sizeof( MODULEINFO ) );
 
 		const auto image_size = module_info.SizeOfImage;
 
@@ -120,8 +120,8 @@ namespace mem
 		auto pattern_bytes = pattern_to_byte( sig );
 		const auto image_bytes = reinterpret_cast< byte* >( module_handle );
 
-		const auto signature_size = pattern_bytes.size();
-		const auto signature_bytes = pattern_bytes.data();
+		const auto signature_size = pattern_bytes.size( );
+		const auto signature_bytes = pattern_bytes.data( );
 
 		for ( auto i = 0ul; i < image_size - signature_size; ++i )
 		{
@@ -146,7 +146,7 @@ namespace mem
 	address_t find_fizz_sig( const char* mod, const std::vector<const char*>& sigs )
 	{
 		address_t dummy{};
-		auto sigs_tried = uint32_t();
+		auto sigs_tried = uint32_t( );
 
 		for ( auto sig : sigs )
 		{
@@ -159,27 +159,27 @@ namespace mem
 
 	address_t get_vfunc( address_t table, uint16_t index )
 	{
-		return table.get<uintptr_t*>()[ index ];
+		return table.get<uintptr_t*>( )[ index ];
 	}
 
 	uint32_t get_vtable_length( address_t table )
 	{
 		auto length = uint32_t{};
 
-		for ( length = 0; table.cast<uintptr_t*>()[ length ]; length++ )
+		for ( length = 0; table.cast<uintptr_t*>( )[ length ]; length++ )
 		{
-			if ( IS_INTRESOURCE( table.cast<uintptr_t*>()[ length ] ) )
+			if ( IS_INTRESOURCE( table.cast<uintptr_t*>( )[ length ] ) )
 				break;
 		}
 
 		return length;
 	}
 
-	std::vector<std::wstring>& get_loaded_modules()
+	std::vector<std::wstring>& get_loaded_modules( )
 	{
 		static std::vector<std::wstring> m_modules{};
 
-		if ( m_modules.empty() )
+		if ( m_modules.empty( ) )
 		{
 			auto peb = reinterpret_cast< PEB* >( reinterpret_cast< TEB* >( __readfsdword( 0x18 ) )->ProcessEnvironmentBlock );
 			if ( !peb || !peb->Ldr->InMemoryOrderModuleList.Flink )

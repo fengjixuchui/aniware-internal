@@ -2,10 +2,10 @@
 
 bool player_t::get_bbox( math::vec4_t& box )
 {
-	math::matrix3x4_t& tran_frame = get_coord_frame();
+	math::matrix3x4_t& tran_frame = get_coord_frame( );
 
-	const math::vec3_t min = GetCollideable()->OBBMins();
-	const math::vec3_t max = GetCollideable()->OBBMaxs();
+	const math::vec3_t min = GetCollideable( )->OBBMins( );
+	const math::vec3_t max = GetCollideable( )->OBBMaxs( );
 
 	math::vec3_t screen_boxes[ 8 ];
 
@@ -65,18 +65,18 @@ bool player_t::get_bbox( math::vec4_t& box )
 	return true;
 }
 
-player_info_t player_t::get_player_info()
+player_info_t player_t::get_player_info( )
 {
 	if ( !this )
 		return {};
 
 	player_info_t info;
-	ctx::csgo.engine->GetPlayerInfo( this->Index(), &info );
+	ctx::csgo.engine->GetPlayerInfo( this->Index( ), &info );
 	
 	return info;
 }
 
-math::vec3_t player_t::get_eye_pos()
+math::vec3_t player_t::get_eye_pos( )
 {
 	auto pos = math::vec3_t{};
 	weapon_shootpos( &pos );
@@ -91,7 +91,7 @@ math::vec3_t player_t::get_hitbox_pos( int hitbox )
 	if ( !SetupBones( bone_matrix, 128, 256, 0.0f ) )
 			return math::vec3_t{};
 
-	auto studio_model = ctx::csgo.modelinfo->GetStudioModel( GetModel() );
+	auto studio_model = ctx::csgo.modelinfo->GetStudioModel( GetModel( ) );
 
 	if( studio_model )
 	{
@@ -109,18 +109,18 @@ math::vec3_t player_t::get_hitbox_pos( int hitbox )
 	}
 }
 
-bool player_t::is_alive()
+bool player_t::is_alive( )
 {
 	if ( !this )
 		return false;
 
-	return get_lifestate() == ALIVE;
+	return get_lifestate( ) == ALIVE;
 }
 
-bool player_t::is_enemy()
+bool player_t::is_enemy( )
 {
 	if ( !this || !ctx::client.local )
 		return false;
 
-	return ctx::client.local->get_team() != this->get_team();
+	return ctx::client.local->get_team( ) != this->get_team( );
 }

@@ -29,7 +29,7 @@ namespace ctx
 			ADD_ADDRESS( DrawColoredText, "vguimatsurface.dll", { "55 8B EC 81 EC ? ? ? ? 56 57 FF 75 10" } ); 
 			ADD_ADDRESS( StartDrawing, "vguimatsurface.dll", { "55 8B EC 83 E4 ? 83 EC ? 80 3D ? ? ? ? 00 56 57 8B F9" } );
 			ADD_ADDRESS( FinishDrawing, "vguimatsurface.dll", { "8B 0D ? ? ? ? 56 C6 05 ? ? ? ? 00 8B 01 FF 90" } ); 
-			ADD_ADDRESS( m_bClippingEnabled, "vguimatsurface.dll", { "83 B9 ? ? ? ? ? 74 39" } ).self_offset( 0x2 ).self_get();
+			ADD_ADDRESS( m_bClippingEnabled, "vguimatsurface.dll", { "83 B9 ? ? ? ? ? 74 39" } ).self_offset( 0x2 ).self_get( );
 		} ISurface;
 
 		struct CFontManager_t

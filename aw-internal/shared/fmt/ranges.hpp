@@ -24,8 +24,8 @@ FMT_BEGIN_NAMESPACE
 
 template <typename Char> struct formatting_base {
   template <typename ParseContext>
-  FMT_CONSTEXPR auto parse(ParseContext& ctx) -> decltype(ctx.begin()) {
-    return ctx.begin();
+  FMT_CONSTEXPR auto parse(ParseContext& ctx) -> decltype(ctx.begin( )) {
+    return ctx.begin( );
   }
 };
 
@@ -37,7 +37,7 @@ struct formatting_range : formatting_base<Char> {
   Char prefix;
   Char delimiter;
   Char postfix;
-  formatting_range() : prefix('{'), delimiter(','), postfix('}') {}
+  formatting_range( ) : prefix('{'), delimiter(','), postfix('}') {}
   static FMT_CONSTEXPR_DECL const bool add_delimiter_spaces = true;
   static FMT_CONSTEXPR_DECL const bool add_prepostfix_space = false;
 };
@@ -47,7 +47,7 @@ struct formatting_tuple : formatting_base<Char> {
   Char prefix;
   Char delimiter;
   Char postfix;
-  formatting_tuple() : prefix('('), delimiter(','), postfix(')') {}
+  formatting_tuple( ) : prefix('('), delimiter(','), postfix(')') {}
   static FMT_CONSTEXPR_DECL const bool add_delimiter_spaces = true;
   static FMT_CONSTEXPR_DECL const bool add_prepostfix_space = false;
 };
@@ -56,7 +56,7 @@ namespace internal {
 
 template <typename RangeT, typename OutputIterator>
 OutputIterator copy(const RangeT& range, OutputIterator out) {
-  for (auto it = range.begin(), end = range.end(); it != end; ++it)
+  for (auto it = range.begin( ), end = range.end( ); it != end; ++it)
     *out++ = *it;
   return out;
 }
@@ -76,7 +76,7 @@ OutputIterator copy(char ch, OutputIterator out) {
 template <typename T> class is_like_std_string {
   template <typename U>
   static auto check(U* p)
-      -> decltype((void)p->find('a'), p->length(), (void)p->data(), int());
+      -> decltype((void)p->find('a'), p->length( ), (void)p->data( ), int( ));
   template <typename> static void check(...);
 
  public:
@@ -96,8 +96,8 @@ template <typename T>
 struct is_range_<
     T, typename std::conditional<
            false,
-           conditional_helper<decltype(internal::declval<T>().begin()),
-                              decltype(internal::declval<T>().end())>,
+           conditional_helper<decltype(internal::declval<T>( ).begin( )),
+                              decltype(internal::declval<T>( ).end( ))>,
            void>::type> : std::true_type {};
 #endif
 
@@ -105,8 +105,8 @@ template <typename T> class is_tuple_like_ {
   template <typename U>
   static auto check(U* p) -> decltype(
       std::tuple_size<U>::value,
-      (void)internal::declval<typename std::tuple_element<0, U>::type>(),
-      int());
+      (void)internal::declval<typename std::tuple_element<0, U>::type>( ),
+      int( ));
   template <typename> static void check(...);
 
  public:
@@ -125,7 +125,7 @@ using make_index_sequence = std::make_index_sequence<N>;
 template <typename T, T... N> struct integer_sequence {
   typedef T value_type;
 
-  static FMT_CONSTEXPR std::size_t size() { return sizeof...(N); }
+  static FMT_CONSTEXPR std::size_t size( ) { return sizeof...(N); }
 };
 
 template <std::size_t... N>
@@ -197,9 +197,9 @@ struct formatter<
     TupleT, Char,
     typename std::enable_if<fmt::is_tuple_like<TupleT>::value>::type> {
  private:
-  // C++11 generic lambda for format()
+  // C++11 generic lambda for format( )
   template <typename FormatContext> struct format_each {
-    template <typename T> void operator()(const T& v) {
+    template <typename T> void operator( )(const T& v) {
       if (i > 0) {
         if (formatting.add_prepostfix_space) {
           *out++ = ' ';
@@ -216,20 +216,20 @@ struct formatter<
     formatting_tuple<Char>& formatting;
     std::size_t& i;
     typename std::add_lvalue_reference<decltype(
-        std::declval<FormatContext>().out())>::type out;
+        std::declval<FormatContext>( ).out( ))>::type out;
   };
 
  public:
   formatting_tuple<Char> formatting;
 
   template <typename ParseContext>
-  FMT_CONSTEXPR auto parse(ParseContext& ctx) -> decltype(ctx.begin()) {
+  FMT_CONSTEXPR auto parse(ParseContext& ctx) -> decltype(ctx.begin( )) {
     return formatting.parse(ctx);
   }
 
   template <typename FormatContext = format_context>
-  auto format(const TupleT& values, FormatContext& ctx) -> decltype(ctx.out()) {
-    auto out = ctx.out();
+  auto format(const TupleT& values, FormatContext& ctx) -> decltype(ctx.out( )) {
+    auto out = ctx.out( );
     std::size_t i = 0;
     internal::copy(formatting.prefix, out);
 
@@ -239,7 +239,7 @@ struct formatter<
     }
     internal::copy(formatting.postfix, out);
 
-    return ctx.out();
+    return ctx.out( );
   }
 };
 
@@ -254,16 +254,16 @@ struct formatter<RangeT, Char,
   formatting_range<Char> formatting;
 
   template <typename ParseContext>
-  FMT_CONSTEXPR auto parse(ParseContext& ctx) -> decltype(ctx.begin()) {
+  FMT_CONSTEXPR auto parse(ParseContext& ctx) -> decltype(ctx.begin( )) {
     return formatting.parse(ctx);
   }
 
   template <typename FormatContext>
   typename FormatContext::iterator format(const RangeT& values,
                                           FormatContext& ctx) {
-    auto out = internal::copy(formatting.prefix, ctx.out());
+    auto out = internal::copy(formatting.prefix, ctx.out( ));
     std::size_t i = 0;
-    for (auto it = values.begin(), end = values.end(); it != end; ++it) {
+    for (auto it = values.begin( ), end = values.end( ); it != end; ++it) {
       if (i > 0) {
         if (formatting.add_prepostfix_space) *out++ = ' ';
         out = internal::copy(formatting.delimiter, out);

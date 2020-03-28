@@ -31,12 +31,12 @@ template <typename IteratorType> class iteration_proxy_value
   public:
     explicit iteration_proxy_value(IteratorType it) noexcept : anchor(it) {}
 
-        iteration_proxy_value& operator*()
+        iteration_proxy_value& operator*( )
     {
         return *this;
     }
 
-        iteration_proxy_value& operator++()
+        iteration_proxy_value& operator++( )
     {
         ++anchor;
         ++array_index;
@@ -54,11 +54,11 @@ template <typename IteratorType> class iteration_proxy_value
         return anchor != o.anchor;
     }
 
-        const std::string& key() const
+        const std::string& key( ) const
     {
         assert(anchor.m_object != nullptr);
 
-        switch (anchor.m_object->type())
+        switch (anchor.m_object->type( ))
         {
             // use integer array index as key
             case value_t::array:
@@ -73,7 +73,7 @@ template <typename IteratorType> class iteration_proxy_value
 
             // use key from the object
             case value_t::object:
-                return anchor.key();
+                return anchor.key( );
 
             // use an empty key for all primitive types
             default:
@@ -81,9 +81,9 @@ template <typename IteratorType> class iteration_proxy_value
         }
     }
 
-        typename IteratorType::reference value() const
+        typename IteratorType::reference value( ) const
     {
-        return anchor.value();
+        return anchor.value( );
     }
 };
 
@@ -96,31 +96,31 @@ template<typename IteratorType> class iteration_proxy
         explicit iteration_proxy(typename IteratorType::reference cont) noexcept
         : container(cont) {}
 
-        iteration_proxy_value<IteratorType> begin() noexcept
+        iteration_proxy_value<IteratorType> begin( ) noexcept
     {
-        return iteration_proxy_value<IteratorType>(container.begin());
+        return iteration_proxy_value<IteratorType>(container.begin( ));
     }
 
-        iteration_proxy_value<IteratorType> end() noexcept
+        iteration_proxy_value<IteratorType> end( ) noexcept
     {
-        return iteration_proxy_value<IteratorType>(container.end());
+        return iteration_proxy_value<IteratorType>(container.end( ));
     }
 };
 // Structured Bindings Support
 // For further reference see https://blog.tartanllama.xyz/structured-bindings/
 // And see https://github.com/nlohmann/json/pull/1391
 template <std::size_t N, typename IteratorType, enable_if_t<N == 0, int> = 0>
-auto get(const nlohmann::detail::iteration_proxy_value<IteratorType>& i) -> decltype(i.key())
+auto get(const nlohmann::detail::iteration_proxy_value<IteratorType>& i) -> decltype(i.key( ))
 {
-    return i.key();
+    return i.key( );
 }
 // Structured Bindings Support
 // For further reference see https://blog.tartanllama.xyz/structured-bindings/
 // And see https://github.com/nlohmann/json/pull/1391
 template <std::size_t N, typename IteratorType, enable_if_t<N == 1, int> = 0>
-auto get(const nlohmann::detail::iteration_proxy_value<IteratorType>& i) -> decltype(i.value())
+auto get(const nlohmann::detail::iteration_proxy_value<IteratorType>& i) -> decltype(i.value( ))
 {
-    return i.value();
+    return i.value( );
 }
 }  // namespace detail
 }  // namespace nlohmann
@@ -146,7 +146,7 @@ class tuple_element<N, ::nlohmann::detail::iteration_proxy_value<IteratorType >>
   public:
     using type = decltype(
                      get<N>(std::declval <
-                            ::nlohmann::detail::iteration_proxy_value<IteratorType >> ()));
+                            ::nlohmann::detail::iteration_proxy_value<IteratorType >> ( )));
 };
 #if defined(__clang__)
     #pragma clang diagnostic pop

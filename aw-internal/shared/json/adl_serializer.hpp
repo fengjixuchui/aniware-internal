@@ -14,7 +14,7 @@ struct adl_serializer
     /*!
     @brief convert a JSON value to any value type
 
-    This function is usually called by the `get()` function of the
+    This function is usually called by the `get( )` function of the
     @ref basic_json class (either explicit or via conversion operators).
 
     @param[in] j        JSON value to read from
@@ -23,7 +23,7 @@ struct adl_serializer
     template<typename BasicJsonType, typename ValueType>
     static auto from_json(BasicJsonType&& j, ValueType& val) noexcept(
         noexcept(::nlohmann::from_json(std::forward<BasicJsonType>(j), val)))
-    -> decltype(::nlohmann::from_json(std::forward<BasicJsonType>(j), val), void())
+    -> decltype(::nlohmann::from_json(std::forward<BasicJsonType>(j), val), void( ))
     {
         ::nlohmann::from_json(std::forward<BasicJsonType>(j), val);
     }
@@ -40,7 +40,7 @@ struct adl_serializer
     template <typename BasicJsonType, typename ValueType>
     static auto to_json(BasicJsonType& j, ValueType&& val) noexcept(
         noexcept(::nlohmann::to_json(j, std::forward<ValueType>(val))))
-    -> decltype(::nlohmann::to_json(j, std::forward<ValueType>(val)), void())
+    -> decltype(::nlohmann::to_json(j, std::forward<ValueType>(val)), void( ))
     {
         ::nlohmann::to_json(j, std::forward<ValueType>(val));
     }

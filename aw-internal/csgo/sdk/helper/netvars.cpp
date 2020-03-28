@@ -5,7 +5,7 @@ namespace netvars
 {
 	struct netvar_t
 	{
-		netvar_t() : m_ptr{ }, m_offset{ } { }
+		netvar_t( ) : m_ptr{ }, m_offset{ } { }
 
 		RecvProp* m_ptr;
 		uint16_t m_offset;
@@ -13,12 +13,12 @@ namespace netvars
 
 	std::unordered_map<uint32_t, std::unordered_map<uint32_t, netvar_t>> m_offsets;
 
-	void init()
+	void init( )
 	{
 		if ( !ctx::csgo.client )
 			throw std::runtime_error( "netvars::init - client pointer not valid" );
 
-		if ( auto client_class_list = ctx::csgo.client->GetAllClasses() )
+		if ( auto client_class_list = ctx::csgo.client->GetAllClasses( ) )
 		{
 			const std::function<void( const char*, RecvTable*, size_t )> store = [ & ]( const char* name, RecvTable * table, size_t offset = 0 )
 			{
@@ -57,7 +57,7 @@ namespace netvars
 
 	uint16_t get( std::string_view table, std::string_view field )
 	{
-		return m_offsets[ HASH( table.data() ) ][ HASH( field.data() ) ].m_offset;
+		return m_offsets[ HASH( table.data( ) ) ][ HASH( field.data( ) ) ].m_offset;
 	}
 
 	uint16_t find_in_datamap( datamap_t * map, uint32_t name )

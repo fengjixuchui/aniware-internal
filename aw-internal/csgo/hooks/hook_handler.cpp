@@ -2,30 +2,30 @@
 
 namespace hooks
 {
-	std::unordered_map< uint32_t, hook_t >& get_map()
+	std::unordered_map< uint32_t, hook_t >& get_map( )
 	{
 		static std::unordered_map< uint32_t, hook_t > map{};
 		return map;
 	}
 
-	hook_handler_t& get()
+	hook_handler_t& get( )
 	{
-		static auto hook_handler = hook_handler_t();
+		static auto hook_handler = hook_handler_t( );
 		return hook_handler;
 	}
 
-	void init()
+	void init( )
 	{
-		get();
+		get( );
 	}
 
-	void undo()
+	void undo( )
 	{
-		auto& map = get_map();
+		auto& map = get_map( );
 
 		for ( auto& map_entry : map )
 		{
-			map_entry.second.m_hook.unhook();
+			map_entry.second.m_hook.unhook( );
 		}
 	}
 }

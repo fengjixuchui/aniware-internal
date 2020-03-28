@@ -16,13 +16,13 @@ namespace detail
 @brief the JSON type enumeration
 
 This enumeration collects the different JSON types. It is internally used to
-distinguish the stored values, and the functions @ref basic_json::is_null(),
-@ref basic_json::is_object(), @ref basic_json::is_array(),
-@ref basic_json::is_string(), @ref basic_json::is_boolean(),
-@ref basic_json::is_number() (with @ref basic_json::is_number_integer(),
-@ref basic_json::is_number_unsigned(), and @ref basic_json::is_number_float()),
-@ref basic_json::is_discarded(), @ref basic_json::is_primitive(), and
-@ref basic_json::is_structured() rely on it.
+distinguish the stored values, and the functions @ref basic_json::is_null( ),
+@ref basic_json::is_object( ), @ref basic_json::is_array( ),
+@ref basic_json::is_string( ), @ref basic_json::is_boolean( ),
+@ref basic_json::is_number( ) (with @ref basic_json::is_number_integer( ),
+@ref basic_json::is_number_unsigned( ), and @ref basic_json::is_number_float( )),
+@ref basic_json::is_discarded( ), @ref basic_json::is_primitive( ), and
+@ref basic_json::is_structured( ) rely on it.
 
 @note There are three enumeration entries (number_integer, number_unsigned, and
 number_float), because the library distinguishes these three types for numbers:
@@ -60,7 +60,7 @@ inline bool operator<(const value_t lhs, const value_t rhs) noexcept
 
     const auto l_index = static_cast<std::size_t>(lhs);
     const auto r_index = static_cast<std::size_t>(rhs);
-    return l_index < order.size() and r_index < order.size() and order[l_index] < order[r_index];
+    return l_index < order.size( ) and r_index < order.size( ) and order[l_index] < order[r_index];
 }
 }  // namespace detail
 }  // namespace nlohmann

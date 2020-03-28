@@ -2,12 +2,12 @@
 
 namespace menu
 {
-	float get_curtime()
+	float get_curtime( )
 	{
 		return ctx::csgo.globals->curtime;
 	}
 
-	float get_frametime()
+	float get_frametime( )
 	{
 		return ctx::csgo.globals->frametime;
 	}
@@ -27,7 +27,7 @@ namespace menu
 		return render::clip( pos, size, override_clip );
 	}
 
-	void init()
+	void init( )
 	{
 		gui::setup_helper(
 			get_curtime,
@@ -52,8 +52,10 @@ namespace menu
 				tab1->add( std::make_shared<gui::controls::c_checkbox>( "enable", &config::get_item( ctx::cfg.aim_enable ) ) );
 				tab1->add( std::make_shared<gui::controls::c_checkbox>( "friendly", &config::get_item( ctx::cfg.aim_friendly ) ) );
 				tab1->add( std::make_shared<gui::controls::c_checkbox>( "body only", &config::get_item( ctx::cfg.aim_body ) ) );
+				tab1->add( std::make_shared<gui::controls::c_checkbox>( "auto shoot", &config::get_item( ctx::cfg.aim_shoot ) ) );
 				tab1->add( std::make_shared<gui::controls::c_checkbox>( "silent", &config::get_item( ctx::cfg.aim_silent ) ) );
 				tab1->add( std::make_shared<gui::controls::c_checkbox>( "lag compensation", &config::get_item( ctx::cfg.aim_lagcompensation ) ) );
+				tab1->add( std::make_shared<gui::controls::c_checkbox>( "recoil compensation", &config::get_item( ctx::cfg.aim_recoilcompensation ) ) );
 				tab1->add( std::make_shared<gui::controls::c_slider>( "hitchance", &config::get_item( ctx::cfg.aim_hitchance ), 0.f, 100.f ) );
 			}
 
@@ -100,17 +102,17 @@ namespace menu
 		}
 	}
 
-	void render()
+	void render( )
 	{
-		gui::set_pos( render::get_screen_size() * 0.5f );
+		gui::set_pos( render::get_screen_size( ) * 0.5f );
 		gui::set_size( { 200, 14 } );
 
-		gui::setup_style();
+		gui::setup_style( );
 
-		ctx::csgo.surface->m_bClippingEnabled() = true;
+		ctx::csgo.surface->m_bClippingEnabled( ) = true;
 
-		gui::render();
+		gui::render( );
 
-		ctx::csgo.surface->m_bClippingEnabled() = false;
+		ctx::csgo.surface->m_bClippingEnabled( ) = false;
 	}
 }

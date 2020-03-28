@@ -9,21 +9,21 @@ namespace event_handler
 	{
 				for ( const auto& callback : m_callbacks )
 		{
-						if ( HASH( e->GetName() ) == callback.first )
+						if ( HASH( e->GetName( ) ) == callback.first )
 				callback.second( e );
 		}
 	}
 
-	void undo()
+	void undo( )
 	{
 		ctx::csgo.events->RemoveListener( &m_listener );
 	}
 
 	void add( const std::string_view event_name, const std::function<void( IGameEvent * e )> & callback )
 	{
-		m_callbacks.push_back( std::make_pair( HASH( event_name.data() ), callback ) );
+		m_callbacks.push_back( std::make_pair( HASH( event_name.data( ) ), callback ) );
 
-		ctx::csgo.events->AddListener( &m_listener, event_name.data(), false );
+		ctx::csgo.events->AddListener( &m_listener, event_name.data( ), false );
 	}
 }
 

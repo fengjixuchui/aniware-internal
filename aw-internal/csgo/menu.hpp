@@ -2,6 +2,6 @@
 
 namespace menu
 {
-	void init();
-	void render();
+	void init( );
+	void render( );
 }

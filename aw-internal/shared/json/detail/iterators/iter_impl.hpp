@@ -64,7 +64,7 @@ class iter_impl
         typename BasicJsonType::const_reference,
         typename BasicJsonType::reference>::type;
 
-        iter_impl() = default;
+        iter_impl( ) = default;
 
     /*!
     @brief constructor for a given JSON instance
@@ -80,19 +80,19 @@ class iter_impl
         {
             case value_t::object:
             {
-                m_it.object_iterator = typename object_t::iterator();
+                m_it.object_iterator = typename object_t::iterator( );
                 break;
             }
 
             case value_t::array:
             {
-                m_it.array_iterator = typename array_t::iterator();
+                m_it.array_iterator = typename array_t::iterator( );
                 break;
             }
 
             default:
             {
-                m_it.primitive_iterator = primitive_iterator_t();
+                m_it.primitive_iterator = primitive_iterator_t( );
                 break;
             }
         }
@@ -133,7 +133,7 @@ class iter_impl
     @brief set the iterator to the first value
     @pre The iterator is initialized; i.e. `m_object != nullptr`.
     */
-    void set_begin() noexcept
+    void set_begin( ) noexcept
     {
         assert(m_object != nullptr);
 
@@ -141,26 +141,26 @@ class iter_impl
         {
             case value_t::object:
             {
-                m_it.object_iterator = m_object->m_value.object->begin();
+                m_it.object_iterator = m_object->m_value.object->begin( );
                 break;
             }
 
             case value_t::array:
             {
-                m_it.array_iterator = m_object->m_value.array->begin();
+                m_it.array_iterator = m_object->m_value.array->begin( );
                 break;
             }
 
             case value_t::null:
             {
-                // set to end so begin()==end() is true: null is empty
-                m_it.primitive_iterator.set_end();
+                // set to end so begin( )==end( ) is true: null is empty
+                m_it.primitive_iterator.set_end( );
                 break;
             }
 
             default:
             {
-                m_it.primitive_iterator.set_begin();
+                m_it.primitive_iterator.set_begin( );
                 break;
             }
         }
@@ -170,7 +170,7 @@ class iter_impl
     @brief set the iterator past the last value
     @pre The iterator is initialized; i.e. `m_object != nullptr`.
     */
-    void set_end() noexcept
+    void set_end( ) noexcept
     {
         assert(m_object != nullptr);
 
@@ -178,19 +178,19 @@ class iter_impl
         {
             case value_t::object:
             {
-                m_it.object_iterator = m_object->m_value.object->end();
+                m_it.object_iterator = m_object->m_value.object->end( );
                 break;
             }
 
             case value_t::array:
             {
-                m_it.array_iterator = m_object->m_value.array->end();
+                m_it.array_iterator = m_object->m_value.array->end( );
                 break;
             }
 
             default:
             {
-                m_it.primitive_iterator.set_end();
+                m_it.primitive_iterator.set_end( );
                 break;
             }
         }
@@ -201,7 +201,7 @@ class iter_impl
     @brief return a reference to the value pointed to by the iterator
     @pre The iterator is initialized; i.e. `m_object != nullptr`.
     */
-    reference operator*() const
+    reference operator*( ) const
     {
         assert(m_object != nullptr);
 
@@ -209,13 +209,13 @@ class iter_impl
         {
             case value_t::object:
             {
-                assert(m_it.object_iterator != m_object->m_value.object->end());
+                assert(m_it.object_iterator != m_object->m_value.object->end( ));
                 return m_it.object_iterator->second;
             }
 
             case value_t::array:
             {
-                assert(m_it.array_iterator != m_object->m_value.array->end());
+                assert(m_it.array_iterator != m_object->m_value.array->end( ));
                 return *m_it.array_iterator;
             }
 
@@ -224,7 +224,7 @@ class iter_impl
 
             default:
             {
-                if (JSON_LIKELY(m_it.primitive_iterator.is_begin()))
+                if (JSON_LIKELY(m_it.primitive_iterator.is_begin( )))
                 {
                     return *m_object;
                 }
@@ -238,7 +238,7 @@ class iter_impl
     @brief dereference the iterator
     @pre The iterator is initialized; i.e. `m_object != nullptr`.
     */
-    pointer operator->() const
+    pointer operator->( ) const
     {
         assert(m_object != nullptr);
 
@@ -246,19 +246,19 @@ class iter_impl
         {
             case value_t::object:
             {
-                assert(m_it.object_iterator != m_object->m_value.object->end());
+                assert(m_it.object_iterator != m_object->m_value.object->end( ));
                 return &(m_it.object_iterator->second);
             }
 
             case value_t::array:
             {
-                assert(m_it.array_iterator != m_object->m_value.array->end());
+                assert(m_it.array_iterator != m_object->m_value.array->end( ));
                 return &*m_it.array_iterator;
             }
 
             default:
             {
-                if (JSON_LIKELY(m_it.primitive_iterator.is_begin()))
+                if (JSON_LIKELY(m_it.primitive_iterator.is_begin( )))
                 {
                     return m_object;
                 }
@@ -283,7 +283,7 @@ class iter_impl
     @brief pre-increment (++it)
     @pre The iterator is initialized; i.e. `m_object != nullptr`.
     */
-    iter_impl& operator++()
+    iter_impl& operator++( )
     {
         assert(m_object != nullptr);
 
@@ -326,7 +326,7 @@ class iter_impl
     @brief pre-decrement (--it)
     @pre The iterator is initialized; i.e. `m_object != nullptr`.
     */
-    iter_impl& operator--()
+    iter_impl& operator--( )
     {
         assert(m_object != nullptr);
 
@@ -557,7 +557,7 @@ class iter_impl
 
             default:
             {
-                if (JSON_LIKELY(m_it.primitive_iterator.get_value() == -n))
+                if (JSON_LIKELY(m_it.primitive_iterator.get_value( ) == -n))
                 {
                     return *m_object;
                 }
@@ -571,25 +571,25 @@ class iter_impl
     @brief  return the key of an object iterator
     @pre The iterator is initialized; i.e. `m_object != nullptr`.
     */
-    const typename object_t::key_type& key() const
+    const typename object_t::key_type& key( ) const
     {
         assert(m_object != nullptr);
 
-        if (JSON_LIKELY(m_object->is_object()))
+        if (JSON_LIKELY(m_object->is_object( )))
         {
             return m_it.object_iterator->first;
         }
 
-        JSON_THROW(invalid_iterator::create(207, "cannot use key() for non-object iterators"));
+        JSON_THROW(invalid_iterator::create(207, "cannot use key( ) for non-object iterators"));
     }
 
     /*!
     @brief  return the value of an iterator
     @pre The iterator is initialized; i.e. `m_object != nullptr`.
     */
-    reference value() const
+    reference value( ) const
     {
-        return operator*();
+        return operator*( );
     }
 
   private:

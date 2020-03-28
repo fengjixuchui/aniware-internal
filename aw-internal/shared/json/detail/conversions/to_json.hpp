@@ -31,7 +31,7 @@ struct external_constructor<value_t::boolean>
     {
         j.m_type = value_t::boolean;
         j.m_value = b;
-        j.assert_invariant();
+        j.assert_invariant( );
     }
 };
 
@@ -43,7 +43,7 @@ struct external_constructor<value_t::string>
     {
         j.m_type = value_t::string;
         j.m_value = s;
-        j.assert_invariant();
+        j.assert_invariant( );
     }
 
     template<typename BasicJsonType>
@@ -51,7 +51,7 @@ struct external_constructor<value_t::string>
     {
         j.m_type = value_t::string;
         j.m_value = std::move(s);
-        j.assert_invariant();
+        j.assert_invariant( );
     }
 
     template<typename BasicJsonType, typename CompatibleStringType,
@@ -61,7 +61,7 @@ struct external_constructor<value_t::string>
     {
         j.m_type = value_t::string;
         j.m_value.string = j.template create<typename BasicJsonType::string_t>(str);
-        j.assert_invariant();
+        j.assert_invariant( );
     }
 };
 
@@ -73,7 +73,7 @@ struct external_constructor<value_t::number_float>
     {
         j.m_type = value_t::number_float;
         j.m_value = val;
-        j.assert_invariant();
+        j.assert_invariant( );
     }
 };
 
@@ -85,7 +85,7 @@ struct external_constructor<value_t::number_unsigned>
     {
         j.m_type = value_t::number_unsigned;
         j.m_value = val;
-        j.assert_invariant();
+        j.assert_invariant( );
     }
 };
 
@@ -97,7 +97,7 @@ struct external_constructor<value_t::number_integer>
     {
         j.m_type = value_t::number_integer;
         j.m_value = val;
-        j.assert_invariant();
+        j.assert_invariant( );
     }
 };
 
@@ -109,7 +109,7 @@ struct external_constructor<value_t::array>
     {
         j.m_type = value_t::array;
         j.m_value = arr;
-        j.assert_invariant();
+        j.assert_invariant( );
     }
 
     template<typename BasicJsonType>
@@ -117,7 +117,7 @@ struct external_constructor<value_t::array>
     {
         j.m_type = value_t::array;
         j.m_value = std::move(arr);
-        j.assert_invariant();
+        j.assert_invariant( );
     }
 
     template<typename BasicJsonType, typename CompatibleArrayType,
@@ -129,7 +129,7 @@ struct external_constructor<value_t::array>
         using std::end;
         j.m_type = value_t::array;
         j.m_value.array = j.template create<typename BasicJsonType::array_t>(begin(arr), end(arr));
-        j.assert_invariant();
+        j.assert_invariant( );
     }
 
     template<typename BasicJsonType>
@@ -137,12 +137,12 @@ struct external_constructor<value_t::array>
     {
         j.m_type = value_t::array;
         j.m_value = value_t::array;
-        j.m_value.array->reserve(arr.size());
+        j.m_value.array->reserve(arr.size( ));
         for (const bool x : arr)
         {
             j.m_value.array->push_back(x);
         }
-        j.assert_invariant();
+        j.assert_invariant( );
     }
 
     template<typename BasicJsonType, typename T,
@@ -151,9 +151,9 @@ struct external_constructor<value_t::array>
     {
         j.m_type = value_t::array;
         j.m_value = value_t::array;
-        j.m_value.array->resize(arr.size());
-        std::copy(std::begin(arr), std::end(arr), j.m_value.array->begin());
-        j.assert_invariant();
+        j.m_value.array->resize(arr.size( ));
+        std::copy(std::begin(arr), std::end(arr), j.m_value.array->begin( ));
+        j.assert_invariant( );
     }
 };
 
@@ -165,7 +165,7 @@ struct external_constructor<value_t::object>
     {
         j.m_type = value_t::object;
         j.m_value = obj;
-        j.assert_invariant();
+        j.assert_invariant( );
     }
 
     template<typename BasicJsonType>
@@ -173,7 +173,7 @@ struct external_constructor<value_t::object>
     {
         j.m_type = value_t::object;
         j.m_value = std::move(obj);
-        j.assert_invariant();
+        j.assert_invariant( );
     }
 
     template<typename BasicJsonType, typename CompatibleObjectType,
@@ -185,7 +185,7 @@ struct external_constructor<value_t::object>
 
         j.m_type = value_t::object;
         j.m_value.object = j.template create<typename BasicJsonType::object_t>(begin(obj), end(obj));
-        j.assert_invariant();
+        j.assert_invariant( );
     }
 };
 
@@ -306,7 +306,7 @@ template < typename BasicJsonType, typename T,
            enable_if_t<std::is_same<T, iteration_proxy_value<typename BasicJsonType::iterator>>::value, int> = 0>
 void to_json(BasicJsonType& j, const T& b)
 {
-    j = { {b.key(), b.value()} };
+    j = { {b.key( ), b.value( )} };
 }
 
 template<typename BasicJsonType, typename Tuple, std::size_t... Idx>
@@ -324,8 +324,8 @@ void to_json(BasicJsonType& j, const std::tuple<Args...>& t)
 struct to_json_fn
 {
     template<typename BasicJsonType, typename T>
-    auto operator()(BasicJsonType& j, T&& val) const noexcept(noexcept(to_json(j, std::forward<T>(val))))
-    -> decltype(to_json(j, std::forward<T>(val)), void())
+    auto operator( )(BasicJsonType& j, T&& val) const noexcept(noexcept(to_json(j, std::forward<T>(val))))
+    -> decltype(to_json(j, std::forward<T>(val)), void( ))
     {
         return to_json(j, std::forward<T>(val));
     }

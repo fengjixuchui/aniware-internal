@@ -17,7 +17,7 @@ template<typename CharType> struct output_adapter_protocol
 {
     virtual void write_character(CharType c) = 0;
     virtual void write_characters(const CharType* s, std::size_t length) = 0;
-    virtual ~output_adapter_protocol() = default;
+    virtual ~output_adapter_protocol( ) = default;
 };
 
 template<typename CharType>
@@ -102,7 +102,7 @@ class output_adapter
     output_adapter(StringType& s)
         : oa(std::make_shared<output_string_adapter<CharType, StringType>>(s)) {}
 
-    operator output_adapter_t<CharType>()
+    operator output_adapter_t<CharType>( )
     {
         return oa;
     }

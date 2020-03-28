@@ -4,7 +4,7 @@ classids_t classids = {};
 
 #define GET_ID( var ) var = get( CT_HASH( #var ) );
 
-void classids_t::init()
+void classids_t::init( )
 {
 	GET_ID( CAI_BaseNPC );
 	GET_ID( CAK47 );
@@ -288,10 +288,10 @@ void classids_t::init()
 
 uint32_t classids_t::get( uint32_t name )
 {
-	if ( m_classids.empty() )
+	if ( m_classids.empty( ) )
 	{
 		int cur_id = -1;
-		if ( auto server_class_list = ctx::csgo.server->GetAllClasses() )
+		if ( auto server_class_list = ctx::csgo.server->GetAllClasses( ) )
 		{
 			for ( ; server_class_list; server_class_list = server_class_list->m_pNext )
 				m_classids[ HASH( server_class_list->m_pNetworkName ) ] = ++cur_id;
