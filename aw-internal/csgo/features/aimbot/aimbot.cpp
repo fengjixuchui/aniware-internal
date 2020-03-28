@@ -32,16 +32,28 @@ namespace aimbot
 
 	void select_points( AimbotData& data )
 	{
-		int aim_body = config::get< bool >( ctx::cfg.aim_body ) ? 2 : 0;
-
-		for ( auto i = aim_body; i < HITBOX_MAX; i++ )
+		const auto append_point = []( AimbotData& data, const math::vec3_t point )
 		{
-			const auto point = data.pl->get_hitbox_pos( i );
+			if ( point.zero( ) )
+				return;
 
-			if ( !point.zero( ) )
-			{
-				data.points.push_back( point );
-			}
+			data.points.push_back( point );
+		};
+
+		for ( auto i = config::get< bool >( ctx::cfg.aim_body ) ? 2 : 0; i < HITBOX_MAX; i++ )
+		{
+			append_point( data, data.pl->get_hitbox_pos( i ) );
+		}
+
+		if ( !config::get< bool >( ctx::cfg.aim_lagcompensation ) )
+			return;
+
+		for ( auto record : records[ data.pl->Index( ) ] )
+		{
+			if ( !record.matrix || !lagcompensation::valid_tick( record.simulation_time ) )
+				continue;
+
+			append_point( data, record.head );
 		}
 	}
 
