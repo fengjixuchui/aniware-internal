@@ -1,6 +1,7 @@
 #include "../../csgo.hpp"
 
-enum StrafeType {
+enum StrafeType
+{
 	RAGE,
 	LEGIT,
 };

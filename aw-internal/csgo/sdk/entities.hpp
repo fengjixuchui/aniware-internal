@@ -8,11 +8,6 @@ enum entity_damage
 	DAMAGE_AIM
 };
 
-enum entity_offsets : int
-{
-	TAKE_DAMAGE = 0x280,
-};
-
 struct entity_t : public IClientEntity
 {
 	template< typename t = entity_t >
