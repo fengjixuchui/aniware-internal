@@ -1,13 +1,15 @@
 #include "../../csgo.hpp"
 #include "../lagcompensation/lagcompensation.hpp"
 
-enum HealthType {
+enum HealthType
+{
 	NOHEALTH,
 	NUMBER,
 	BAR,
 };
 
-enum BoxType {
+enum BoxType
+{
 	NOBOX,
 	RECTANGLE,
 	CORNERS
@@ -20,6 +22,16 @@ namespace players
 		auto player_info = pl->get_player_info( );
 
 		render::text( render::fonts::m_main, { bbox.x + bbox.w * 0.5f, bbox.y - 7 }, { 255, 255, 255 }, { render::fonts::FONT_RIGHT | render::fonts::FONT_CENTER_Y }, player_info.name );
+	}
+
+	void dot( player_t* pl )
+	{
+		math::vec3_t dst{};
+
+		if ( static_cast< bool >( ctx::csgo.debugoverlay->WorldToScreen( pl->get_eye_pos( ), dst ) != 1 ) )
+		{
+			render::text(render::fonts::m_main, { dst.x, dst.y }, { 100, 255, 100 }, { render::fonts::FONT_CENTER_X | render::fonts::FONT_CENTER_Y }, "x");
+		}
 	}
 
 	void ticks( player_t* pl )
@@ -42,9 +54,9 @@ namespace players
 	{
 		const auto get_health_color = []( player_t* pl, int health )
 		{
-			col_t health_color { static_cast< int >( 255 - health * 2.55 ), static_cast< int >( health * 2.55 ), 0, 255 };
+			col_t health_color { static_cast< int >( 255 - health * 2.55f ), static_cast< int >( health * 2.55f ), 0, 255 };
 			{
-				health > 100 ? health_color = col_t{ 0, 255, 0 } : col_t{};
+				( health > 100 ) ? health_color = col_t{ 0, 255, 0 } : col_t{};
 			}
 
 			return health_color;
@@ -96,6 +108,9 @@ namespace players
 
 			if ( config::get< bool >( ctx::cfg.extrasensory_name ) )
 				name( bbox, pl );
+
+			if ( config::get< bool >( ctx::cfg.extrasensory_dot ) )
+				dot( pl );
 
 			if ( config::get< bool >( ctx::cfg.lagcompensation_show ) )
 				ticks( pl );

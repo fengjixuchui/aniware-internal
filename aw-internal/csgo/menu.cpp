@@ -73,6 +73,7 @@ namespace menu
 			{
 				tab2->add( std::make_shared<gui::controls::c_checkbox>( "fog", &config::get_item( ctx::cfg.draw_fog ) ) );
 				tab2->add( std::make_shared<gui::controls::c_checkbox>( "name", &config::get_item( ctx::cfg.extrasensory_name ) ) );
+				tab2->add( std::make_shared<gui::controls::c_checkbox>( "dot", &config::get_item( ctx::cfg.extrasensory_dot ) ) );
 				tab2->add( std::make_shared<gui::controls::c_combo>( "health type", &config::get_item( ctx::cfg.extrasensory_health_type ), std::vector<std::string_view>{ "disabled", "number", "bar" } ) );
 				tab2->add( std::make_shared<gui::controls::c_combo>( "box type", &config::get_item( ctx::cfg.extrasensory_box_type ), std::vector<std::string_view>{ "disabled", "rectangle", "corners" } ) );
 			}
