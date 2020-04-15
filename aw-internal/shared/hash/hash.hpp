@@ -28,9 +28,9 @@ namespace hash
 }
 
 #define CT_HASH( str ) \
-       [ ]( ) { \
-           constexpr hash_t ret = hash::get_const( str ); \
-           return ret; \
-       }( )
+    [ ]( ) { \
+        constexpr hash_t ret = hash::get_const( str ); \
+        return ret; \
+    }( )
 
 #define HASH( str ) hash::get( str )

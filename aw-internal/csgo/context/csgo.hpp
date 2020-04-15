@@ -23,7 +23,6 @@ namespace ctx
 		ADD_INTERFACE( IClientEntityList, entlist, "VClientEntityList" );
 		ADD_INTERFACE( ISchemeManager, scheme_manager, "VGUI_Scheme" );
 		ADD_INTERFACE( IGameEventManager2, events, "GAMEEVENTSMANAGER002" );
-		ADD_INTERFACE( IEngineTrace, enginetrace, "EngineTraceClient004" );
 		ADD_INTERFACE( IEngineSound, enginesound, "IEngineSoundClient003" );
 		ADD_INTERFACE( CInputSystem, inputsys, "InputSystemVersion0" );
 
