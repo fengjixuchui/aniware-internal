@@ -27,10 +27,14 @@ namespace players
 	void dot( player_t* pl )
 	{
 		math::vec3_t dst{};
+		
+		col_t color{};
 
 		if ( static_cast< bool >( ctx::csgo.debugoverlay->WorldToScreen( pl->get_eye_pos( ), dst ) != 1 ) )
 		{
-			render::text(render::fonts::m_main, { dst.x, dst.y }, { 100, 255, 100 }, { render::fonts::FONT_CENTER_X | render::fonts::FONT_CENTER_Y }, "x");
+			ctx::client.local->can_see_pos( pl, pl->get_eye_pos( ) ) ? color = col_t{ 100, 255, 100 } : color = col_t{ 255, 100, 100 };
+
+			render::text( render::fonts::m_main, { dst.x, dst.y }, color, { render::fonts::FONT_CENTER_X | render::fonts::FONT_CENTER_Y }, "x" );
 		}
 	}
 

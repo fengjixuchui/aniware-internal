@@ -65,6 +65,7 @@
     <ClInclude Include="csgo\sdk\source_engine\ISchemeManager.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IServer.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\ISurface.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\ITrace.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IVDebugOverlay.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IVEngineClient.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IVEngineVGui.hpp" />

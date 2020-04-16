@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../../context/mem.hpp"
 
 struct CInputSystem

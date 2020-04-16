@@ -12,6 +12,7 @@ namespace ctx
 	{
 		ADD_INTERFACE_MOD( ISurface, surface, "vguimatsurface.dll", "VGUI_Surface" );
 		ADD_INTERFACE_MOD( IPhysicsSurface, physics_surface, "vphysics.dll", "VPhysicsSurfaceProps001" );
+		ADD_INTERFACE_MOD( ITrace, trace, "engine.dll", "EngineTraceClient004" );
 
 		ADD_INTERFACE( IVEngineClient, engine, "VEngineClient0" );
 		ADD_INTERFACE( IVEngineVGui, enginevgui, "VEngineVGui" );

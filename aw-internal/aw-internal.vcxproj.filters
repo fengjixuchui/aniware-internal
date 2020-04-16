@@ -119,6 +119,7 @@
     <ClInclude Include="csgo\sdk\source_engine\datatypes\INetChannelInfo.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IPhysicsSurface.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IEngineSound.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\ITrace.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="csgo\features\misc\movement.cpp" />
