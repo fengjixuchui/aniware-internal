@@ -32,9 +32,12 @@ namespace aimbot
 
 	void select_points( AimbotData& data )
 	{
-		const auto append_point = []( AimbotData& data, const math::vec3_t point )
+		const auto append_point = []( AimbotData& data, math::vec3_t point, player_t* pl )
 		{
 			if ( point.zero( ) )
+				return;
+
+			if ( !ctx::client.local->can_see_pos( pl, point ) )
 				return;
 
 			data.points.push_back( point );
@@ -42,7 +45,7 @@ namespace aimbot
 
 		for ( auto i = config::get< bool >( ctx::cfg.aim_body ) ? 2 : 0; i < HITBOX_MAX; i++ )
 		{
-			append_point( data, data.pl->get_hitbox_pos( i ) );
+			append_point( data, data.pl->get_hitbox_pos( i ), data.pl );
 		}
 
 		if ( !config::get< bool >( ctx::cfg.aim_lagcompensation ) )
@@ -53,7 +56,7 @@ namespace aimbot
 			if ( !record.matrix || !lagcompensation::valid_tick( record.simulation_time ) )
 				continue;
 
-			append_point( data, record.head );
+			append_point( data, record.head, record.pl );
 		}
 	}
 
@@ -73,6 +76,9 @@ namespace aimbot
 
 	void select_angles( AimbotData& data )
 	{
+		if ( data.points.empty( ) )
+			return;
+
 		ctx::client.cmd->viewangles = math::calc_angle( ctx::client.local->get_eye_pos( ), data.points.front( ) );
 
 		if ( config::get< bool >( ctx::cfg.aim_recoilcompensation ) )

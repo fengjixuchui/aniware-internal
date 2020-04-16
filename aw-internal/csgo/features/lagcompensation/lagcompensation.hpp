@@ -4,18 +4,11 @@ struct CompensationRecord
 {
 	float simulation_time;
 
-	math::vec3_t view;
-	math::vec3_t head;
+	math::vec3_t view, head;
+
+	player_t* pl;
 
 	math::matrix3x4_t matrix[ 128 ];
-};
-
-struct BestRecord
-{
-	CompensationRecord record;
-	player_t* target;
-
-	math::vec3_t head;
 };
 
 struct ConVars
