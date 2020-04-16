@@ -12,6 +12,7 @@ namespace ctx
 	{
 		ADD_INTERFACE_MOD( ISurface, surface, "vguimatsurface.dll", "VGUI_Surface" );
 		ADD_INTERFACE_MOD( IPhysicsSurface, physics_surface, "vphysics.dll", "VPhysicsSurfaceProps001" );
+		ADD_INTERFACE_MOD( ITrace, trace, "engine.dll", "EngineTraceClient004" );
 
 		ADD_INTERFACE( IVEngineClient, engine, "VEngineClient0" );
 		ADD_INTERFACE( IVEngineVGui, enginevgui, "VEngineVGui" );
@@ -23,7 +24,6 @@ namespace ctx
 		ADD_INTERFACE( IClientEntityList, entlist, "VClientEntityList" );
 		ADD_INTERFACE( ISchemeManager, scheme_manager, "VGUI_Scheme" );
 		ADD_INTERFACE( IGameEventManager2, events, "GAMEEVENTSMANAGER002" );
-		ADD_INTERFACE( IEngineTrace, enginetrace, "EngineTraceClient004" );
 		ADD_INTERFACE( IEngineSound, enginesound, "IEngineSoundClient003" );
 		ADD_INTERFACE( CInputSystem, inputsys, "InputSystemVersion0" );
 

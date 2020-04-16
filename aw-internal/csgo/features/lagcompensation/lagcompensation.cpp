@@ -2,8 +2,6 @@
 
 std::deque< CompensationRecord > records[ 65 ];
 
-BestRecord best_record;
-
 ConVars cvars;
 
 namespace lagcompensation
@@ -64,6 +62,7 @@ namespace lagcompensation
 		record.head = pl->get_hitbox_pos( HITBOX_HEAD );
 		record.view = pl->get_eye_angles( );
 		record.simulation_time = pl->get_simtime( );
+		record.pl = pl;
 		
 		if ( valid_tick( record.simulation_time ) && record.matrix->m_matrix )
 			return true;

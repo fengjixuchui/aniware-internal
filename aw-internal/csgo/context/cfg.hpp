@@ -23,9 +23,10 @@ namespace ctx
 		ADD_CFG_ITEM( float, world_fov, 0.f );
 
 		ADD_CFG_ITEM( bool, extrasensory_name, false );
+		ADD_CFG_ITEM( bool, extrasensory_dot, false);
 		ADD_CFG_ITEM( int, extrasensory_box_type, 0 );
-		ADD_CFG_ITEM( int, extrasensory_health_type, false) ;
-
+		ADD_CFG_ITEM( int, extrasensory_health_type, false);
+		
 		ADD_CFG_ITEM( bool, hitmarker_enable, false );
 		ADD_CFG_ITEM( bool, hitmarker_tint, false );
 		ADD_CFG_ITEM( int, hitmarker_sound, 0 );

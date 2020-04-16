@@ -121,6 +121,8 @@ struct player_t : public combat_character_t
 	math::vec3_t get_eye_pos( );
 	math::vec3_t get_hitbox_pos( int hitbox );
 
+	bool can_see_pos( player_t* pl, const math::vec3_t dst );
+
 	bool is_alive( );
 	bool is_enemy( );
 };

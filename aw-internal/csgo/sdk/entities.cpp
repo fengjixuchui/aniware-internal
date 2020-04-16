@@ -109,6 +109,18 @@ math::vec3_t player_t::get_hitbox_pos( int hitbox )
 	}
 }
 
+bool player_t::can_see_pos( player_t* pl, const math::vec3_t dst )
+{
+	ray_t ray( get_eye_pos( ), dst );
+	trace_filter_entity filter( this );
+
+	trace_t trace;
+
+	ctx::csgo.trace->TraceRay( ray, mask_shot | contents_grate, &filter, &trace );
+
+	return ( trace.entity == pl ) || ( trace.fraction > 0.97f );
+}
+
 bool player_t::is_alive( )
 {
 	if ( !this )

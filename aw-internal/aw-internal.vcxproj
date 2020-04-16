@@ -25,7 +25,6 @@
     <ClInclude Include="csgo\context\mem.hpp" />
     <ClInclude Include="csgo\csgo.hpp" />
     <ClInclude Include="csgo\features\aimbot\aimbot.hpp" />
-    <ClInclude Include="csgo\features\autowall\autowall.hpp" />
     <ClInclude Include="csgo\features\features.hpp" />
     <ClInclude Include="csgo\features\lagcompensation\lagcompensation.hpp" />
     <ClInclude Include="csgo\features\misc\movement.hpp" />
@@ -61,12 +60,12 @@
     <ClInclude Include="csgo\sdk\source_engine\IClientMode.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\ICVar.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IEngineSound.hpp" />
-    <ClInclude Include="csgo\sdk\source_engine\IEngineTrace.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IGameEventManager.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IPhysicsSurface.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\ISchemeManager.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IServer.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\ISurface.hpp" />
+    <ClInclude Include="csgo\sdk\source_engine\ITrace.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IVDebugOverlay.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IVEngineClient.hpp" />
     <ClInclude Include="csgo\sdk\source_engine\IVEngineVGui.hpp" />
@@ -142,7 +141,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="csgo\features\aimbot\aimbot.cpp" />
-    <ClCompile Include="csgo\features\autowall\autowall.cpp" />
     <ClCompile Include="csgo\features\lagcompensation\lagcompensation.cpp" />
     <ClCompile Include="csgo\features\misc\movement.cpp" />
     <ClCompile Include="csgo\features\visuals\players.cpp" />
@@ -156,7 +154,6 @@
     <ClCompile Include="csgo\hooks\functions\player_hurt.cpp" />
     <ClCompile Include="csgo\hooks\functions\player_step.cpp" />
     <ClCompile Include="csgo\hooks\functions\reload_fonts.cpp" />
-    <ClCompile Include="csgo\hooks\functions\trace_ray.cpp" />
     <ClCompile Include="csgo\hooks\functions\viewmodel_fov.cpp" />
     <ClCompile Include="csgo\hooks\hook_handler.cpp" />
     <ClCompile Include="csgo\main.cpp" />
@@ -263,7 +260,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
@@ -288,7 +285,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>

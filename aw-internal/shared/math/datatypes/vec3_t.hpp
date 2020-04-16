@@ -11,9 +11,14 @@ namespace math
 		vec3_t( float x, float y, float z ) : x( x ), y( y ), z( z ) {};
 		vec3_t( float* arr ) : x( arr[ PITCH ] ), y( arr[ YAW ] ), z( arr[ ROLL ] ) {};
 
+		inline float length_sqr( ) const
+		{
+			return ( ( x * x ) + ( y * y ) + ( z * z ) );
+		}
+
 		inline float length( ) const
 		{
-			return sqrt( x * x + y * y + z * z );
+			return sqrt( length_sqr( ) );
 		}
 
 		inline float length_2d( ) const
@@ -265,11 +270,12 @@ namespace math
 
 	struct __declspec( align( 16 ) ) vec3_aligned_t : public vec3_t
 	{
-		inline vec3_aligned_t& operator=( const vec3_t& vec )
+		inline vec3_aligned_t &operator=( const vec3_t& vec )
 		{
 			x = vec.x;
 			y = vec.y;
 			z = vec.z;
+
 			return *this;
 		}
 
