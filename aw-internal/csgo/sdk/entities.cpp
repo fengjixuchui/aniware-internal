@@ -126,7 +126,7 @@ bool player_t::is_alive( )
 	if ( !this )
 		return false;
 
-	return get_lifestate( ) == ALIVE;
+	return get_lifestate( ) == BodyState_t::alive;
 }
 
 bool player_t::is_enemy( )

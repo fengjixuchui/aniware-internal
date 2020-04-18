@@ -45,7 +45,7 @@ namespace lagcompensation
 		if( pl == ctx::client.local )
 			return false;
 
-		if ( !pl->is_alive( ) || pl->get_flags( ).has_flag( FL_FROZEN ) )
+		if ( !pl->is_alive( ) || pl->get_flags( ).has_flag( fl_frozen ) )
 			return false;
 
 		if ( pl->is_immune( ) )
@@ -105,6 +105,11 @@ namespace lagcompensation
 			if ( !records->empty( ) )
 			{
 				records->clear( );
+			}
+
+			if ( ctx::client.cmd->buttons.has_flag( in_attack ) )
+			{
+
 			}
 
 			return;

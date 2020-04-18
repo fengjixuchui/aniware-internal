@@ -2,69 +2,77 @@
 
 enum ButtonFlags_t
 {
-	IN_ATTACK = ( 1 << 0 ),
-	IN_JUMP = ( 1 << 1 ),
-	IN_DUCK = ( 1 << 2 ),
-	IN_FORWARD = ( 1 << 3 ),
-	IN_BACK = ( 1 << 4 ),
-	IN_USE = ( 1 << 5 ),
-	IN_CANCEL = ( 1 << 6 ),
-	IN_LEFT = ( 1 << 7 ),
-	IN_RIGHT = ( 1 << 8 ),
-	IN_MOVELEFT = ( 1 << 9 ),
-	IN_MOVERIGHT = ( 1 << 10 ),
-	IN_ATTACK2 = ( 1 << 11 ),
-	IN_RUN = ( 1 << 12 ),
-	IN_RELOAD = ( 1 << 13 ),
-	IN_ALT1 = ( 1 << 14 ),
-	IN_ALT2 = ( 1 << 15 ),
-	IN_SCORE = ( 1 << 16 ),
-	IN_SPEED = ( 1 << 17 ),
-	IN_WALK = ( 1 << 18 ),
-	IN_ZOOM = ( 1 << 19 ),
-	IN_WEAPON1 = ( 1 << 20 ),
-	IN_WEAPON2 = ( 1 << 21 ),
-	IN_BULLRUSH = ( 1 << 22 ),
-	IN_GRENADE1 = ( 1 << 23 ),
-	IN_GRENADE2 = ( 1 << 24 ),
-	IN_ATTACK3 = ( 1 << 25 ),
+	in_attack = ( 1 << 0 ),
+	in_jump = ( 1 << 1 ),
+	in_duck = ( 1 << 2 ),
+	in_forward = ( 1 << 3 ),
+	in_back = ( 1 << 4 ),
+	in_use = ( 1 << 5 ),
+	in_cancel = ( 1 << 6 ),
+	in_left = ( 1 << 7 ),
+	in_right = ( 1 << 8 ),
+	in_moveleft = ( 1 << 9 ),
+	in_moveright = ( 1 << 10 ),
+	in_attack2 = ( 1 << 11 ),
+	in_run = ( 1 << 12 ),
+	in_reload = ( 1 << 13 ),
+	in_alt1 = ( 1 << 14 ),
+	in_alt2 = ( 1 << 15 ),
+	in_score = ( 1 << 16 ),
+	in_speed = ( 1 << 17 ),
+	in_walk = ( 1 << 18 ),
+	in_zoom = ( 1 << 19 ),
+	in_weapon1 = ( 1 << 20 ),
+	in_weapon2 = ( 1 << 21 ),
+	in_bullrush = ( 1 << 22 ),
+	in_grenade1 = ( 1 << 23 ),
+	in_grenade2 = ( 1 << 24 ),
+	in_attack3 = ( 1 << 25 ),
 };
 
 enum MoveType_t
 {
-	MOVETYPE_NONE = 0,
-	MOVETYPE_ISOMETRIC,
-	MOVETYPE_WALK,
-	MOVETYPE_STEP,
-	MOVETYPE_FLY,
-	MOVETYPE_FLYGRAVITY,
-	MOVETYPE_VPHYSICS,
-	MOVETYPE_PUSH,
-	MOVETYPE_NOCLIP,
-	MOVETYPE_LADDER,
-	MOVETYPE_OBSERVER,
-	MOVETYPE_CUSTOM,
-	MOVETYPE_LAST = MOVETYPE_CUSTOM,
-	MOVETYPE_MAX_BITS = 4
+	movetype_none = 0,
+	movetype_isometric,
+	movetype_walk,
+	movetype_step,
+	movetype_fly,
+	movetype_flygravity,
+	movetype_vphysics,
+	movetype_push,
+	movetype_noclip,
+	movetype_ladder,
+	movetype_observer,
+	movetype_custom,
+	movetype_last = movetype_custom,
+	movetype_max_bits = 4
 };
 
 struct CUserCmd
 {
 	char pad_vtable[ 0x4 ];
+
 	int command_number;     
 	int tick_count;      
+
 	math::vec3_t viewangles;         
 	math::vec3_t aimdirection;
+
 	float forwardmove;       
 	float sidemove;          
-	float upmove;            
-	bitflag_t buttons;           
-	unsigned char impulse;		  
+	float upmove;      
+
+	bitflag_t buttons;   
+
+	unsigned char impulse;		
+
 	int weaponselect;     
 	int weaponsubtype;     
-	int random_seed;        
+	int random_seed;     
+
 	short mousedx;           
-	short mousedy;           
+	short mousedy;     
+
 	bool hasbeenpredicted;  
 	char pad_0x4C[ 0x18 ];
 };
