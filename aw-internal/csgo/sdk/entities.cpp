@@ -4,8 +4,7 @@ bool player_t::get_bbox( math::vec4_t& box )
 {
 	math::matrix3x4_t& tran_frame = get_coord_frame( );
 
-	const math::vec3_t min = GetCollideable( )->OBBMins( );
-	const math::vec3_t max = GetCollideable( )->OBBMaxs( );
+	const math::vec3_t min = GetCollideable( )->OBBMins( ), max = GetCollideable( )->OBBMaxs( );
 
 	math::vec3_t screen_boxes[ 8 ];
 
@@ -126,7 +125,7 @@ bool player_t::is_alive( )
 	if ( !this )
 		return false;
 
-	return get_lifestate( ) == ALIVE;
+	return get_lifestate( ) == BodyState_t::alive;
 }
 
 bool player_t::is_enemy( )

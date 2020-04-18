@@ -21,14 +21,14 @@ namespace movement
 
 		const auto move_type = ctx::client.local->get_move_type( );
 
-		if ( move_type == MOVETYPE_LADDER || move_type == MOVETYPE_NOCLIP || move_type == MOVETYPE_OBSERVER )
+		if ( move_type == movetype_ladder || move_type == movetype_noclip || move_type == movetype_observer )
 			return;
 
 		if ( ctx::client.local->get_water_level( ) >= 2 )
 			return;
 
-		if ( !ctx::client.local->get_flags( ).has_flag( FL_ONGROUND ) )
-			ctx::client.cmd->buttons.remove_flag( IN_JUMP );
+		if ( !ctx::client.local->get_flags( ).has_flag( fl_onground ) )
+			ctx::client.cmd->buttons.remove_flag( in_jump );
 	}
 
 	void strafe( )
@@ -44,13 +44,13 @@ namespace movement
 
 		const auto move_type = ctx::client.local->get_move_type( );
 
-		if ( move_type == MOVETYPE_LADDER || move_type == MOVETYPE_NOCLIP || move_type == MOVETYPE_OBSERVER )
+		if ( move_type == movetype_ladder || move_type == movetype_noclip || move_type == movetype_observer )
 			return;
 
 		if ( ctx::client.local->get_water_level( ) >= 2 )
 			return;
 
-		if ( ctx::client.local->get_flags( ).has_flag( FL_ONGROUND ) && !ctx::client.cmd->buttons.has_flag( IN_JUMP ) )
+		if ( ctx::client.local->get_flags( ).has_flag( fl_onground ) && !ctx::client.cmd->buttons.has_flag( in_jump ) )
 			return;
 			
 		math::vec3_t viewangles;
